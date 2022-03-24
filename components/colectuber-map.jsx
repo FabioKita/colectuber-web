@@ -2,9 +2,13 @@ import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
 
+const FPS = 60;
+const SPF = 1000/FPS;
+
 const ColectuberMap = ({
     className,
-    initialValues
+    initialValues,
+    fetchedColectivos
 })=>{
     //Initial Values
     const mapParams = useMemo(()=>{
@@ -36,6 +40,87 @@ const ColectuberMap = ({
         return retValues;
     },[]);
 
+    //Colectivo
+    const [colectivos, setColectivos] = useState({});
+
+    const createOrUpdateColectivos = (prevColectivos)=>{
+        let newColectivos = {};
+
+        fetchedColectivos.forEach((fetchedColectivo)=>{
+            let colectivo = prevColectivos[fetchedColectivo.id];
+            
+            if(colectivo){
+                colectivo.position = {...colectivo.position_to}
+                colectivo.position_from  = {...colectivo.position_to}
+                colectivo.position_to = {...fetchedColectivo.position}
+            }else{
+                //Create new Colectivo
+                let newColectivo = {
+                    id:fetchedColectivo.id,
+                    position:{...fetchedColectivo.position},
+                    position_from:{...fetchedColectivo.position},
+                    position_to:{...fetchedColectivo.position},
+                };
+
+                newColectivos[newColectivo.id] = newColectivo;
+            }
+        })
+
+        return newColectivos;
+    }
+
+    useEffect(()=>{
+        setColectivos(createOrUpdateColectivos);
+    },[fetchedColectivos])
+
+    //INTERPOLATION
+    const thenRef = useRef(0);
+
+    useEffect(()=>{
+        startInterpolation();
+    },[]);
+
+    const startInterpolation = ()=>{
+        thenRef.current = Date.now();
+        processInterpolation();
+    }
+
+    const processInterpolation = ()=>{
+        requestAnimationFrame(processInterpolation)
+        
+        let now = Date.now();
+        let enlapsed = now - thenRef.current;
+
+        if (enlapsed > SPF){
+            thenRef.current = now - (enlapsed%SPF);
+            step(enlapsed);
+        }
+    }
+
+    const step = (delta)=>{
+        console.log("step: " + delta);
+    }
+    
+
+    //RENDER
+    //Render Colectivos
+    const renderColectivos = ()=>{
+        return Object.values(colectivos).map((colectivo)=>{
+            return <Marker
+                key={`marker-${colectivo.id}}`}
+                position={{
+                    lat:colectivo.position.lat,
+                    lng:colectivo.position.lng
+                }}
+                icon={{
+                    url:`test-icons/test_icon_${marker.id%5}.png`,
+                    scaledSize:new google.maps.Size(64, 64),
+                    anchor:new google.maps.Point(32, 32),
+                }}
+            />
+        })
+    }
+
     return (
         <div className={styles.container + " " + className}>
             <GoogleMap
@@ -44,7 +129,7 @@ const ColectuberMap = ({
                 mapContainerClassName={mapParams.mapContainerClassName}
                 options={mapParams.options}
             >
-
+                {renderColectivos()}
             </GoogleMap>
         </div>
     );
