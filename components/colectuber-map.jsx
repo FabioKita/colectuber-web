@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
+import ColectivoEntity from 'src/beans/colectivoEntity';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -40,7 +41,7 @@ const ColectuberMap = ({
         return retValues;
     },[]);
 
-    //Colectivo
+    //COLECTIVO
     const [colectivos, setColectivos] = useState({});
 
     const createOrUpdateColectivos = (prevColectivos)=>{
@@ -50,22 +51,14 @@ const ColectuberMap = ({
             let colectivo = prevColectivos[fetchedColectivo.id];
             
             if(colectivo){
-                colectivo.position = {...colectivo.position_to}
-                colectivo.position_from  = {...colectivo.position_to}
-                colectivo.position_to = {...fetchedColectivo.position}
+                colectivo.updatePosition(fetchedColectivo.position);
+                newColectivos[colectivo.id] = colectivo;
             }else{
                 //Create new Colectivo
-                let newColectivo = {
-                    id:fetchedColectivo.id,
-                    position:{...fetchedColectivo.position},
-                    position_from:{...fetchedColectivo.position},
-                    position_to:{...fetchedColectivo.position},
-                };
-
+                let newColectivo = new ColectivoEntity(fetchedColectivo.id, fetchedColectivo.position);
                 newColectivos[newColectivo.id] = newColectivo;
             }
         })
-
         return newColectivos;
     }
 
@@ -73,34 +66,46 @@ const ColectuberMap = ({
         setColectivos(createOrUpdateColectivos);
     },[fetchedColectivos])
 
-    //INTERPOLATION
+    //Interpolation
     const thenRef = useRef(0);
 
     useEffect(()=>{
-        startInterpolation();
+        startClock();
     },[]);
 
-    const startInterpolation = ()=>{
+    const startClock = ()=>{
         thenRef.current = Date.now();
-        processInterpolation();
+        processClock();
     }
 
-    const processInterpolation = ()=>{
-        requestAnimationFrame(processInterpolation)
+    const processClock = ()=>{
+        requestAnimationFrame(processClock)
         
         let now = Date.now();
         let enlapsed = now - thenRef.current;
 
         if (enlapsed > SPF){
-            thenRef.current = now - (enlapsed%SPF);
-            step(enlapsed);
+            let newThen = now - (enlapsed%SPF);
+            let delta = newThen - thenRef.current;
+            thenRef.current = newThen;
+
+            step(delta);
         }
     }
 
+    //step interpolation
     const step = (delta)=>{
-        console.log("step: " + delta);
+        setColectivos((prevColectivos)=>{
+            let newColectivos = {};
+
+            Object.values(prevColectivos).forEach((colectivo)=>{
+                colectivo.move(delta);
+                newColectivos[colectivo.id] = colectivo;
+            })
+
+            return newColectivos;
+        })
     }
-    
 
     //RENDER
     //Render Colectivos
@@ -108,15 +113,25 @@ const ColectuberMap = ({
         return Object.values(colectivos).map((colectivo)=>{
             return <Marker
                 key={`marker-${colectivo.id}}`}
-                position={{
-                    lat:colectivo.position.lat,
-                    lng:colectivo.position.lng
-                }}
+                position={colectivo.position}
                 icon={{
-                    url:`test-icons/test_icon_${marker.id%5}.png`,
+                    url:`test-icons/test_icon_${colectivo.id%5}.png`,
                     scaledSize:new google.maps.Size(64, 64),
                     anchor:new google.maps.Point(32, 32),
                 }}
+            />
+        })
+    }
+
+    const renderCircle = ()=>{
+        return fetchedColectivos.map((fetchedColectivo)=>{
+            return <Circle
+                key={`circle-${fetchedColectivo.id}`}
+                center = {{
+                    lat: fetchedColectivo.position.lat,
+                    lng: fetchedColectivo.position.lng
+                }}
+                radius={5}
             />
         })
     }
@@ -130,6 +145,7 @@ const ColectuberMap = ({
                 options={mapParams.options}
             >
                 {renderColectivos()}
+                {renderCircle()}
             </GoogleMap>
         </div>
     );

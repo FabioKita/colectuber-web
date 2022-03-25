@@ -13,8 +13,8 @@ const fetchLocations = async ()=>{
     });
 }
 
-const colectuberService = {
+const ColectuberService = {
     fetchLocations:fetchLocations
 };
 
-export default colectuberService;
+export default ColectuberService;

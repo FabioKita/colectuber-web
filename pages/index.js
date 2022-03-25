@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import styles from "styles/index.module.scss"
 import ColectuberMap from "components/colectuber-map"
+import ColectuberService from "src/services/colectuber-service";
 
 export default function Home() {
   //LOAD GOOGLE MAPS SCRIPT
@@ -11,6 +12,28 @@ export default function Home() {
 
   //Colectivo
   const [colectivos, setColectivos] = useState([]);
+
+  const fetchInitialData = ()=>{
+    ColectuberService.fetchLocations()
+      .then(res=>setColectivos(res))
+      .catch(err=>console.error(err));
+  }
+
+  const fetchLocations = ()=>{
+    ColectuberService.fetchLocations()
+      .then(res=>setColectivos(res))
+      .catch(err=>console.error(err));
+  }
+
+  useEffect(()=>{
+    fetchInitialData();
+
+    const interval = setInterval(()=>{
+      fetchLocations();
+    }, 5000);
+
+    return ()=>clearInterval(interval)
+  },[])
 
   if (!isLoaded) {
     return <div>Loading...</div>
