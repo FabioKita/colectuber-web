@@ -1,4 +1,4 @@
-import API from "src/repository/api";
+import API from "src/repositories/api";
 
 const fetchLocations = async ()=>{
     let responce = await API.get("/colectuber/ubicaciones");
