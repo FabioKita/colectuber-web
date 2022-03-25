@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
-import ColectivoEntity from 'src/beans/colectivoEntity';
+import ColectivoEntity from 'src/entities/colectivoEntity';
+import ColectivoMarker from './colectivo-marker';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -11,7 +12,7 @@ const ColectuberMap = ({
     initialValues,
     fetchedColectivos
 })=>{
-    //Initial Values
+    //INITIAL VALUES
     const mapParams = useMemo(()=>{
         const BOUNDS = {
             north: -27.28831571374801,
@@ -51,10 +52,11 @@ const ColectuberMap = ({
             let colectivo = prevColectivos[fetchedColectivo.id];
             
             if(colectivo){
-                colectivo.updatePosition(fetchedColectivo.position);
+                //Update colectivo data
+                colectivo.update(fetchedColectivo.position);
                 newColectivos[colectivo.id] = colectivo;
             }else{
-                //Create new Colectivo
+                //Create new COlectivo
                 let newColectivo = new ColectivoEntity(fetchedColectivo.id, fetchedColectivo.position);
                 newColectivos[newColectivo.id] = newColectivo;
             }
@@ -64,7 +66,7 @@ const ColectuberMap = ({
 
     useEffect(()=>{
         setColectivos(createOrUpdateColectivos);
-    },[fetchedColectivos])
+    },[fetchedColectivos]);
 
     //Interpolation
     const thenRef = useRef(0);
@@ -93,16 +95,13 @@ const ColectuberMap = ({
         }
     }
 
-    //step interpolation
     const step = (delta)=>{
         setColectivos((prevColectivos)=>{
             let newColectivos = {};
-
             Object.values(prevColectivos).forEach((colectivo)=>{
                 colectivo.move(delta);
                 newColectivos[colectivo.id] = colectivo;
             })
-
             return newColectivos;
         })
     }
@@ -111,18 +110,14 @@ const ColectuberMap = ({
     //Render Colectivos
     const renderColectivos = ()=>{
         return Object.values(colectivos).map((colectivo)=>{
-            return <Marker
-                key={`marker-${colectivo.id}}`}
-                position={colectivo.position}
-                icon={{
-                    url:`test-icons/test_icon_${colectivo.id%5}.png`,
-                    scaledSize:new google.maps.Size(64, 64),
-                    anchor:new google.maps.Point(32, 32),
-                }}
+            return <ColectivoMarker 
+                key={colectivo.id} 
+                coelctivoEntity={colectivo}
             />
         })
     }
 
+    //Debug
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
             return <Circle

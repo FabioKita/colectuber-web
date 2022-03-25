@@ -3,13 +3,15 @@ const TIMER = 5000;
 export default class ColectivoEntity{
     constructor(id, initialPos){
         this.id = id;
+        
+        //Position and Interpolation Variables
         this.position = new google.maps.LatLng(initialPos);
         this.position_from = new google.maps.LatLng(initialPos);
         this.position_to = new google.maps.LatLng(initialPos);
         this.timer = 0;
     }
 
-    updatePosition(new_position){
+    update(new_position){
         let newPos = new google.maps.LatLng(new_position);
         if(this.position_to.equals(newPos)) return;
 
@@ -28,14 +30,14 @@ export default class ColectivoEntity{
         }
 
         if (this.timer > 0){
+            this.timer -= delta;
+
             let p = clamp(1 - this.timer/TIMER, 0, 1);
 
             this.position = new google.maps.LatLng({
                 lat: lerp(this.position_from.lat(), this.position_to.lat(), p),
                 lng: lerp(this.position_from.lng(), this.position_to.lng(), p),
             });
-
-            this.timer -= delta;
         }
     }
 }

@@ -11,11 +11,15 @@ export default function Home() {
   });
 
   //Colectivo
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [colectivos, setColectivos] = useState([]);
 
   const fetchInitialData = ()=>{
     ColectuberService.fetchLocations()
-      .then(res=>setColectivos(res))
+      .then(res=>{
+        setDataLoaded(true);
+        setColectivos(res);
+      })
       .catch(err=>console.error(err));
   }
 
@@ -33,9 +37,9 @@ export default function Home() {
     }, 5000);
 
     return ()=>clearInterval(interval)
-  },[])
+  },[]);
 
-  if (!isLoaded) {
+  if (!isLoaded || !dataLoaded) {
     return <div>Loading...</div>
   }else{
     return (
