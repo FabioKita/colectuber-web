@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
-import ColectivoEntity from 'src/beans/colectivoEntity';
+import ColectivoEntity from 'src/entities/colectivoEntity';
 
 const FPS = 60;
 const SPF = 1000/FPS;
