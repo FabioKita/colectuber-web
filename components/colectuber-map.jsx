@@ -112,7 +112,7 @@ const ColectuberMap = ({
         return Object.values(colectivos).map((colectivo)=>{
             return <ColectivoMarker 
                 key={colectivo.id} 
-                coelctivoEntity={colectivo}
+                colectivoEntity={colectivo}
             />
         })
     }
