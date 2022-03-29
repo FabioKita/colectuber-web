@@ -10,15 +10,20 @@ export default function Home() {
     googleMapsApiKey: "AIzaSyDBCbGo7oxhEkicC2jY8SmGaPekY5OeSxU"
   });
 
-  //Colectivo
+  //FLAGS, SELECTS, FOCUS, ETC
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [selected, setSelected] = useState([]);
+  
+  //DATOS
   const [colectivos, setColectivos] = useState([]);
+  const [paradas, setParadas] = useState([]);
 
   const fetchInitialData = ()=>{
-    ColectuberService.fetchLocations()
+    ColectuberService.fetchInitialData()
       .then(res=>{
+        setParadas(res.paradas);
+        setColectivos(res.ubicaciones)
         setDataLoaded(true);
-        setColectivos(res);
       })
       .catch(err=>console.error(err));
   }
@@ -46,6 +51,7 @@ export default function Home() {
       <div className={styles.container}>
         <ColectuberMap
           fetchedColectivos={colectivos}
+          fetchedParadas={paradas}
         />
       </div>
     );
