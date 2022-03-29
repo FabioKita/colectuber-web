@@ -10,10 +10,9 @@ export default function Home() {
     googleMapsApiKey: "AIzaSyDBCbGo7oxhEkicC2jY8SmGaPekY5OeSxU"
   });
 
-  //FLAGS, SELECTS, FOCUS, ETC
+  //FLAGS
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [selected, setSelected] = useState([]);
-  
+
   //DATOS
   const [colectivos, setColectivos] = useState([]);
   const [paradas, setParadas] = useState([]);
@@ -44,6 +43,15 @@ export default function Home() {
     return ()=>clearInterval(interval)
   },[]);
 
+  //SELECT
+  const [selectedMarkers, setSelectedMarker] = useState([]);
+
+  const selectMarker = (markerId)=>{
+    let newSelection = [markerId];
+    setSelectedMarker(newSelection);
+  }
+
+
   if (!isLoaded || !dataLoaded) {
     return <div>Loading...</div>
   }else{
@@ -52,6 +60,10 @@ export default function Home() {
         <ColectuberMap
           fetchedColectivos={colectivos}
           fetchedParadas={paradas}
+          
+          //Selection
+          selectedMarkers={selectedMarkers}
+          selectMarker={selectMarker}
         />
       </div>
     );

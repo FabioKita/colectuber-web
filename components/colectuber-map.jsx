@@ -13,7 +13,10 @@ const ColectuberMap = ({
     className,
     initialValues,
     fetchedColectivos,
-    fetchedParadas
+    fetchedParadas,
+
+    selectedMarkers,
+    selectMarker
 })=>{
     //INITIAL VALUES
     const mapParams = useMemo(()=>{
@@ -44,24 +47,6 @@ const ColectuberMap = ({
         }
         return retValues;
     },[]);
-
-    //PARADAS
-    const [paradas, setParadas] = useState({});
-    
-    const createParadas = (prevParadas)=>{
-        let newParadas = {};
-
-        fetchedParadas.forEach((fetchedParada)=>{
-            let newParada = new ParadaMapEntity(fetchedParada);
-            newParadas[newParada.id] = newParada;
-        })
-
-        return newParadas;
-    }
-
-    useEffect(()=>{
-        setParadas(createParadas);
-    },[fetchedParadas]);
 
     //COLECTIVOS
     const [colectivos, setColectivos] = useState({});
@@ -127,6 +112,24 @@ const ColectuberMap = ({
         })
     }
 
+    //PARADAS
+    const [paradas, setParadas] = useState({});
+    
+    const createParadas = (prevParadas)=>{
+        let newParadas = {};
+
+        fetchedParadas.forEach((fetchedParada)=>{
+            let newParada = new ParadaMapEntity(fetchedParada);
+            newParadas[newParada.id] = newParada;
+        })
+
+        return newParadas;
+    }
+
+    useEffect(()=>{
+        setParadas(createParadas);
+    },[fetchedParadas]);
+
     //RENDER
     //Render Colectivos
     const renderColectivos = ()=>{
@@ -134,6 +137,9 @@ const ColectuberMap = ({
             return <ColectivoMarker 
                 key={colectivo.id} 
                 colectivoEntity={colectivo}
+                selected={selectedMarkers.includes(colectivo.id)}
+                onClick={()=>{selectMarker(colectivo.id)}}
+                onCloseClick={()=>{selectMarker(null)}}
             />
         })
     }
@@ -144,6 +150,9 @@ const ColectuberMap = ({
             return <ParadaMarker
                 key={parada.id}
                 paradaEntity={parada}
+                selected={selectedMarkers.includes(parada.id)}
+                onClick={()=>{selectMarker(parada.id)}}
+                onCloseClick={()=>{selectMarker(null)}}
             />
         })
     }
@@ -152,7 +161,7 @@ const ColectuberMap = ({
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
             return <Circle
-                key={`circle-${fetchedColectivo.id}`}
+                key={fetchedColectivo.id}
                 center = {{
                     lat: fetchedColectivo.position.lat,
                     lng: fetchedColectivo.position.lng

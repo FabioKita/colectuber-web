@@ -5,8 +5,29 @@ const MARKER_SIZE = 56;
 const MARKER_ZINDEX = 100;
 
 const ColectivoMarker = ({
-    colectivoEntity
+    colectivoEntity,
+    selected,
+    onClick,
+    onCloseClick
 })=>{
+    const renderInfoIfSelected = ()=>{
+        if (selected){
+            return <InfoWindow 
+                position={colectivoEntity.position}
+                onCloseClick={onCloseClick}
+                options={{
+                    pixelOffset:new google.maps.Size(0, -25)
+                }}
+            >
+                <div>
+                    <h1> {colectivoEntity.id} </h1>
+                </div>
+            </InfoWindow>
+        }else{
+            return "";
+        }
+    }
+
     return <>
         <Marker
             position={colectivoEntity.position}
@@ -18,7 +39,9 @@ const ColectivoMarker = ({
             options={{
                 zIndex:MARKER_ZINDEX
             }}
+            onClick={onClick}
         />
+        {renderInfoIfSelected()}
     </>
 }
 

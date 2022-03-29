@@ -12,7 +12,7 @@ const fetchInitialData = async ()=>{
     let fetchedParadasData = await API.get("/paradas");
     datos.paradas = fetchedParadasData.data.result.map((dto)=>{
         return {
-            id:dto.id,
+            id:"p-" + dto.id,
             name:dto.nombre,
             description:dto.descripcion,
             image:dto.image,
@@ -33,7 +33,7 @@ const fetchLocations = async ()=>{
     let responce = await API.get("/colectuber/ubicaciones");
     return responce.data.result.map((dto)=>{
         return {
-            id:dto.colectivoId,
+            id:"c-" + dto.colectivoId,
             position:{
                 lat:dto.posicionColectivo.latitud,
                 lng:dto.posicionColectivo.longitud
