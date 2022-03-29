@@ -3,14 +3,14 @@ import React, {useState} from 'react';
 
 const MARKER_SIZE = 56;
 
-const ColectivoMarker = ({
-    colectivoEntity
+const ParadaMarker = ({
+    paradaEntity
 })=>{
     return <>
         <Marker
-            position={colectivoEntity.position}
+            position={paradaEntity.position}
             icon={{
-                url:`markers/colectivo.svg`,
+                url:`test-icons/test_icon_0.png`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
             }}
@@ -18,4 +18,4 @@ const ColectivoMarker = ({
     </>
 }
 
-export default ColectivoMarker;
+export default ParadaMarker;

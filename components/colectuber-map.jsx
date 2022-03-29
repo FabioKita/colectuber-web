@@ -3,6 +3,7 @@ import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
 import ColectivoEntity from 'src/entities/colectivoEntity';
 import ColectivoMarker from './colectivo-marker';
+import ParadaMarker from './parada-marker';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -10,7 +11,8 @@ const SPF = 1000/FPS;
 const ColectuberMap = ({
     className,
     initialValues,
-    fetchedColectivos
+    fetchedColectivos,
+    fetchedParadas
 })=>{
     //INITIAL VALUES
     const mapParams = useMemo(()=>{
@@ -42,7 +44,24 @@ const ColectuberMap = ({
         return retValues;
     },[]);
 
-    //COLECTIVO
+    //PARADAS
+    const [paradas, setParadas] = useState({});
+    
+    const createParadas = (prevParadas)=>{
+        let newParadas = {};
+
+        fetchedParadas.forEach((fetchedParada)=>{
+            newParadas[fetchedParada.id] = fetchedParada;
+        })
+
+        return newParadas;
+    }
+
+    useEffect(()=>{
+        setParadas(createParadas);
+    },[fetchedParadas]);
+
+    //COLECTIVOS
     const [colectivos, setColectivos] = useState({});
 
     const createOrUpdateColectivos = (prevColectivos)=>{
@@ -117,6 +136,16 @@ const ColectuberMap = ({
         })
     }
 
+    //Render Paradas
+    const renderParadas = ()=>{
+        return Object.values(paradas).map((parada)=>{
+            return <ParadaMarker
+                key={parada.id}
+                paradaEntity={parada}
+            />
+        })
+    }
+
     //Debug
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
@@ -140,6 +169,7 @@ const ColectuberMap = ({
                 options={mapParams.options}
             >
                 {renderColectivos()}
+                {renderParadas()}
                 {renderCircle()}
             </GoogleMap>
         </div>

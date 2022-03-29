@@ -1,5 +1,34 @@
 import API from "src/repositories/api";
 
+const fetchInitialData = async ()=>{
+    let datos = {
+        colectivos:[],
+        paradas:[],
+        recorridos:[],
+        ubicaciones:[]
+    };
+
+    //Paradas
+    let fetchedParadasData = await API.get("/paradas");
+    datos.paradas = fetchedParadasData.data.result.map((dto)=>{
+        return {
+            id:dto.id,
+            name:dto.nombre,
+            description:dto.descripcion,
+            image:dto.image,
+            position:{
+                lat:dto.latitud,
+                lng:dto.longitud
+            }
+        };
+    });
+
+    //Ubicaciones
+    datos.ubicaciones = await fetchLocations();
+    
+    return datos;
+}
+
 const fetchLocations = async ()=>{
     let responce = await API.get("/colectuber/ubicaciones");
     return responce.data.listaColectivoUbicaciones.map((dto)=>{
@@ -14,7 +43,8 @@ const fetchLocations = async ()=>{
 }
 
 const ColectuberService = {
-    fetchLocations:fetchLocations
+    fetchInitialData,
+    fetchLocations
 };
 
 export default ColectuberService;
