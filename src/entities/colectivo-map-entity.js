@@ -1,6 +1,6 @@
 const TIMER = 5000;
 
-export default class ColectivoEntity{
+export default class ColectivoMapEntity{
     constructor(id, initialPos){
         this.id = id;
         
