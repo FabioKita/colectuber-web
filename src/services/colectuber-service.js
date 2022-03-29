@@ -31,7 +31,7 @@ const fetchInitialData = async ()=>{
 
 const fetchLocations = async ()=>{
     let responce = await API.get("/colectuber/ubicaciones");
-    return responce.data.listaColectivoUbicaciones.map((dto)=>{
+    return responce.data.result.map((dto)=>{
         return {
             id:dto.colectivoId,
             position:{

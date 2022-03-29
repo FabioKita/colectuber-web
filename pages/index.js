@@ -10,8 +10,11 @@ export default function Home() {
     googleMapsApiKey: "AIzaSyDBCbGo7oxhEkicC2jY8SmGaPekY5OeSxU"
   });
 
-  //DATOS
+  //FLAGS, SELECTS, FOCUS, ETC
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [selected, setSelected] = useState([]);
+  
+  //DATOS
   const [colectivos, setColectivos] = useState([]);
   const [paradas, setParadas] = useState([]);
 

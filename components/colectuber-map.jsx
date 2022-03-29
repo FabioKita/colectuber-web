@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
-import ColectivoEntity from 'src/entities/colectivoEntity';
+import ColectivoMapEntity from 'src/entities/colectivo-map-entity';
 import ColectivoMarker from './colectivo-marker';
 import ParadaMarker from './parada-marker';
+import ParadaMapEntity from 'src/entities/parada-map-entity';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -51,7 +52,8 @@ const ColectuberMap = ({
         let newParadas = {};
 
         fetchedParadas.forEach((fetchedParada)=>{
-            newParadas[fetchedParada.id] = fetchedParada;
+            let newParada = new ParadaMapEntity(fetchedParada);
+            newParadas[newParada.id] = newParada;
         })
 
         return newParadas;
@@ -76,7 +78,7 @@ const ColectuberMap = ({
                 newColectivos[colectivo.id] = colectivo;
             }else{
                 //Create new COlectivo
-                let newColectivo = new ColectivoEntity(fetchedColectivo.id, fetchedColectivo.position);
+                let newColectivo = new ColectivoMapEntity(fetchedColectivo.id, fetchedColectivo.position);
                 newColectivos[newColectivo.id] = newColectivo;
             }
         })
