@@ -15,7 +15,7 @@ const ColectuberMap = ({
     fetchedColectivos,
     fetchedParadas,
 
-    selectedMarkers,
+    selectedMarker,
     selectMarker
 })=>{
     //INITIAL VALUES
@@ -137,7 +137,7 @@ const ColectuberMap = ({
             return <ColectivoMarker 
                 key={colectivo.id} 
                 colectivoEntity={colectivo}
-                selected={selectedMarkers.includes(colectivo.id)}
+                selected={selectedMarker == colectivo.id}
                 onClick={()=>{selectMarker(colectivo.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
             />
@@ -150,7 +150,7 @@ const ColectuberMap = ({
             return <ParadaMarker
                 key={parada.id}
                 paradaEntity={parada}
-                selected={selectedMarkers.includes(parada.id)}
+                selected={selectedMarker == parada.id}
                 onClick={()=>{selectMarker(parada.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
             />

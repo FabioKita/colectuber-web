@@ -44,11 +44,10 @@ export default function Home() {
   },[]);
 
   //SELECT
-  const [selectedMarkers, setSelectedMarker] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   const selectMarker = (markerId)=>{
-    let newSelection = [markerId];
-    setSelectedMarker(newSelection);
+    setSelectedMarker(markerId);
   }
 
 
@@ -62,7 +61,7 @@ export default function Home() {
           fetchedParadas={paradas}
           
           //Selection
-          selectedMarkers={selectedMarkers}
+          selectedMarker={selectedMarker}
           selectMarker={selectMarker}
         />
       </div>
