@@ -21,7 +21,7 @@ export default function Home() {
     ColectuberService.fetchInitialData()
       .then(res=>{
         setParadas(res.paradas);
-        setColectivos(res.ubicaciones)
+        setColectivos(res.colectivos)
         setDataLoaded(true);
       })
       .catch(err=>console.error(err));
@@ -29,7 +29,14 @@ export default function Home() {
 
   const fetchLocations = ()=>{
     ColectuberService.fetchLocations()
-      .then(res=>setColectivos(res))
+      .then((newPositions)=>{
+        setColectivos((prevColectivos)=>{
+          prevColectivos.forEach(colectivo=>{
+            colectivo.position = newPositions.find(fp=>fp.id==colectivo.id)?.position;
+          });
+          return [...prevColectivos];
+        });
+      })
       .catch(err=>console.error(err));
   }
 
@@ -57,6 +64,7 @@ export default function Home() {
     return (
       <div className={styles.container}>
         <ColectuberMap
+          //Data
           fetchedColectivos={colectivos}
           fetchedParadas={paradas}
           

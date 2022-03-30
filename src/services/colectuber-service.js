@@ -4,13 +4,47 @@ const fetchInitialData = async ()=>{
     let datos = {
         colectivos:[],
         paradas:[],
-        recorridos:[],
-        ubicaciones:[]
+        recorridos:[]
     };
 
     //Paradas
+    datos.paradas = await fetchParadas();
+
+    //Colectivos
+    datos.colectivos = await fetchColectivos();
+
+    return datos;
+}
+
+const fetchColectivos = async ()=>{
+    let locations = await fetchLocations();
+    let fetchedColectivosData = await API.get("/colectivos");
+    
+    return await Promise.all(fetchedColectivosData.data.result.map(async (dto)=>{
+        let id = "c-"+dto.id;
+        let position = locations.find(pe=>pe.id===id)?.position;
+        let linea = await fetchLinea(dto.lineaId);
+        return {
+            id:id,
+            number:dto.numero,
+            line:linea,
+            position:position
+        };
+    }));
+}
+
+const fetchLinea = async (id)=>{
+    let lineaData = await API.get(`/lineas_colectivos/${id}`);
+    return {
+        id:lineaData.data.id,
+        number:lineaData.data.numero
+    };
+}
+
+const fetchParadas = async ()=>{
     let fetchedParadasData = await API.get("/paradas");
-    datos.paradas = fetchedParadasData.data.result.map((dto)=>{
+
+    return fetchedParadasData.data.result.map((dto)=>{
         return {
             id:"p-" + dto.id,
             name:dto.nombre,
@@ -21,12 +55,7 @@ const fetchInitialData = async ()=>{
                 lng:dto.longitud
             }
         };
-    });
-
-    //Ubicaciones
-    datos.ubicaciones = await fetchLocations();
-    
-    return datos;
+    })
 }
 
 const fetchLocations = async ()=>{

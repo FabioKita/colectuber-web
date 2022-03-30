@@ -11,10 +11,12 @@ const SPF = 1000/FPS;
 
 const ColectuberMap = ({
     className,
-    initialValues,
+    
+    //Data
     fetchedColectivos,
     fetchedParadas,
 
+    //Selection
     selectedMarker,
     selectMarker
 })=>{
@@ -38,14 +40,7 @@ const ColectuberMap = ({
                 gestureHandling: "greedy",
             }
         };
-
-        let retValues;
-        if (initialValues && typeof initialValues === 'object'){
-            retValues = {...retValues, ...initialValues};
-        }else{
-            retValues = DEF_VALUES
-        }
-        return retValues;
+        return DEF_VALUES;
     },[]);
 
     //COLECTIVOS
@@ -55,18 +50,21 @@ const ColectuberMap = ({
         let newColectivos = {};
 
         fetchedColectivos.forEach((fetchedColectivo)=>{
+            if(!fetchedColectivo.position) return;
+            
             let colectivo = prevColectivos[fetchedColectivo.id];
             
             if(colectivo){
                 //Update colectivo data
-                colectivo.update(fetchedColectivo.position);
+                colectivo.update(fetchedColectivo);
                 newColectivos[colectivo.id] = colectivo;
             }else{
-                //Create new COlectivo
-                let newColectivo = new ColectivoMapEntity(fetchedColectivo.id, fetchedColectivo.position);
+                //Create new Colectivo
+                let newColectivo = new ColectivoMapEntity(fetchedColectivo);
                 newColectivos[newColectivo.id] = newColectivo;
             }
-        })
+        });
+
         return newColectivos;
     }
 
@@ -137,6 +135,7 @@ const ColectuberMap = ({
             return <ColectivoMarker 
                 key={colectivo.id} 
                 colectivoEntity={colectivo}
+                
                 selected={selectedMarker == colectivo.id}
                 onClick={()=>{selectMarker(colectivo.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
@@ -160,6 +159,7 @@ const ColectuberMap = ({
     //Debug
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
+            if(!fetchedColectivo.position) return;
             return <Circle
                 key={fetchedColectivo.id}
                 center = {{
