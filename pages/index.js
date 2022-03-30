@@ -10,10 +10,9 @@ export default function Home() {
     googleMapsApiKey: "AIzaSyDBCbGo7oxhEkicC2jY8SmGaPekY5OeSxU"
   });
 
-  //FLAGS, SELECTS, FOCUS, ETC
+  //FLAGS
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [selected, setSelected] = useState([]);
-  
+
   //DATOS
   const [colectivos, setColectivos] = useState([]);
   const [paradas, setParadas] = useState([]);
@@ -22,7 +21,7 @@ export default function Home() {
     ColectuberService.fetchInitialData()
       .then(res=>{
         setParadas(res.paradas);
-        setColectivos(res.ubicaciones)
+        setColectivos(res.colectivos)
         setDataLoaded(true);
       })
       .catch(err=>console.error(err));
@@ -30,7 +29,14 @@ export default function Home() {
 
   const fetchLocations = ()=>{
     ColectuberService.fetchLocations()
-      .then(res=>setColectivos(res))
+      .then((newPositions)=>{
+        setColectivos((prevColectivos)=>{
+          prevColectivos.forEach(colectivo=>{
+            colectivo.position = newPositions.find(fp=>fp.id==colectivo.id)?.position;
+          });
+          return [...prevColectivos];
+        });
+      })
       .catch(err=>console.error(err));
   }
 
@@ -44,14 +50,27 @@ export default function Home() {
     return ()=>clearInterval(interval)
   },[]);
 
+  //SELECT
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  const selectMarker = (markerId)=>{
+    setSelectedMarker(markerId);
+  }
+
+
   if (!isLoaded || !dataLoaded) {
     return <div>Loading...</div>
   }else{
     return (
       <div className={styles.container}>
         <ColectuberMap
+          //Data
           fetchedColectivos={colectivos}
           fetchedParadas={paradas}
+          
+          //Selection
+          selectedMarker={selectedMarker}
+          selectMarker={selectMarker}
         />
       </div>
     );

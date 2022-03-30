@@ -1,12 +1,34 @@
 import { InfoWindow, Marker } from '@react-google-maps/api';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 const MARKER_SIZE = 56;
-const MARKER_ZINDEX = 100;
+const MARKER_ZINDEX = 1000;
 
 const ColectivoMarker = ({
-    colectivoEntity
+    colectivoEntity,
+    selected,
+    onClick,
+    onCloseClick
 })=>{
+    const renderInfoIfSelected = ()=>{
+        if (selected){
+            return <InfoWindow 
+                position={colectivoEntity.position}
+                onCloseClick={onCloseClick}
+                options={{
+                    pixelOffset:new google.maps.Size(0, -25)
+                }}
+            >
+                <div>
+                    <h1> Colectivo N°{colectivoEntity.number} </h1>
+                    <p>Linea N°{colectivoEntity.line.number}</p>
+                </div>
+            </InfoWindow>
+        }else{
+            return "";
+        }
+    }
+
     return <>
         <Marker
             position={colectivoEntity.position}
@@ -18,7 +40,10 @@ const ColectivoMarker = ({
             options={{
                 zIndex:MARKER_ZINDEX
             }}
+            onClick={onClick}
+            onUnmount={onCloseClick}
         />
+        {renderInfoIfSelected()}
     </>
 }
 

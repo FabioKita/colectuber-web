@@ -1,18 +1,21 @@
 const TIMER = 5000;
 
 export default class ColectivoMapEntity{
-    constructor(id, initialPos){
-        this.id = id;
+    constructor(data){
+        this.id = data.id;
         
+        this.number = data.number;
+        this.line = data.line;
+
         //Position and Interpolation Variables
-        this.position = new google.maps.LatLng(initialPos);
-        this.position_from = new google.maps.LatLng(initialPos);
-        this.position_to = new google.maps.LatLng(initialPos);
+        this.position = new google.maps.LatLng(data.position);
+        this.position_from = new google.maps.LatLng(data.position);
+        this.position_to = new google.maps.LatLng(data.position);
         this.timer = 0;
     }
 
-    update(new_position){
-        let newPos = new google.maps.LatLng(new_position);
+    update(data){
+        let newPos = new google.maps.LatLng(data.position);
         if(this.position_to.equals(newPos)) return;
 
         this.position_from = this.position;

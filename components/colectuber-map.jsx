@@ -11,9 +11,14 @@ const SPF = 1000/FPS;
 
 const ColectuberMap = ({
     className,
-    initialValues,
+
+    //Data
     fetchedColectivos,
-    fetchedParadas
+    fetchedParadas,
+
+    //Selection
+    selectedMarker,
+    selectMarker
 })=>{
     //INITIAL VALUES
     const mapParams = useMemo(()=>{
@@ -35,33 +40,8 @@ const ColectuberMap = ({
                 gestureHandling: "greedy",
             }
         };
-
-        let retValues;
-        if (initialValues && typeof initialValues === 'object'){
-            retValues = {...retValues, ...initialValues};
-        }else{
-            retValues = DEF_VALUES
-        }
-        return retValues;
+        return DEF_VALUES;
     },[]);
-
-    //PARADAS
-    const [paradas, setParadas] = useState({});
-    
-    const createParadas = (prevParadas)=>{
-        let newParadas = {};
-
-        fetchedParadas.forEach((fetchedParada)=>{
-            let newParada = new ParadaMapEntity(fetchedParada);
-            newParadas[newParada.id] = newParada;
-        })
-
-        return newParadas;
-    }
-
-    useEffect(()=>{
-        setParadas(createParadas);
-    },[fetchedParadas]);
 
     //COLECTIVOS
     const [colectivos, setColectivos] = useState({});
@@ -70,18 +50,20 @@ const ColectuberMap = ({
         let newColectivos = {};
 
         fetchedColectivos.forEach((fetchedColectivo)=>{
-            let colectivo = prevColectivos[fetchedColectivo.id];
+            if(!fetchedColectivo.position) return;
             
+            let colectivo = prevColectivos[fetchedColectivo.id];
             if(colectivo){
                 //Update colectivo data
-                colectivo.update(fetchedColectivo.position);
+                colectivo.update(fetchedColectivo);
                 newColectivos[colectivo.id] = colectivo;
             }else{
-                //Create new COlectivo
-                let newColectivo = new ColectivoMapEntity(fetchedColectivo.id, fetchedColectivo.position);
+                //Create new Colectivo
+                let newColectivo = new ColectivoMapEntity(fetchedColectivo);
                 newColectivos[newColectivo.id] = newColectivo;
             }
-        })
+        });
+
         return newColectivos;
     }
 
@@ -127,6 +109,24 @@ const ColectuberMap = ({
         })
     }
 
+    //PARADAS
+    const [paradas, setParadas] = useState({});
+    
+    const createParadas = (prevParadas)=>{
+        let newParadas = {};
+
+        fetchedParadas.forEach((fetchedParada)=>{
+            let newParada = new ParadaMapEntity(fetchedParada);
+            newParadas[newParada.id] = newParada;
+        })
+
+        return newParadas;
+    }
+
+    useEffect(()=>{
+        setParadas(createParadas);
+    },[fetchedParadas]);
+
     //RENDER
     //Render Colectivos
     const renderColectivos = ()=>{
@@ -134,6 +134,10 @@ const ColectuberMap = ({
             return <ColectivoMarker 
                 key={colectivo.id} 
                 colectivoEntity={colectivo}
+                
+                selected={selectedMarker == colectivo.id}
+                onClick={()=>{selectMarker(colectivo.id)}}
+                onCloseClick={()=>{selectMarker(null)}}
             />
         })
     }
@@ -144,6 +148,9 @@ const ColectuberMap = ({
             return <ParadaMarker
                 key={parada.id}
                 paradaEntity={parada}
+                selected={selectedMarker == parada.id}
+                onClick={()=>{selectMarker(parada.id)}}
+                onCloseClick={()=>{selectMarker(null)}}
             />
         })
     }
@@ -151,8 +158,9 @@ const ColectuberMap = ({
     //Debug
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
+            if(!fetchedColectivo.position) return;
             return <Circle
-                key={`circle-${fetchedColectivo.id}`}
+                key={fetchedColectivo.id}
                 center = {{
                     lat: fetchedColectivo.position.lat,
                     lng: fetchedColectivo.position.lng

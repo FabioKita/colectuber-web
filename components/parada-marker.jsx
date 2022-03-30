@@ -4,8 +4,30 @@ import React, {useState} from 'react';
 const MARKER_SIZE = 56;
 
 const ParadaMarker = ({
-    paradaEntity
+    paradaEntity,
+    selected,
+    onClick,
+    onCloseClick
 })=>{
+    const renderInfoIfSelected = ()=>{
+        if (selected){
+            return <InfoWindow 
+                position={paradaEntity.position}
+                onCloseClick={onCloseClick}
+                options={{
+                    pixelOffset:new google.maps.Size(0, -25)
+                }}
+            >
+                <div>
+                    <h1> {paradaEntity.name} </h1>
+                    <p> {paradaEntity.description} </p>
+                </div>
+            </InfoWindow>
+        }else{
+            return "";
+        }
+    }
+
     return <>
         <Marker
             position={paradaEntity.position}
@@ -14,7 +36,9 @@ const ParadaMarker = ({
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
             }}
+            onClick={onClick}
         />
+        {renderInfoIfSelected()}
     </>
 }
 
