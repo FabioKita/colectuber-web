@@ -11,7 +11,7 @@ const SPF = 1000/FPS;
 
 const ColectuberMap = ({
     className,
-    
+
     //Data
     fetchedColectivos,
     fetchedParadas,
@@ -53,7 +53,6 @@ const ColectuberMap = ({
             if(!fetchedColectivo.position) return;
             
             let colectivo = prevColectivos[fetchedColectivo.id];
-            
             if(colectivo){
                 //Update colectivo data
                 colectivo.update(fetchedColectivo);
