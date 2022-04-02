@@ -15,10 +15,9 @@ const RecorridoLine = ({
         <Polyline
             path={recorridoEntity.getPath()}
             options={{
-                strokeColor:'black',
-                strokeWeight:8,
+                strokeColor:'white',
+                strokeWeight:10,
                 zIndex:-1000
-                
             }}
         />
     </>
