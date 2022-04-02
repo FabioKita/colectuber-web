@@ -10,7 +10,7 @@ export default function Home() {
     googleMapsApiKey: "AIzaSyDBCbGo7oxhEkicC2jY8SmGaPekY5OeSxU"
   });
 
-  //FLAGS
+  //FLAG
   const [dataLoaded, setDataLoaded] = useState(false);
 
   //DATOS
