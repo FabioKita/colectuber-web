@@ -34,7 +34,7 @@ const ParadaMarker = ({
             icon={{
                 url:`test-icons/test_icon_0.png`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
-                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
+                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2)
             }}
             onClick={onClick}
         />

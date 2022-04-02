@@ -16,12 +16,14 @@ export default function Home() {
   //DATOS
   const [colectivos, setColectivos] = useState([]);
   const [paradas, setParadas] = useState([]);
+  const [recorridos, setRecorridos] = useState([]);
 
   const fetchInitialData = ()=>{
     ColectuberService.fetchInitialData()
       .then(res=>{
         setParadas(res.paradas);
         setColectivos(res.colectivos)
+        setRecorridos(res.recorridos)
         setDataLoaded(true);
       })
       .catch(err=>console.error(err));
@@ -67,7 +69,8 @@ export default function Home() {
           //Data
           fetchedColectivos={colectivos}
           fetchedParadas={paradas}
-          
+          fetchedRecorridos={recorridos}
+
           //Selection
           selectedMarker={selectedMarker}
           selectMarker={selectMarker}

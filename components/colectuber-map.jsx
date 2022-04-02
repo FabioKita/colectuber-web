@@ -5,6 +5,8 @@ import ColectivoMapEntity from 'src/entities/colectivo-map-entity';
 import ColectivoMarker from './colectivo-marker';
 import ParadaMarker from './parada-marker';
 import ParadaMapEntity from 'src/entities/parada-map-entity';
+import RecorridoMapEntity from 'src/entities/recorrido-map-entity';
+import RecorridoLine from './recorrido-line';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -15,6 +17,7 @@ const ColectuberMap = ({
     //Data
     fetchedColectivos,
     fetchedParadas,
+    fetchedRecorridos,
 
     //Selection
     selectedMarker,
@@ -127,6 +130,24 @@ const ColectuberMap = ({
         setParadas(createParadas);
     },[fetchedParadas]);
 
+    //RECORRIDOS
+    const [recorridos, setRecorridos] = useState({});
+
+    const createRecorridos = (prevRecorridos)=>{
+        let newRecorridos = {};
+
+        fetchedRecorridos.forEach((fetchedRecorrido)=>{
+            let newRecorrido = new RecorridoMapEntity(fetchedRecorrido);
+            newRecorridos[newRecorrido.id] = newRecorrido;
+        })
+
+        return newRecorridos;
+    }
+
+    useEffect(()=>{
+        setRecorridos(createRecorridos);
+    },[fetchedRecorridos])
+
     //RENDER
     //Render Colectivos
     const renderColectivos = ()=>{
@@ -151,6 +172,16 @@ const ColectuberMap = ({
                 selected={selectedMarker == parada.id}
                 onClick={()=>{selectMarker(parada.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
+            />
+        })
+    }
+
+    //Render Recorridos
+    const renderRecorridos = ()=>{
+        return Object.values(recorridos).map((recorrido)=>{
+            return <RecorridoLine
+                key={recorrido.id}
+                recorridoEntity={recorrido}
             />
         })
     }
@@ -180,6 +211,7 @@ const ColectuberMap = ({
             >
                 {renderColectivos()}
                 {renderParadas()}
+                {renderRecorridos()}
                 {renderCircle()}
             </GoogleMap>
         </div>
