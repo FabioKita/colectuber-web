@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'colectuber-web'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B8163FCFF7EA474E854221F92BC07889 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BEB8EC233F1C4D009098EE183FADC004 }}
           package: .
