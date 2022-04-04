@@ -13,6 +13,10 @@ export default class ColectivoMapEntity{
         this.position_from = new google.maps.LatLng(data.position);
         this.position_to = new google.maps.LatLng(data.position);
         this.timer = 0;
+
+        //Opacity
+        this.opacity = 1;
+        this.opacityTo = 1;
     }
 
     update(data){
@@ -26,6 +30,7 @@ export default class ColectivoMapEntity{
 
     step(delta){
         this.move(delta);
+
     }
 
     move(delta){
@@ -46,6 +51,17 @@ export default class ColectivoMapEntity{
                 lat: lerp(this.position_from.lat(), this.position_to.lat(), p),
                 lng: lerp(this.position_from.lng(), this.position_to.lng(), p),
             });
+        }
+    }
+
+    interpolateOpacity(delta){
+        const approach = (i, f, a)=>{
+            if (i < f) return Math.min(i+a, f);
+            else return Math.max(i-a, f);
+        }
+
+        if(this.opacity != this.opacityTo){
+
         }
     }
 }

@@ -16,6 +16,10 @@ export default class RecorridoMapEntity{
                 lng:point.position.lng
             });
         })
+
+        //Opacity
+        this.opacity = 1;
+        this.opacityTo = 1;
     }
 
     step(delta){

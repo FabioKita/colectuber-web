@@ -8,6 +8,10 @@ export default class ParadaMapEntity{
             lat: data.position.lat,
             lng: data.position.lng
         }
+
+        //Opacity
+        this.opacity = 1;
+        this.opacityTo = 1;
     }
     
     step(delta){
