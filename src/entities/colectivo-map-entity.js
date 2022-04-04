@@ -24,6 +24,10 @@ export default class ColectivoMapEntity{
         this.timer = TIMER;
     }
 
+    step(delta){
+        this.move(delta);
+    }
+
     move(delta){
         const lerp = (i, f, p)=>{
             return i + (f-i)*p;

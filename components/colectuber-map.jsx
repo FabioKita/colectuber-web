@@ -105,10 +105,28 @@ const ColectuberMap = ({
         setColectivos((prevColectivos)=>{
             let newColectivos = {};
             Object.values(prevColectivos).forEach((colectivo)=>{
-                colectivo.move(delta);
+                colectivo.step(delta);
                 newColectivos[colectivo.id] = colectivo;
             })
             return newColectivos;
+        })
+
+        setParadas((prevParadas)=>{
+            let newParadas = {};
+            Object.values(prevParadas).forEach((parada)=>{
+                parada.step(delta);
+                newParadas[parada.id] = parada;
+            })
+            return newParadas;
+        })
+
+        setRecorridos((prevRecorridos)=>{
+            let newRecorridos = {};
+            Object.values(prevRecorridos).forEach((recorrido)=>{
+                recorrido.step(delta);
+                newRecorridos[recorrido.id] = recorrido;
+            })
+            return newRecorridos;
         })
     }
 

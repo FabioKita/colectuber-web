@@ -9,4 +9,8 @@ export default class ParadaMapEntity{
             lng: data.position.lng
         }
     }
+    
+    step(delta){
+        
+    }
 }
