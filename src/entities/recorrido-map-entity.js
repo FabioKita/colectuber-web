@@ -18,6 +18,10 @@ export default class RecorridoMapEntity{
         })
     }
 
+    step(delta){
+        
+    }
+
     getPath(){
         return this.path;
     }
