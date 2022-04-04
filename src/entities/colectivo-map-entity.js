@@ -1,4 +1,5 @@
 const TIMER = 5000;
+const OPACITY_SPEED = 0.1;
 
 export default class ColectivoMapEntity{
     constructor(data){
@@ -30,7 +31,6 @@ export default class ColectivoMapEntity{
 
     step(delta){
         this.move(delta);
-
     }
 
     move(delta){
@@ -61,7 +61,7 @@ export default class ColectivoMapEntity{
         }
 
         if(this.opacity != this.opacityTo){
-
+            this.opacity = approach(this.opacity, this.opacityTo, OPACITY_SPEED);
         }
     }
 }
