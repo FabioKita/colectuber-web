@@ -45,12 +45,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-      
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'colectuber-web'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_558E8DE31DFE471AACEAD4C537EDEF53 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_07C7836FB29E4014BA68853DE7462A1D }}
           package: .
