@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import { Polyline } from '@react-google-maps/api';
 
 const RecorridoLine = ({
-    recorridoEntity
+    recorridoEntity,
+    hide
 })=>{
     return <>
         <Polyline
             path={recorridoEntity.getPath()}
             options={{
                 strokeColor:'red',
+                strokeOpacity:hide?0.2:1,
                 strokeWeight:6
             }}
         />
@@ -16,6 +18,7 @@ const RecorridoLine = ({
             path={recorridoEntity.getPath()}
             options={{
                 strokeColor:'white',
+                strokeOpacity:hide?0.1:1,
                 strokeWeight:10,
                 zIndex:-1000
             }}

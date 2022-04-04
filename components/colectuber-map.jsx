@@ -157,6 +157,8 @@ const ColectuberMap = ({
                 colectivoEntity={colectivo}
                 
                 selected={selectedMarker == colectivo.id}
+                hide={selectedMarker && selectedMarker != colectivo.id}
+
                 onClick={()=>{selectMarker(colectivo.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
             />
@@ -170,6 +172,7 @@ const ColectuberMap = ({
                 key={parada.id}
                 paradaEntity={parada}
                 selected={selectedMarker == parada.id}
+                hide={selectedMarker && selectedMarker != parada.id}
                 onClick={()=>{selectMarker(parada.id)}}
                 onCloseClick={()=>{selectMarker(null)}}
             />
@@ -181,6 +184,7 @@ const ColectuberMap = ({
         return Object.values(recorridos).map((recorrido)=>{
             return <RecorridoLine
                 key={recorrido.id}
+                hide={selectedMarker && selectedMarker != recorrido.id}
                 recorridoEntity={recorrido}
             />
         })
@@ -201,6 +205,7 @@ const ColectuberMap = ({
         })
     }
 
+    //Return
     return (
         <div className={styles.container + " " + className}>
             <GoogleMap
