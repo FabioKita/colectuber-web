@@ -2,11 +2,11 @@ import { InfoWindow, Marker } from '@react-google-maps/api';
 import React, {useState, useEffect} from 'react';
 
 const MARKER_SIZE = 56;
-const MARKER_ZINDEX = 1000;
 
 const ColectivoMarker = ({
     colectivoEntity,
     selected,
+    hide,
     onClick,
     onCloseClick
 })=>{
@@ -21,7 +21,8 @@ const ColectivoMarker = ({
             >
                 <div>
                     <h1> Colectivo N°{colectivoEntity.number} </h1>
-                    <p>Linea N°{colectivoEntity.line.number}</p>
+                    <p>Linea N°{colectivoEntity.line}</p>
+                    <p>Empresa "{colectivoEntity.company}"</p>
                 </div>
             </InfoWindow>
         }else{
@@ -38,8 +39,9 @@ const ColectivoMarker = ({
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
             }}
             options={{
-                zIndex:MARKER_ZINDEX
+                zIndex:1000
             }}
+            opacity={hide?0.5:1}
             onClick={onClick}
             onUnmount={onCloseClick}
         />

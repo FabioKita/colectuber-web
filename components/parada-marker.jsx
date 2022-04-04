@@ -6,6 +6,7 @@ const MARKER_SIZE = 56;
 const ParadaMarker = ({
     paradaEntity,
     selected,
+    hide,
     onClick,
     onCloseClick
 })=>{
@@ -36,6 +37,7 @@ const ParadaMarker = ({
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2)
             }}
+            opacity={hide?0.5:1}
             onClick={onClick}
         />
         {renderInfoIfSelected()}

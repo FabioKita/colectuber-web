@@ -6,6 +6,7 @@ export default class ColectivoMapEntity{
         
         this.number = data.number;
         this.line = data.line;
+        this.company = data.company;
 
         //Position and Interpolation Variables
         this.position = new google.maps.LatLng(data.position);
