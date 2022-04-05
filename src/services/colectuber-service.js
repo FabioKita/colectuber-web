@@ -33,13 +33,11 @@ const fetchInitialData = async ()=>{
     datos.paradas = getParadaList(responce.data);
     datos.recorridos = getRecorridosList(responce.data);
 
-    console.log(datos);
-
     return datos;
 }
 
 const getColectivosList = (responceData)=>{
-    let locations = responceData.colectivoUbicacion.map((l)=>parseDtoToLocations(l));
+    let locations = responceData.colectivoUbicacion.map(l=>parseDtoToLocations(l));
 
     let colectivos = responceData.colectivos.map(c=>{
         return {
@@ -49,7 +47,6 @@ const getColectivosList = (responceData)=>{
             company:c.empresa,
         };
     });
-
     mergeColectivosWithLocations(colectivos, locations);
     return colectivos;
 }
@@ -79,7 +76,7 @@ const getRecorridosList = (responceData)=>{
             description:r.descripcion,
             points:r.puntos.map(p=>({
                 id:p.id,
-                paradaId:p.paradaId,
+                paradaId: "p-" + p.paradaId,
                 position:{
                     lat:p.puntoPosicion.latitud,
                     lng:p.puntoPosicion.longitud
@@ -94,16 +91,13 @@ const getRecorridosList = (responceData)=>{
 const fetchLocations = async ()=>{
     let responce = await API.get("/colectuber/ubicaciones");
     let fetchedLocations = responce.data.result.map((fetchedLocation)=>parseDtoToLocations(fetchedLocation))
-
-    console.log(fetchedLocations);
-
     return fetchedLocations;
 }
 
 const parseDtoToLocations = (dto)=>{
     return {
         colectivoId: "c-" + dto.colectivoId,
-        recorridoId: dto.recorrido_id,
+        recorridoId: "r-" + dto.recorrido_id,
         ip: dto.indicePorcentaje,
         position:{
             lat:dto.posicionColectivo.latitud,

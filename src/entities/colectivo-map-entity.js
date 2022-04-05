@@ -1,31 +1,32 @@
 const TIMER = 5000;
-const OPACITY_SPEED = 0.1;
 
 export default class ColectivoMapEntity{
-    constructor(data){
+    constructor(data, recorrido){
         this.id = data.id;
         
+        //Info window data
         this.number = data.number;
         this.line = data.line;
         this.company = data.company;
 
         //Position and Interpolation Variables
-        this.position = new google.maps.LatLng(data.position);
-        this.position_from = new google.maps.LatLng(data.position);
-        this.position_to = new google.maps.LatLng(data.position);
-        this.timer = 0;
+        this.ip = data.ip;
+        this.ip_from = data.ip;
+        this.ip_to = data.ip;
+        this.recorrido = recorrido;
 
-        //Opacity
-        this.opacity = 1;
-        this.opacityTo = 1;
+        this.position = this.getPositionFromIp(this.ip, this.recorrido);
+
+        this.timer = 0;
     }
 
-    update(data){
-        let newPos = new google.maps.LatLng(data.position);
-        if(this.position_to.equals(newPos)) return;
+    update(data, recorrido){
+        this.recorrido = recorrido;
+        let newIp = data.ip;
 
-        this.position_from = this.position;
-        this.position_to = newPos;
+        if(this.ip == newIp) return;
+        this.ip_from = this.ip;
+        this.ip_to = newIp;
         this.timer = TIMER;
     }
 
@@ -34,34 +35,41 @@ export default class ColectivoMapEntity{
     }
 
     move(delta){
-        const lerp = (i, f, p)=>{
-            return i + (f-i)*p;
-        }
-
-        const clamp = (n, min, max)=>{
-            return Math.max(min, Math.min(max, n))
-        }
-
         if (this.timer > 0){
             this.timer -= delta;
+            let p = this.clamp(1 - this.timer/TIMER, 0, 1);
 
-            let p = clamp(1 - this.timer/TIMER, 0, 1);
-
-            this.position = new google.maps.LatLng({
-                lat: lerp(this.position_from.lat(), this.position_to.lat(), p),
-                lng: lerp(this.position_from.lng(), this.position_to.lng(), p),
-            });
+            this.ip = this.lerp(this.ip_from, this.ip_to, p);
+            this.position = this.getPositionFromIp(this.ip, this.recorrido);
         }
     }
 
-    interpolateOpacity(delta){
-        const approach = (i, f, a)=>{
-            if (i < f) return Math.min(i+a, f);
-            else return Math.max(i-a, f);
-        }
+    //Auxiliar method
+    lerp(i, f, p){
+        return i + (f-i)*p;
+    }
 
-        if(this.opacity != this.opacityTo){
-            this.opacity = approach(this.opacity, this.opacityTo, OPACITY_SPEED);
-        }
+    clamp(n, min, max){
+        return Math.max(min, Math.min(max, n))
+    }
+
+    separateIp(ip){
+        let index = Math.trunc(ip);
+        let per = ip-index;
+        return [index, per];
+    }
+
+    getPositionFromIp(ip, recorrido){
+        let path = recorrido.getPath();
+        
+        let [index, per] = this.separateIp(ip);
+        let nextIndex = this.clamp(index+1, 0, path.length-1);
+
+        let new_position = {
+            lat: this.lerp(path[index].lat(), path[nextIndex].lat(), per),
+            lng: this.lerp(path[index].lng(), path[nextIndex].lng(), per),
+        };
+
+        return new google.maps.LatLng(new_position);
     }
 }

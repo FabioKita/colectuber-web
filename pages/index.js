@@ -18,32 +18,36 @@ export default function Home() {
   const [paradas, setParadas] = useState([]);
   const [recorridos, setRecorridos] = useState([]);
 
-  const fetchInitialData = ()=>{
+  const fetchAndSetInitialData = ()=>{
     ColectuberService.fetchInitialData()
-      .then(res=>{
-        setColectivos(res.colectivos);
-        setParadas(res.paradas);
-        setRecorridos(res.recorridos);
-        setDataLoaded(true)
+      .then((initialData)=>{
+        setColectivos(initialData.colectivos);
+        setParadas(initialData.paradas);
+        setRecorridos(initialData.recorridos);
+        setDataLoaded(true);
+      }).catch((err)=>{
+        console.error(err);
       })
-      .catch(err=>console.error(err));
   }
 
-  const fetchLocations = ()=>{
+  const fetchAndSetLocations = async ()=>{
     ColectuberService.fetchLocations()
       .then((newPositions)=>{
-        let newColectivos = [...colectivos];
-        ColectuberService.mergeColectivosWithLocations(newColectivos, newPositions);
-        setColectivos(newColectivos);
+        setColectivos((prevColectivos)=>{
+          let newColectivos = [...prevColectivos];
+          ColectuberService.mergeColectivosWithLocations(newColectivos, newPositions)
+          return newColectivos;
+        })
+      }).catch((err)=>{
+        console.error(err);
       })
-      .catch(err=>console.error(err));
   }
 
   useEffect(()=>{
-    fetchInitialData();
+    fetchAndSetInitialData();
 
     const interval = setInterval(()=>{
-      fetchLocations();
+      fetchAndSetLocations();
     }, 5000);
 
     return ()=>clearInterval(interval)
