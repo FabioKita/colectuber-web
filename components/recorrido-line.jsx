@@ -11,7 +11,7 @@ const RecorridoLine = ({
             options={{
                 strokeColor:'red',
                 strokeOpacity:hide?0.2:1,
-                strokeWeight:6
+                strokeWeight:4
             }}
         />
         <Polyline
@@ -19,7 +19,7 @@ const RecorridoLine = ({
             options={{
                 strokeColor:'white',
                 strokeOpacity:hide?0.1:1,
-                strokeWeight:10,
+                strokeWeight:6,
                 zIndex:-1000
             }}
         />

@@ -21,10 +21,10 @@ export default function Home() {
   const fetchInitialData = ()=>{
     ColectuberService.fetchInitialData()
       .then(res=>{
+        setColectivos(res.colectivos);
         setParadas(res.paradas);
-        setColectivos(res.colectivos)
-        setRecorridos(res.recorridos)
-        setDataLoaded(true);
+        setRecorridos(res.recorridos);
+        setDataLoaded(true)
       })
       .catch(err=>console.error(err));
   }
@@ -32,12 +32,9 @@ export default function Home() {
   const fetchLocations = ()=>{
     ColectuberService.fetchLocations()
       .then((newPositions)=>{
-        setColectivos((prevColectivos)=>{
-          prevColectivos.forEach(colectivo=>{
-            colectivo.position = newPositions.find(fp=>fp.id==colectivo.id)?.position;
-          });
-          return [...prevColectivos];
-        });
+        let newColectivos = [...colectivos];
+        ColectuberService.mergeColectivosWithLocations(newColectivos, newPositions);
+        setColectivos(newColectivos);
       })
       .catch(err=>console.error(err));
   }
