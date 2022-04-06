@@ -46,6 +46,42 @@ const ColectuberMap = ({
         return DEF_VALUES;
     },[]);
 
+    //PARADAS
+    const [paradas, setParadas] = useState({});
+    
+    const createParadas = (prevParadas)=>{
+        let newParadas = {};
+
+        fetchedParadas.forEach((fetchedParada)=>{
+            let newParada = new ParadaMapEntity(fetchedParada);
+            newParadas[newParada.id] = newParada;
+        })
+
+        return newParadas;
+    }
+
+    useEffect(()=>{
+        setParadas(createParadas);
+    },[fetchedParadas]);
+
+    //RECORRIDOS
+    const [recorridos, setRecorridos] = useState({});
+
+    const createRecorridos = (prevRecorridos)=>{
+        let newRecorridos = {};
+
+        fetchedRecorridos.forEach((fetchedRecorrido)=>{
+            let newRecorrido = new RecorridoMapEntity(fetchedRecorrido);
+            newRecorridos[newRecorrido.id] = newRecorrido;
+        })
+
+        return newRecorridos;
+    }
+
+    useEffect(()=>{
+        setRecorridos(createRecorridos);
+    },[fetchedRecorridos, paradas])
+
     //COLECTIVOS
     const [colectivos, setColectivos] = useState({});
 
@@ -55,14 +91,17 @@ const ColectuberMap = ({
         fetchedColectivos.forEach((fetchedColectivo)=>{
             if(!fetchedColectivo.position) return;
             
+            let recorrido = recorridos[fetchedColectivo.recorridoId];
+            if(!recorrido) return;
+
             let colectivo = prevColectivos[fetchedColectivo.id];
             if(colectivo){
                 //Update colectivo data
-                colectivo.update(fetchedColectivo);
+                colectivo.update(fetchedColectivo, recorrido);
                 newColectivos[colectivo.id] = colectivo;
             }else{
                 //Create new Colectivo
-                let newColectivo = new ColectivoMapEntity(fetchedColectivo);
+                let newColectivo = new ColectivoMapEntity(fetchedColectivo, recorrido);
                 newColectivos[newColectivo.id] = newColectivo;
             }
         });
@@ -72,7 +111,7 @@ const ColectuberMap = ({
 
     useEffect(()=>{
         setColectivos(createOrUpdateColectivos);
-    },[fetchedColectivos]);
+    },[fetchedColectivos, recorridos]);
 
     //Interpolation
     const thenRef = useRef(0);
@@ -110,61 +149,7 @@ const ColectuberMap = ({
             })
             return newColectivos;
         })
-
-        setParadas((prevParadas)=>{
-            let newParadas = {};
-            Object.values(prevParadas).forEach((parada)=>{
-                parada.step(delta);
-                newParadas[parada.id] = parada;
-            })
-            return newParadas;
-        })
-
-        setRecorridos((prevRecorridos)=>{
-            let newRecorridos = {};
-            Object.values(prevRecorridos).forEach((recorrido)=>{
-                recorrido.step(delta);
-                newRecorridos[recorrido.id] = recorrido;
-            })
-            return newRecorridos;
-        })
     }
-
-    //PARADAS
-    const [paradas, setParadas] = useState({});
-    
-    const createParadas = (prevParadas)=>{
-        let newParadas = {};
-
-        fetchedParadas.forEach((fetchedParada)=>{
-            let newParada = new ParadaMapEntity(fetchedParada);
-            newParadas[newParada.id] = newParada;
-        })
-
-        return newParadas;
-    }
-
-    useEffect(()=>{
-        setParadas(createParadas);
-    },[fetchedParadas]);
-
-    //RECORRIDOS
-    const [recorridos, setRecorridos] = useState({});
-
-    const createRecorridos = (prevRecorridos)=>{
-        let newRecorridos = {};
-
-        fetchedRecorridos.forEach((fetchedRecorrido)=>{
-            let newRecorrido = new RecorridoMapEntity(fetchedRecorrido);
-            newRecorridos[newRecorrido.id] = newRecorrido;
-        })
-
-        return newRecorridos;
-    }
-
-    useEffect(()=>{
-        setRecorridos(createRecorridos);
-    },[fetchedRecorridos])
 
     //RENDER
     //Render Colectivos
