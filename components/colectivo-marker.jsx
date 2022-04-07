@@ -1,7 +1,7 @@
 import { InfoWindow, Marker } from '@react-google-maps/api';
 import React, {useState, useEffect} from 'react';
 
-const MARKER_SIZE = 56;
+const MARKER_SIZE = 48;
 
 const ColectivoMarker = ({
     colectivoEntity,
@@ -34,7 +34,7 @@ const ColectivoMarker = ({
         <Marker
             position={colectivoEntity.position}
             icon={{
-                url:`test-icons/test_icon_3.png`,
+                url:`markers/colectivo.svg`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
             }}
