@@ -19,7 +19,7 @@ const RecorridoLine = ({
             options={{
                 strokeColor:'white',
                 strokeOpacity:hide?0.1:1,
-                strokeWeight:6,
+                strokeWeight:8,
                 zIndex:-1000
             }}
         />
