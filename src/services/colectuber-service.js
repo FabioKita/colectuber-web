@@ -20,6 +20,14 @@ const mergeColectivosWithLocations = (colectivos, locations)=>{
     })
 }
 
+const addPrefix=(value, prefix)=>{
+    if(value){
+        return prefix+value;
+    }else{
+        return value;
+    }
+}
+
 const fetchInitialData = async ()=>{
     let datos = {
         colectivos:[],
@@ -41,7 +49,7 @@ const getColectivosList = (responceData)=>{
 
     let colectivos = responceData.colectivos.map(c=>{
         return {
-            id:"c-"+c.id,
+            id:addPrefix(c.id, "c-"),
             number:c.numero,
             line:c.linea,
             company:c.empresa,
@@ -54,7 +62,7 @@ const getColectivosList = (responceData)=>{
 const getParadaList = (responceData)=>{
     let paradas = responceData.paradas.map(p=>{
         return {
-            id:"p-"+p.id,
+            id:addPrefix(p.id, "p-"),
             name:p.nombre,
             description:p.descripcion,
             image:p.image,
@@ -71,12 +79,12 @@ const getParadaList = (responceData)=>{
 const getRecorridosList = (responceData)=>{
     let recorridos = responceData.recorridos.map(r=>{
         return {
-            id:"r-"+r.id,
+            id:addPrefix(r.id, "r-"),
             name:r.nombre,
             description:r.descripcion,
             points:r.puntos.map(p=>({
                 id:p.id,
-                paradaId: "p-" + p.paradaId,
+                paradaId: addPrefix(p.paradaId, "p-"),
                 position:{
                     lat:p.puntoPosicion.latitud,
                     lng:p.puntoPosicion.longitud
@@ -96,8 +104,8 @@ const fetchLocations = async ()=>{
 
 const parseDtoToLocations = (dto)=>{
     return {
-        colectivoId: "c-" + dto.colectivoId,
-        recorridoId: "r-" + dto.recorrido_id,
+        colectivoId: addPrefix(dto.colectivoId, "c-"),
+        recorridoId: addPrefix(dto.recorrido_id, "r-"),
         ip: dto.indicePorcentaje,
         position:{
             lat:dto.posicionColectivo.latitud,

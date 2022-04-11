@@ -1,20 +1,33 @@
 export default class RecorridoMapEntity{
-    constructor(data){
-        this.id = data.id,
-        this.name = data.name,
-        this.description = data.description,
+    constructor(data, paradas){
+        this.id = data.id;
+        this.name = data.name;
+        this.description = data.description;
+        
         this.points = data.points.map((dataPoint)=>{
+            let parada = dataPoint.paradaId?paradas[dataPoint.paradaId]:undefined;
             return {
                 id:dataPoint.id,
-                paradaId:dataPoint.paradaId,
+                parada:parada,
                 position:dataPoint.position
             };
         })
+        
         this.path = this.points.map((point)=>{
             return new google.maps.LatLng({
                 lat:point.position.lat,
                 lng:point.position.lng
             });
+        })
+
+        this.paradas = {};
+        this.points.forEach((point, index)=>{
+            if(point.parada){
+                this.paradas[point.parada.id] = {
+                    parada:point.parada,
+                    ip:index
+                };
+            }
         })
     }
 
@@ -31,11 +44,27 @@ export default class RecorridoMapEntity{
             }
         }
 
+        const getPathToIp = (ip)=>{
+            const _getPathToIp = (currentIp, finalIp)=>{
+                if(currentIp >= finalIp){
+                    return [this.ipPosition(finalIp)]
+                }else{
+                    let nextIp = this._clampIp(Math.floor(currentIp)+1);
+                    return [this.ipPosition(currentIp), ..._getPathToIp(nextIp, finalIp)];
+                }
+            }
+            return _getPathToIp(0, ip);
+        }
+
         if(!relatedEntity){
             return this.path;
         }else if(relatedEntity.id.startsWith("c-")){
             //Es un colectivo
             return getPathfromIp(relatedEntity.ip);
+        }else if(relatedEntity.id.startsWith("p-")){
+            //Es una parada
+            let ip = this.paradas[relatedEntity.id].ip;
+            return getPathToIp(ip);
         }else{
             return this.path;
         }
