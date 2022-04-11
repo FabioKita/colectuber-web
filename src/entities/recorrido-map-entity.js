@@ -17,8 +17,104 @@ export default class RecorridoMapEntity{
             });
         })
     }
+
+    //SelectionMethod
+    getPathWithRelatedEntity(relatedEntity){
+        const getPathfromIp = (ip)=>{
+            ip = this._clampIp(ip);
+            let nextIp = this._clampIp(Math.floor(ip)+1);
+            let position = this.ipPosition(ip);
+            if(nextIp == ip){
+                return [position]
+            }else{
+                return [position, ...getPathfromIp(nextIp)];
+            }
+        }
+
+        if(!relatedEntity){
+            return this.path;
+        }else if(relatedEntity.id.startsWith("c-")){
+            //Es un colectivo
+            return getPathfromIp(relatedEntity.ip);
+        }else{
+            return this.path;
+        }
+    }
+
+    //IP Methods
+    ipPosition(ip){
+        ip = this._clampIp(ip);
+        let index = Math.trunc(ip);
+        let per = ip-index;
+        let nextIndex = this._clampIp(index+1);
+
+        let path = this.path;
+        let newPosition = {
+            lat:this._lerp(path[index].lat(), path[nextIndex].lat(), per),
+            lng:this._lerp(path[index].lng(), path[nextIndex].lng(), per)
+        };
+
+        return new google.maps.LatLng(newPosition);
+    }
+
+    ipDistance(ip1, ip2){
+        //Si esta en la misma recta, devolver la distancia directa
+        if(Math.trunc(ip1) == Math.trunc(ip2)){
+            return this._ipDistanceDirect(ip1, ip2);
+        }
+
+        //Si no esta en la misma recta, usar recurcion
+        let dir = Math.sign(ip2-ip1);
+        let nextIp = dir > 0 ? Math.floor(ip1) + 1 : Math.ceil(ip1) - 1;
+        return this._ipDistanceDirect(ip1, nextIp) + this.ipDistance(nextIp, ip2);
+    }
     
-    getPath(){
-        return this.path;
+    ipOffset(ip, offset){
+        const _ipOffset = (index, offset)=>{
+            let dir = Math.sign(offset);
+            let nextIndex = this._clampIp(index+dir);
+            if(index == nextIndex) return index;
+
+            let indexDistNextIndex = this._ipDistanceDirect(index, nextIndex);
+            if(Math.abs(indexDistNextIndex) > Math.abs(offset)){
+                let per = offset/indexDistNextIndex;
+                return this._clampIp(index+per*dir);
+            }else{
+                return _ipOffset(nextIndex, offset-indexDistNextIndex);
+            }
+        }
+
+        ip = this._clampIp(ip);
+        let dir = Math.sign(offset);
+        let index;
+        
+        if(dir > 0) index = Math.floor(ip);
+        else if (dir < 0) index = Math.ceil(ip);
+        else return ip;
+
+        let ipDistIndex = this._ipDistanceDirect(index, ip);
+        return _ipOffset(index, offset + ipDistIndex);
+    }
+
+    //Auxiliar Method
+    _lerp(i, f, p){
+        return i + (f-i)*p;
+    }
+
+    _clamp(n, min, max){
+        return Math.max(min, Math.min(max, n))
+    }
+
+    _clampIp(ip){
+        return this._clamp(ip, 0, this.path.length-1);
+    }
+
+    _ipDistanceDirect(ip1, ip2){
+        let p1 = this.ipPosition(ip1);
+        let p2 = this.ipPosition(ip2);
+        
+        let dlat = p1.lat()-p2.lat();
+        let dlng = p1.lng()-p2.lng();
+        return Math.sqrt(dlat*dlat + dlng*dlng) * Math.sign(ip2-ip1);
     }
 }

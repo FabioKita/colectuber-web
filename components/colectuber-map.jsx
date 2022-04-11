@@ -184,11 +184,32 @@ const ColectuberMap = ({
 
     //Render Recorridos
     const renderRecorridos = ()=>{
+        const getRecorridoState = (recorrido)=>{
+            let id = selectedMarker;
+            if (!id){
+                return {
+                    state:"SHOWN"
+                };
+            }else if(id.startsWith("c-")){
+                let colectivo = colectivos[id];
+                if (colectivo.recorrido.id == recorrido.id){
+                    return {
+                        state:"RELATED",
+                        relatedEntity:colectivo
+                    }
+                }
+            }
+
+            return {
+                state:"HIDDEN"
+            }
+        }
+
         return Object.values(recorridos).map((recorrido)=>{
             return <RecorridoLine
                 key={recorrido.id}
-                hide={selectedMarker && selectedMarker != recorrido.id}
                 recorridoEntity={recorrido}
+                state={getRecorridoState(recorrido)}
             />
         })
     }
