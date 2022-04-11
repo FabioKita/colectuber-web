@@ -71,7 +71,7 @@ const ColectuberMap = ({
         let newRecorridos = {};
 
         fetchedRecorridos.forEach((fetchedRecorrido)=>{
-            let newRecorrido = new RecorridoMapEntity(fetchedRecorrido);
+            let newRecorrido = new RecorridoMapEntity(fetchedRecorrido, paradas);
             newRecorridos[newRecorrido.id] = newRecorrido;
         })
 
@@ -196,6 +196,14 @@ const ColectuberMap = ({
                     return {
                         state:"RELATED",
                         relatedEntity:colectivo
+                    }
+                }
+            }else if(id.startsWith("p-")){
+                let parada = paradas[id];
+                if(recorrido.paradas[parada.id]){
+                    return {
+                        state:"RELATED",
+                        relatedEntity:parada
                     }
                 }
             }
