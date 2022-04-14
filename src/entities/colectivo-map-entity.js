@@ -48,6 +48,19 @@ export default class ColectivoMapEntity{
         }
         this.position = this.recorrido.ipPosition(this.ip);
     }
+
+    //Selection Method
+    isInterpolationFinished(){
+        return this.timer <= 0;
+    }
+
+    isColectivoBeforeParada(paradaId){
+        return this.recorrido.isParadaAfterIp(paradaId, this.ip);
+    }
+
+    getDistanceToParada(paradaId){
+        return this.recorrido.getDistanceToParada(paradaId, this.ip)
+    }
     
     //Auxiliar method
     _lerp(i, f, p){

@@ -89,7 +89,7 @@ const ColectuberMap = ({
         let newColectivos = {};
 
         fetchedColectivos.forEach((fetchedColectivo)=>{
-            if(!fetchedColectivo.position) return;
+            if(!fetchedColectivo.ip) return;
             
             let recorrido = recorridos[fetchedColectivo.recorridoId];
             if(!recorrido) return;
@@ -170,14 +170,39 @@ const ColectuberMap = ({
 
     //Render Paradas
     const renderParadas = ()=>{
+        const getParadaState = (parada)=>{
+            let id = selectedMarker;
+            if(!id){
+                return {
+                    state:"SHOWN"
+                };
+            }else if(id == parada.id){
+                return {
+                    state:"SELECTED"
+                };
+            }else if(id.startsWith("c-")){
+                //Colectivo
+                let colectivo = colectivos[id];
+                if(colectivo.isColectivoBeforeParada(parada.id)){
+                    return {
+                        state:"RELATED",
+                        relatedEntity:colectivo
+                    };
+                }
+            }
+
+            return {
+                state:"HIDDEN"
+            }
+        }
+
         return Object.values(paradas).map((parada)=>{
             return <ParadaMarker
                 key={parada.id}
                 paradaEntity={parada}
-                selected={selectedMarker == parada.id}
-                hide={selectedMarker && selectedMarker != parada.id}
-                onClick={()=>{selectMarker(parada.id)}}
-                onCloseClick={()=>{selectMarker(null)}}
+                state={getParadaState(parada)}
+                onSelect={()=>{selectMarker(parada.id)}}
+                onDeselect={()=>{selectMarker(null)}}
             />
         })
     }
