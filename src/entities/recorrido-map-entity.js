@@ -20,12 +20,26 @@ export default class RecorridoMapEntity{
             });
         })
 
+        //Parada Map
+        const getPathToIp = (ip)=>{
+            const _getPathToIp = (currentIp, finalIp)=>{
+                if(currentIp >= finalIp){
+                    return [this.ipPosition(finalIp)]
+                }else{
+                    let nextIp = this._clampIp(Math.floor(currentIp)+1);
+                    return [this.ipPosition(currentIp), ..._getPathToIp(nextIp, finalIp)];
+                }
+            }
+            return _getPathToIp(0, ip);
+        }
+
         this.paradas = {};
         this.points.forEach((point, index)=>{
             if(point.parada){
                 this.paradas[point.parada.id] = {
                     parada:point.parada,
-                    ip:index
+                    ip:index,
+                    path:getPathToIp(index)
                 };
             }
         })
@@ -44,18 +58,6 @@ export default class RecorridoMapEntity{
             }
         }
 
-        const getPathToIp = (ip)=>{
-            const _getPathToIp = (currentIp, finalIp)=>{
-                if(currentIp >= finalIp){
-                    return [this.ipPosition(finalIp)]
-                }else{
-                    let nextIp = this._clampIp(Math.floor(currentIp)+1);
-                    return [this.ipPosition(currentIp), ..._getPathToIp(nextIp, finalIp)];
-                }
-            }
-            return _getPathToIp(0, ip);
-        }
-
         if(!relatedEntity){
             return this.path;
         }else if(relatedEntity.id.startsWith("c-")){
@@ -63,11 +65,22 @@ export default class RecorridoMapEntity{
             return getPathfromIp(relatedEntity.ip);
         }else if(relatedEntity.id.startsWith("p-")){
             //Es una parada
-            let ip = this.paradas[relatedEntity.id].ip;
-            return getPathToIp(ip);
+            return this.paradas[relatedEntity.id].path;
         }else{
             return this.path;
         }
+    }
+
+    isParadaAfterIp(paradaId, ip){
+        let paradaInfo = this.paradas[paradaId];
+        if(!paradaInfo) return false;
+        return paradaInfo.ip > ip;
+    }
+
+    getDistanceToParada(paradaId, ip){
+        let paradaInfo = this.paradas[paradaId];
+        if(!paradaInfo) return false;
+        return this.ipDistance(ip, paradaInfo.ip);
     }
 
     //IP Methods
