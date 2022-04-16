@@ -154,16 +154,39 @@ const ColectuberMap = ({
     //RENDER
     //Render Colectivos
     const renderColectivos = ()=>{
+        const getColectivoState = (colectivo)=>{
+            let id = selectedMarker;
+            if(!id){
+                return {
+                    state: "SHOWN"
+                };
+            }else if(id == colectivo.id){
+                return {
+                    state:"SELECTED"
+                };
+            }else if(id.startsWith("p-")){
+                let parada = paradas[id];
+                //Parada
+                if(colectivo.isColectivoBeforeParada(parada.id)){
+                    return {
+                        state:"RELATED",
+                        relatedEntity:parada
+                    }
+                }
+            }
+
+            return {
+                state:"HIDDEN"
+            };
+        }
+
         return Object.values(colectivos).map((colectivo)=>{
             return <ColectivoMarker 
                 key={colectivo.id} 
                 colectivoEntity={colectivo}
-                
-                selected={selectedMarker == colectivo.id}
-                hide={selectedMarker && selectedMarker != colectivo.id}
-
-                onClick={()=>{selectMarker(colectivo.id)}}
-                onCloseClick={()=>{selectMarker(null)}}
+                state={getColectivoState(colectivo)}
+                onSelect={()=>{selectMarker(colectivo.id)}}
+                onDeselect={()=>{selectMarker(null)}}
             />
         })
     }

@@ -151,12 +151,35 @@ export default class RecorridoMapEntity{
         return this._clamp(ip, 0, this.path.length-1);
     }
 
+    //formula de esta pagina https://www.movable-type.co.uk/scripts/latlong.html
+    _haversine(p1, p2){
+        let lat1 = p1.lat();
+        let lng1 = p1.lng();
+        let lat2 = p2.lat();
+        let lng2 = p2.lng();
+
+        const R = 6371e3; // metres
+        const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+        const φ2 = lat2 * Math.PI/180;
+        const Δφ = (lat2-lat1) * Math.PI/180;
+        const Δλ = (lng2-lng1) * Math.PI/180;
+        const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const d = R * c; // in metres
+
+        return d;
+    }
+
     _ipDistanceDirect(ip1, ip2){
         let p1 = this.ipPosition(ip1);
         let p2 = this.ipPosition(ip2);
-        
+        /*
         let dlat = p1.lat()-p2.lat();
         let dlng = p1.lng()-p2.lng();
         return Math.sqrt(dlat*dlat + dlng*dlng) * Math.sign(ip2-ip1);
+        */
+       return this._haversine(p1, p2) * Math.sign(ip2-ip1);
     }
 }
