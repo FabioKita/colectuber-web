@@ -10,12 +10,15 @@ export default class ColectivoMapEntity{
         this.company = data.company;
 
         //Position and Interpolation Variables
+        this.recorrido = recorrido;
+
         this.ip = data.ip;
         this.ip_from = data.ip;
         this.ip_to = data.ip;
-        this.recorrido = recorrido;
+        this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
 
         this.position = this.recorrido.ipPosition(this.ip);
+        this.distanceFromStart = this.recorrido.ipDistance(0, this.ip);
 
         this.timer = 0;
     }
@@ -26,9 +29,13 @@ export default class ColectivoMapEntity{
 
         if(this.ip_to != newIp || this.recorrido != newRecorrido){
             this.recorrido = newRecorrido;
+
             this.ip_from = this.ip;
             this.ip_to = newIp;
+            this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
+
             this.position = this.recorrido.ipPosition(this.ip);
+
             this.timer = TIMER;
         }
     }
@@ -41,8 +48,8 @@ export default class ColectivoMapEntity{
         if (this.timer > 0){
             this.timer -= delta;
             let p = this._clamp(1 - this.timer/TIMER, 0, 1);
-            let dist = this.recorrido.ipDistance(this.ip_from, this.ip_to);
-            this.ip = this.recorrido.ipOffset(this.ip_from, dist*p);
+            this.ip = this.recorrido.ipOffset(this.ip_from, this.ip_delta*p);
+            this.distanceFromStart = this.recorrido.ipDistance(0, this.ip)
         }else{
             this.ip = this.ip_to;
         }
@@ -59,7 +66,7 @@ export default class ColectivoMapEntity{
     }
 
     getDistanceToParada(paradaId){
-        return this.recorrido.getDistanceToParada(paradaId, this.ip)
+        return this.recorrido.getDistanceToParada(paradaId, this.distanceFromStart)*100000;
     }
     
     //Auxiliar method
