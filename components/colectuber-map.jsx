@@ -89,7 +89,7 @@ const ColectuberMap = ({
         let newColectivos = {};
 
         fetchedColectivos.forEach((fetchedColectivo)=>{
-            if(!fetchedColectivo.ip) return;
+            if(isNaN(fetchedColectivo.ip)) return;
             
             let recorrido = recorridos[fetchedColectivo.recorridoId];
             if(!recorrido) return;
