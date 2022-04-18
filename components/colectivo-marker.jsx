@@ -32,7 +32,8 @@ const ColectivoMarker = ({
             position={colectivoEntity.position}
             onCloseClick={onDeselect}
             options={{
-                pixelOffset:new google.maps.Size(0, -25)
+                pixelOffset:new google.maps.Size(0, -25),
+                disableAutoPan:true
             }}
         >
             <div>
@@ -50,10 +51,11 @@ const ColectivoMarker = ({
                 distance = Math.trunc(distance/100)/10;
                 return distance + "km"
             }else{
-                distance = Math.trunc(distance/100)*100;
+                distance = Math.trunc(distance);
                 return distance + "m"
             }
         }
+        
         return <ExtraInfoWindow
             position={colectivoEntity.position}
         >

@@ -29,7 +29,8 @@ const ParadaMarker = ({
             position={paradaEntity.position}
             onCloseClick={onDeselect}
             options={{
-                pixelOffset:new google.maps.Size(0, -25)
+                pixelOffset:new google.maps.Size(0, -25),
+                disableAutoPan:true
             }}
         >
             <div>
@@ -38,15 +39,24 @@ const ParadaMarker = ({
             </div>
         </InfoWindow>
     }
-
+    
     const renderExtraInfoWindow = ()=>{
-        let distance = state.relatedEntity.getDistanceToParada(paradaEntity.id);
-        distance = Math.trunc(distance*10000)/10000
+        const renderDistance = ()=>{
+            let distance = state.relatedEntity.getDistanceToParada(paradaEntity.id);
+            if (distance > 1000){
+                distance = Math.trunc(distance/100)/10;
+                return distance + "km"
+            }else{
+                distance = Math.trunc(distance);
+                return distance + "m"
+            }
+        }
+
         return <ExtraInfoWindow
             position={paradaEntity.position}
         >
             <div>
-                Distancia: {distance}
+                Distancia: {renderDistance()}
             </div>
         </ExtraInfoWindow>
     }
