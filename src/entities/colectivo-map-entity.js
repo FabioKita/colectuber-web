@@ -71,7 +71,7 @@ export default class ColectivoMapEntity{
     }
 
     getDistanceAndTimeToParada(paradaId){
-        let distance = this.recorrido.getDistanceToParada(paradaId, this.distanceFromStart)*100000;
+        let distance = this.getDistanceToParada(paradaId);
         let time = distance/AVERAGE_SPEED;
         return [distance, time];
     }

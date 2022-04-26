@@ -45,22 +45,35 @@ const ColectivoMarker = ({
     }
 
     const renderExtraInfoWindow = ()=>{
-        const renderDistance = ()=>{
-            let distance = colectivoEntity.getDistanceToParada(state.relatedEntity.id);
-            if (distance > 1000){
-                distance = Math.trunc(distance/100)/10;
-                return distance + "km"
-            }else{
-                distance = Math.trunc(distance);
-                return distance + "m"
-            }
+        let [distance, time] = colectivoEntity.getDistanceAndTimeToParada(state.relatedEntity.id);
+        let renderDistance, renderTime;
+
+        //Process distance
+        if(distance > 1000){
+            renderDistance = "Aprox. " + Math.round(distance/100)/10 + "Km";
+        }else if (distance > 100){
+            renderDistance = "Aprox. " + Math.round(distance/100)*100 + "m";
+        }else{
+            renderTime = "Menos de 100m";
+        }
+
+        //Process time
+        if(time > 3600){
+            renderTime = "Aprox. " + Math.round(time/3600) + "h";
+        }else if(time > 60){
+            renderTime = "Aprox. " + Math.round(time/60) + "min";
+        }else{
+            renderTime = "Menos de 1min";
         }
         
         return <ExtraInfoWindow
             position={colectivoEntity.position}
         >
             <div>
-                Distancia: {renderDistance()}
+                <b>Distancia:</b> {renderDistance}
+            </div>
+            <div>
+                <b>Tiempo:</b> {renderTime}
             </div>
         </ExtraInfoWindow>
     }
