@@ -1,4 +1,5 @@
 const TIMER = 5000;
+const AVERAGE_SPEED = 10;
 
 export default class ColectivoMapEntity{
     constructor(data, recorrido){
@@ -67,6 +68,12 @@ export default class ColectivoMapEntity{
 
     getDistanceToParada(paradaId){
         return this.recorrido.getDistanceToParada(paradaId, this.distanceFromStart)*100000;
+    }
+
+    getDistanceAndTimeToParada(paradaId){
+        let distance = this.getDistanceToParada(paradaId);
+        let time = distance/AVERAGE_SPEED;
+        return [distance, time];
     }
     
     //Auxiliar method
