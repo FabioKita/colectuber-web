@@ -20,7 +20,7 @@ export default class RecorridoMapEntity{
             });
         })
 
-        this.color = "red";
+        this.color = data.color;
 
         //Parada Map
         this.paradas = {};
