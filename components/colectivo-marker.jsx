@@ -39,6 +39,7 @@ const ColectivoMarker = ({
             <div>
                 <h1> Colectivo N°{colectivoEntity.number} </h1>
                 <p>Linea N°{colectivoEntity.line}</p>
+                <p>Destino: {colectivoEntity.destination}</p>
                 <p>Empresa {colectivoEntity.company}</p>
             </div>
         </InfoWindow>
