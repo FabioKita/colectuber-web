@@ -10,7 +10,7 @@ const RecorridoLine = ({
             <Polyline
                 path={path}
                 options={{
-                    strokeColor:'red',
+                    strokeColor:recorridoEntity.color,
                     strokeOpacity:hidden?0.2:1,
                     strokeWeight:4,
                     zIndex:hidden?-1000:0

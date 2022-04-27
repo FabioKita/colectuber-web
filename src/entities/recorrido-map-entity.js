@@ -20,6 +20,8 @@ export default class RecorridoMapEntity{
             });
         })
 
+        this.color = "red";
+
         //Parada Map
         this.paradas = {};
         this.points.forEach((point, index)=>{
