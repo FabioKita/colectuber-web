@@ -84,7 +84,7 @@ const getRecorridosList = (responceData)=>{
             id:addPrefix(r.id, "r-"),
             name:r.nombre,
             description:r.descripcion,
-            color:"red",
+            color:r.color,
             points:r.puntos.map(p=>({
                 id:p.id,
                 paradaId: addPrefix(p.paradaId, "p-"),
