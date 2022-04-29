@@ -38,6 +38,7 @@ export default class ColectivoMapEntity{
             this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
 
             this.position = this.recorrido.ipPosition(this.ip);
+            this.distanceFromStart = this.recorrido.ipDistance(0, this.ip)
 
             this.timer = TIMER;
         }
