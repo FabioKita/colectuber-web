@@ -7,6 +7,8 @@ import ParadaMarker from './parada-marker';
 import ParadaMapEntity from 'src/entities/parada-map-entity';
 import RecorridoMapEntity from 'src/entities/recorrido-map-entity';
 import RecorridoLine from './recorrido-line';
+import UserMapEntity from 'src/entities/user-map-entity';
+import UserMarker from './user-marker';
 
 const FPS = 60;
 const SPF = 1000/FPS;
@@ -18,6 +20,7 @@ const ColectuberMap = ({
     fetchedColectivos,
     fetchedParadas,
     fetchedRecorridos,
+    fetchedUser,
 
     //Selection
     selectedMarker,
@@ -151,6 +154,23 @@ const ColectuberMap = ({
         })
     }
 
+    //USER
+    const [user, setUser] = useState(null);
+
+    const createOrUpdateUser = (prevUser)=>{
+        if(prevUser){
+            prevUser.update(fetchedUser);
+            return prevUser;
+        }else{
+            if(!fetchedUser) return null;
+            return new UserMapEntity(fetchedUser);
+        }
+    }
+
+    useEffect(()=>{
+        setUser(createOrUpdateUser);
+    },[fetchedUser]);
+
     //RENDER
     //Render Colectivos
     const renderColectivos = ()=>{
@@ -270,6 +290,27 @@ const ColectuberMap = ({
         })
     }
 
+    const renderUser = ()=>{
+        const getUserState = ()=>{
+            let id = selectedMarker;
+            if(!id){
+                return {
+                    state:"SHOWN"
+                };
+            }
+
+            return {
+                state:"HIDDEN"
+            }
+        }
+
+        if(!user) return <></>;
+        return <UserMarker
+            userEntity={user}
+            state={getUserState()}
+        />
+    }
+
     //Debug
     const renderCircle = ()=>{
         return fetchedColectivos.map((fetchedColectivo)=>{
@@ -297,6 +338,7 @@ const ColectuberMap = ({
                 {renderColectivos()}
                 {renderParadas()}
                 {renderRecorridos()}
+                {renderUser()}
                 {renderCircle()}
             </GoogleMap>
         </div>
