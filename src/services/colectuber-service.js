@@ -6,10 +6,12 @@ const mergeColectivoWithLocation = (colectivo, location)=>{
         colectivo.position = location.position;
         colectivo.recorridoId = location.recorridoId;
         colectivo.ip = location.ip;
+        colectivo.destination = location.destination;
     }else{
         colectivo.position = undefined;
         colectivo.recorridoId = undefined;
         colectivo.ip = undefined;
+        colectivo.destination = undefined;
     }
 }
 
@@ -82,6 +84,7 @@ const getRecorridosList = (responceData)=>{
             id:addPrefix(r.id, "r-"),
             name:r.nombre,
             description:r.descripcion,
+            color:r.color,
             points:r.puntos.map(p=>({
                 id:p.id,
                 paradaId: addPrefix(p.paradaId, "p-"),
@@ -110,7 +113,8 @@ const parseDtoToLocations = (dto)=>{
         position:{
             lat:dto.posicionColectivo.latitud,
             lng:dto.posicionColectivo.longitud
-        }
+        },
+        destination:dto.destino
     };
 }
 

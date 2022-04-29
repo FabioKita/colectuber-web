@@ -14,7 +14,7 @@ const ColectivoMarker = ({
         return <Marker
             position={colectivoEntity.position}
             icon={{
-                url:`markers/colectivo.svg`,
+                url:`markers/colectivo/colectivo-${colectivoEntity.recorrido.color}.svg`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
                 anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
             }}
@@ -37,9 +37,10 @@ const ColectivoMarker = ({
             }}
         >
             <div>
-                <h1> Colectivo N°{colectivoEntity.number} </h1>
-                <p>Linea N°{colectivoEntity.line}</p>
-                <p>Empresa {colectivoEntity.company}</p>
+                <h1>Colectivo N°{colectivoEntity.number} </h1>
+                <p>Linea {colectivoEntity.line}</p>
+                <p>Destino: {colectivoEntity.destination}</p>
+                <p>{colectivoEntity.company}</p>
             </div>
         </InfoWindow>
     }
