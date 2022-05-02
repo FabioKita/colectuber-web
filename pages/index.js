@@ -59,9 +59,15 @@ export default function Home() {
     let locationTrackingId = null;
     LocationService.askPermissions()
       .then(()=>{
-        locationTrackingId = LocationService.startLocationTracking((position)=>{
-          setUser({position})
-        })
+        locationTrackingId = LocationService.startLocationTracking(
+          (position)=>{
+            console.log(position);
+            setUser({position})
+          },
+          (err)=>{
+            console.error(err);
+          }
+        )
       })
       .catch((err)=>{
         console.error(err);
