@@ -3,6 +3,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import styles from "styles/index.module.scss"
 import ColectuberMap from "components/colectuber-map"
 import ColectuberService from "src/services/colectuber-service";
+import LocationService from "src/services/location-service";
 
 export default function Home() {
   //LOAD GOOGLE MAPS SCRIPT
@@ -12,11 +13,13 @@ export default function Home() {
 
   //FLAG
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [permissionAsked, setPermissionAsked] = useState(false);
 
   //DATOS
   const [colectivos, setColectivos] = useState([]);
   const [paradas, setParadas] = useState([]);
   const [recorridos, setRecorridos] = useState([]);
+  const [user, setUser] = useState(null);
 
   const fetchAndSetInitialData = ()=>{
     ColectuberService.fetchInitialData()
@@ -43,14 +46,41 @@ export default function Home() {
       })
   }
 
+  //ON START
   useEffect(()=>{
+    //Initial data and positions
     fetchAndSetInitialData();
 
     const interval = setInterval(()=>{
       fetchAndSetLocations();
     }, 5000);
 
-    return ()=>clearInterval(interval)
+    //User location Tracking
+    let locationTrackingId = null;
+    LocationService.askPermissions()
+      .then(()=>{
+        locationTrackingId = LocationService.startLocationTracking(
+          (position)=>{
+            console.log(position);
+            setUser({position})
+          },
+          (err)=>{
+            console.error(err);
+          }
+        )
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+      .finally(()=>{
+        setPermissionAsked(true);
+      })
+
+    return ()=>{
+      //Clean
+      clearInterval(interval);
+      LocationService.stopLocationTracking(locationTrackingId);
+    }
   },[]);
 
   //SELECT
@@ -61,7 +91,7 @@ export default function Home() {
   }
 
 
-  if (!isLoaded || !dataLoaded) {
+  if (!isLoaded || !dataLoaded || !permissionAsked) {
     return <div>Loading...</div>
   }else{
     return (
@@ -71,6 +101,7 @@ export default function Home() {
           fetchedColectivos={colectivos}
           fetchedParadas={paradas}
           fetchedRecorridos={recorridos}
+          fetchedUser={user}
 
           //Selection
           selectedMarker={selectedMarker}
