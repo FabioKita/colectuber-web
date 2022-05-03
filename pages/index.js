@@ -61,7 +61,6 @@ export default function Home() {
       .then(()=>{
         locationTrackingId = LocationService.startLocationTracking(
           (position)=>{
-            console.log(position);
             setUser({position})
           },
           (err)=>{
