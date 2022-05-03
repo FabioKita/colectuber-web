@@ -55,7 +55,7 @@ const ColectivoMarker = ({
         }else if (distance > 100){
             renderDistance = "Aprox. " + Math.round(distance/100)*100 + "m";
         }else{
-            renderTime = "Menos de 100m";
+            renderDistance = "Menos de 100m";
         }
 
         //Process time
