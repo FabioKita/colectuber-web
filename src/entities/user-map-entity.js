@@ -12,4 +12,9 @@ export default class UserMapEntity{
             lng: data.position.lng
         }
     }
+
+    isValid(){
+        if(!this.position) return false;
+        return true;
+    }
 }

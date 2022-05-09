@@ -1,22 +1,25 @@
-import { InfoWindow, Marker, OverlayView } from '@react-google-maps/api';
-import React, {useState} from 'react';
+import { InfoWindow, Marker } from '@react-google-maps/api';
+import React, {useState, useEffect} from 'react';
 import ExtraInfoWindow from './extra-info-window';
 
-const MARKER_SIZE = 40;
+const MARKER_SIZE = 48;
 
-const ParadaMarker = ({
-    paradaEntity,
+const ColectivoMarker = ({
+    colectivoEntity,
     state,
-    onSelect,
-    onDeselect
+    onSelect=()=>{},
+    onDeselect=()=>{}
 })=>{
     const renderMarker = (hidden = false)=>{
         return <Marker
-            position={paradaEntity.position}
+            position={colectivoEntity.position}
             icon={{
-                url:`markers/parada.svg`,
+                url:`markers/colectivo/colectivo-${colectivoEntity.recorrido.color}.svg`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
-                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2)
+                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
+            }}
+            options={{
+                zIndex:1000,
             }}
             opacity={hidden?0.5:1}
             onClick={onSelect}
@@ -25,8 +28,8 @@ const ParadaMarker = ({
     }
 
     const renderInfoWindow = ()=>{
-        return <InfoWindow
-            position={paradaEntity.position}
+        return <InfoWindow 
+            position={colectivoEntity.position}
             onCloseClick={onDeselect}
             options={{
                 pixelOffset:new google.maps.Size(0, -25),
@@ -34,14 +37,16 @@ const ParadaMarker = ({
             }}
         >
             <div>
-                <h1> {paradaEntity.name} </h1>
-                <p> {paradaEntity.description} </p>
+                <h1>Colectivo N°{colectivoEntity.number} </h1>
+                <p>Linea {colectivoEntity.line}</p>
+                <p>Destino: {colectivoEntity.destination}</p>
+                <p>{colectivoEntity.company}</p>
             </div>
         </InfoWindow>
     }
-    
+
     const renderExtraInfoWindow = ()=>{
-        let [distance, time] = state.relatedEntity.getDistanceAndTimeToParada(paradaEntity.id);
+        let [distance, time] = colectivoEntity.getDistanceAndTimeToParada(state.relatedEntity.id);
         let renderDistance, renderTime;
 
         //Process distance
@@ -61,9 +66,9 @@ const ParadaMarker = ({
         }else{
             renderTime = "Menos de 1min";
         }
-
+        
         return <ExtraInfoWindow
-            position={paradaEntity.position}
+            position={colectivoEntity.position}
         >
             <div>
                 <b>Distancia:</b> {renderDistance}
@@ -93,7 +98,11 @@ const ParadaMarker = ({
         }
     }
 
-    return renderAccordingToState();
+    if(colectivoEntity && colectivoEntity.isValid()){
+        return renderAccordingToState();
+    }else{
+        return <></>
+    }
 }
 
-export default ParadaMarker;
+export default ColectivoMarker;

@@ -1,25 +1,22 @@
-import { InfoWindow, Marker } from '@react-google-maps/api';
-import React, {useState, useEffect} from 'react';
+import { InfoWindow, Marker, OverlayView } from '@react-google-maps/api';
+import React, {useState} from 'react';
 import ExtraInfoWindow from './extra-info-window';
 
-const MARKER_SIZE = 48;
+const MARKER_SIZE = 24;
 
-const ColectivoMarker = ({
-    colectivoEntity,
+const ParadaMarker = ({
+    paradaEntity,
     state,
     onSelect,
     onDeselect
 })=>{
     const renderMarker = (hidden = false)=>{
         return <Marker
-            position={colectivoEntity.position}
+            position={paradaEntity.position}
             icon={{
-                url:`markers/colectivo/colectivo-${colectivoEntity.recorrido.color}.svg`,
+                url:`markers/parada.svg`,
                 scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
-                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
-            }}
-            options={{
-                zIndex:1000,
+                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2)
             }}
             opacity={hidden?0.5:1}
             onClick={onSelect}
@@ -28,8 +25,8 @@ const ColectivoMarker = ({
     }
 
     const renderInfoWindow = ()=>{
-        return <InfoWindow 
-            position={colectivoEntity.position}
+        return <InfoWindow
+            position={paradaEntity.position}
             onCloseClick={onDeselect}
             options={{
                 pixelOffset:new google.maps.Size(0, -25),
@@ -37,16 +34,14 @@ const ColectivoMarker = ({
             }}
         >
             <div>
-                <h1>Colectivo N°{colectivoEntity.number} </h1>
-                <p>Linea {colectivoEntity.line}</p>
-                <p>Destino: {colectivoEntity.destination}</p>
-                <p>{colectivoEntity.company}</p>
+                <h1> {paradaEntity.name} </h1>
+                <p> {paradaEntity.description} </p>
             </div>
         </InfoWindow>
     }
-
+    
     const renderExtraInfoWindow = ()=>{
-        let [distance, time] = colectivoEntity.getDistanceAndTimeToParada(state.relatedEntity.id);
+        let [distance, time] = state.relatedEntity.getDistanceAndTimeToParada(paradaEntity.id);
         let renderDistance, renderTime;
 
         //Process distance
@@ -66,9 +61,9 @@ const ColectivoMarker = ({
         }else{
             renderTime = "Menos de 1min";
         }
-        
+
         return <ExtraInfoWindow
-            position={colectivoEntity.position}
+            position={paradaEntity.position}
         >
             <div>
                 <b>Distancia:</b> {renderDistance}
@@ -101,4 +96,4 @@ const ColectivoMarker = ({
     return renderAccordingToState();
 }
 
-export default ColectivoMarker;
+export default ParadaMarker;

@@ -33,7 +33,11 @@ const UserMarker = ({
         }
     }
 
-    return renderAccordingToState();
+    if(userEntity && userEntity.isValid()){
+        return renderAccordingToState();
+    }else{
+        return <></>
+    }
 }
 
 export default UserMarker;
