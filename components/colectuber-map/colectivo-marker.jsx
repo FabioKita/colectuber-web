@@ -4,7 +4,7 @@ import { useDataContext } from 'src/context/data-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import ExtraInfoWindow from './extra-info-window';
 
-const MARKER_SIZE = 48;
+const MARKER_SIZE = 32;
 
 const ACTION = {
     SHOW:0,
@@ -53,6 +53,8 @@ const ColectivoMarker = ({
     })
 
     useEffect(()=>{
+        if(!colectivoEntity || !colectivoEntity.isValid()) return;
+
         let id = selectionContext.selectedMarker;
         if(!id){
             return dispatch({ type:ACTION.SHOW });
@@ -65,7 +67,7 @@ const ColectivoMarker = ({
             }
         }
         return dispatch({ type:ACTION.HIDE });
-    },[selectionContext.selectedMarker])
+    },[selectionContext.selectedMarker, dataContext])
 
     const select = ()=>{
         selectionContext.selectMarker(colectivoEntity.id);

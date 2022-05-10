@@ -65,7 +65,7 @@ const ParadaMarker = ({
             }
         }
         return dispatch({ type:ACTION.HIDE });
-    },[selectionContext.selectedMarker])
+    },[selectionContext.selectedMarker, dataContext])
 
     const select = ()=>{
         selectionContext.selectMarker(paradaEntity.id);
