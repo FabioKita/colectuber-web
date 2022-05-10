@@ -1,15 +1,80 @@
 import { InfoWindow, Marker } from '@react-google-maps/api';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
+import { useDataContext } from 'src/context/data-context-provider';
+import { useSelectionContext } from 'src/context/selection-context-provider';
 import ExtraInfoWindow from './extra-info-window';
 
 const MARKER_SIZE = 48;
 
+const ACTION = {
+    SHOW:0,
+    HIDE:1,
+    SELECT:2,
+    RELATE:3
+}
+
+const STATE = {
+    SHOWN:0,
+    HIDDEN:1,
+    SELECTED:2,
+    RELATED:3
+}
+
 const ColectivoMarker = ({
-    colectivoEntity,
-    state,
-    onSelect=()=>{},
-    onDeselect=()=>{}
+    colectivoEntity
 })=>{
+    const dataContext = useDataContext();
+    const selectionContext = useSelectionContext();
+    
+    const [state, dispatch] = useReducer((state, action)=>{
+        switch(action.type){
+            case ACTION.SHOW:{
+                state.state = STATE.SHOWN;
+                break;
+            }
+            case ACTION.HIDE:{
+                state.state = STATE.HIDDEN;
+                break;
+            }
+            case ACTION.SELECT:{
+                state.state = STATE.SELECTED;
+                break;
+            }
+            case ACTION.RELATE:{
+                state.state = STATE.RELATED;
+                state.relatedEntity = action.relatedEntity;
+                break;
+            }
+        }
+        return {...state};
+    }, {
+        state:STATE.SHOWN,
+        relatedEntity:null
+    })
+
+    useEffect(()=>{
+        let id = selectionContext.selectedMarker;
+        if(!id){
+            return dispatch({ type:ACTION.SHOW });
+        }else if(id == colectivoEntity.id){
+            return dispatch({ type:ACTION.SELECT });
+        }else if(id.startsWith("p-")){
+            let parada = dataContext.paradas[id];
+            if(colectivoEntity.isColectivoBeforeParada(parada.id)){
+                return dispatch({ type:ACTION.RELATE, relatedEntity:parada })
+            }
+        }
+        return dispatch({ type:ACTION.HIDE });
+    },[selectionContext.selectedMarker])
+
+    const select = ()=>{
+        selectionContext.selectMarker(colectivoEntity.id);
+    }
+
+    const deselect = ()=>{
+        selectionContext.deselectCurrent();
+    }
+
     const renderMarker = (hidden = false)=>{
         return <Marker
             position={colectivoEntity.position}
@@ -22,15 +87,15 @@ const ColectivoMarker = ({
                 zIndex:1000,
             }}
             opacity={hidden?0.5:1}
-            onClick={onSelect}
-            onUnmount={onDeselect}
+            onClick={select}
+            onUnmount={deselect}
         />
     }
 
     const renderInfoWindow = ()=>{
         return <InfoWindow 
             position={colectivoEntity.position}
-            onCloseClick={onDeselect}
+            onCloseClick={deselect}
             options={{
                 pixelOffset:new google.maps.Size(0, -25),
                 disableAutoPan:true
@@ -81,19 +146,19 @@ const ColectivoMarker = ({
 
     const renderAccordingToState = ()=>{
         switch(state.state){
-            case "HIDDEN": 
+            case STATE.HIDDEN: 
                 return renderMarker(true);
-            case "SELECTED":
+            case STATE.SELECTED:
                 return <>
                     {renderMarker()}
                     {renderInfoWindow()}
                 </>
-            case "RELATED":
+            case STATE.RELATED:
                 return <>
                     {renderMarker()}
                     {renderExtraInfoWindow()}
                 </>
-            default:
+            case STATE.SHOWN:
                 return renderMarker();
         }
     }

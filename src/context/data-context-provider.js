@@ -89,7 +89,7 @@ export const DataProvider = ({
         let paradas = createParadas(result.paradas);
         let recorridos = createRecorridos(result.recorridos, paradas);
         let colectivos = createColectivos(result.colectivos, recorridos);
-        
+
         dispatch({
             type: ACTIONS.LOAD_INITIAL_DATA,
             result: {

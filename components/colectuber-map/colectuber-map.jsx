@@ -4,7 +4,6 @@ import styles from 'styles/colectuber-map.module.scss'
 import ColectivoMarker from './colectivo-marker';
 import ParadaMarker from './parada-marker';
 import RecorridoLine from './recorrido-line';
-import UserMapEntity from 'src/entities/user-map-entity';
 import UserMarker from './user-marker';
 import { useDataContext } from 'src/context/data-context-provider';
 
@@ -77,7 +76,6 @@ const ColectuberMap = ({
             return <ColectivoMarker
                 key={colectivo.id}
                 colectivoEntity={colectivo}
-                state={{state:"SHOWN"}}
             />
         })
     }
@@ -87,7 +85,6 @@ const ColectuberMap = ({
             return <ParadaMarker
                 key={parada.id}
                 paradaEntity={parada}
-                state={{state:"SHOWN"}}
             />
         })
     }
@@ -97,9 +94,12 @@ const ColectuberMap = ({
             return <RecorridoLine
                 key={recorrido.id}
                 recorridoEntity={recorrido}
-                state={{state:"SHOWN"}}
             />
         })
+    }
+
+    const renderUser = ()=>{
+        return <UserMarker/>
     }
 
     //Return
@@ -114,6 +114,7 @@ const ColectuberMap = ({
                 {renderColectivos()}
                 {renderParadas()}
                 {renderRecorridos()}
+                {renderUser()}
             </GoogleMap>
         </div>
     );
