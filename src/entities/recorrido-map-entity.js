@@ -62,6 +62,18 @@ export default class RecorridoMapEntity{
         return paradaInfo.distanceFromStart-distanceFromStart;
     }
 
+    hasColectivo(colectivo){
+        if(!colectivo)return false;
+        if(!colectivo.isValid()) return false;
+        return (colectivo.recorrido.id == this.id);
+    }
+
+    hasParada(parada){
+        let paradaInfo = this.paradas[parada.id];
+        if(!paradaInfo) return false;
+        return true;
+    }
+
     //IP Methods
     ipPosition(ip){
         ip = this._clampIp(ip);

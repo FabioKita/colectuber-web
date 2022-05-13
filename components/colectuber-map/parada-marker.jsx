@@ -1,5 +1,5 @@
 import { InfoWindow, Marker, OverlayView } from '@react-google-maps/api';
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect, useReducer, useRef} from 'react';
 import { useDataContext } from 'src/context/data-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import ExtraInfoWindow from './extra-info-window';
@@ -53,8 +53,17 @@ const ParadaMarker = ({
     })
 
     useEffect(()=>{
+        handleStateChange();
+    },[selectionContext.selectedMarker, selectionContext.filter, dataContext])
+
+    const handleStateChange = ()=>{
+        const isFiltered = ()=>{
+            return (selectionContext.filter && !selectionContext.filter.includes(paradaEntity.id));
+        }
+
         let id = selectionContext.selectedMarker;
         if(!id){
+            if(isFiltered()) return dispatch({ type:ACTION.HIDE });
             return dispatch({ type:ACTION.SHOW });
         }else if(id == paradaEntity.id){
             return dispatch({ type:ACTION.SELECT });
@@ -65,14 +74,29 @@ const ParadaMarker = ({
             }
         }
         return dispatch({ type:ACTION.HIDE });
-    },[selectionContext.selectedMarker, dataContext])
+    }
+
+    const ref = useRef(false);
 
     const select = ()=>{
-        selectionContext.selectMarker(paradaEntity.id);
+        if(selectionContext.filtrar){
+            if(ref.current){
+                selectionContext.removeFromFilter(paradaEntity.id);
+            }else{
+                selectionContext.addToFilter(paradaEntity.id);
+            }
+            ref.current = !ref.current;
+        }else{
+            selectionContext.selectMarker(paradaEntity.id);
+        }
     }
 
     const deselect = ()=>{
-        selectionContext.deselectCurrent();
+        if(selectionContext.filtrar){
+            selectionContext.removeFromFilter(paradaEntity.id);
+        }else{
+            selectionContext.deselectCurrent();
+        }
     }
 
     const renderMarker = (hidden = false)=>{

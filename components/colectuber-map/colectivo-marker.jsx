@@ -1,5 +1,5 @@
 import { InfoWindow, Marker } from '@react-google-maps/api';
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect, useReducer, useRef} from 'react';
 import { useDataContext } from 'src/context/data-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import ExtraInfoWindow from './extra-info-window';
@@ -54,9 +54,17 @@ const ColectivoMarker = ({
 
     useEffect(()=>{
         if(!colectivoEntity || !colectivoEntity.isValid()) return;
+        handleStateChange();
+    },[selectionContext.selectedMarker, selectionContext.filter, dataContext])
+
+    const handleStateChange = ()=>{
+        const isFiltered = ()=>{
+            return (selectionContext.filter && !selectionContext.filter.includes(colectivoEntity.id));
+        }
 
         let id = selectionContext.selectedMarker;
         if(!id){
+            if(isFiltered()) return dispatch({ type:ACTION.HIDE });
             return dispatch({ type:ACTION.SHOW });
         }else if(id == colectivoEntity.id){
             return dispatch({ type:ACTION.SELECT });
@@ -66,15 +74,31 @@ const ColectivoMarker = ({
                 return dispatch({ type:ACTION.RELATE, relatedEntity:parada })
             }
         }
+
         return dispatch({ type:ACTION.HIDE });
-    },[selectionContext.selectedMarker, dataContext])
+    }
+
+    const ref = useRef(false);
 
     const select = ()=>{
-        selectionContext.selectMarker(colectivoEntity.id);
+        if(selectionContext.filtrar){
+            if(ref.current){
+                selectionContext.removeFromFilter(colectivoEntity.id);
+            }else{
+                selectionContext.addToFilter(colectivoEntity.id);
+            }
+            ref.current = !ref.current;
+        }else{
+            selectionContext.selectMarker(colectivoEntity.id);
+        }
     }
 
     const deselect = ()=>{
-        selectionContext.deselectCurrent();
+        if(selectionContext.filtrar){
+            selectionContext.removeFromFilter(colectivoEntity.id);
+        }else{
+            selectionContext.deselectCurrent();
+        }
     }
 
     const renderMarker = (hidden = false)=>{
