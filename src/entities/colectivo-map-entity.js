@@ -2,7 +2,7 @@ const TIMER = 5000;
 const AVERAGE_SPEED = 10;
 
 export default class ColectivoMapEntity{
-    constructor(data, recorrido){
+    constructor(data, recorridos){
         this.id = data.id;
         
         //Info window data
@@ -11,8 +11,10 @@ export default class ColectivoMapEntity{
         this.company = data.company;
 
         //Position and Interpolation Variables
-        this.recorrido = recorrido;
         this.destination = data.destination;
+        this.recorrido = recorridos[data.recorridoId];
+
+        if(!this.recorrido) return;
 
         this.ip = data.ip;
         this.ip_from = data.ip;
@@ -25,13 +27,15 @@ export default class ColectivoMapEntity{
         this.timer = 0;
     }
 
-    update(data, recorrido){
+    update(data, recorridos){
         let newIp = data.ip;
-        let newRecorrido = recorrido;
+        let newRecorrido = recorridos[data.recorridoId];
 
         if(this.ip_to != newIp || this.recorrido != newRecorrido){
-            this.recorrido = newRecorrido;
             this.destination = data.destination;
+            this.recorrido = newRecorrido;
+
+            if(!this.recorrido) return;
 
             this.ip_from = this.ip;
             this.ip_to = newIp;
@@ -42,8 +46,17 @@ export default class ColectivoMapEntity{
         }
     }
 
+    isValid(){
+        if(!this.id) return false;
+        if(!this.recorrido) return false;
+        if(isNaN(this.ip)) return false;
+        return true;
+    }
+
     step(delta){
-        this.move(delta);
+        if(this.isValid()){
+            this.move(delta);
+        }
     }
 
     move(delta){

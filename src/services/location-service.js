@@ -35,7 +35,7 @@ const startLocationTracking = (onGetLocation, onError)=>{
 
 const stopLocationTracking = (id)=>{
     if(!id) return;
-    navigator.geolocation.stopLocationTracking(id);
+    navigator.geolocation.clearWatch(id);
 }
 
 const LocationService = {
