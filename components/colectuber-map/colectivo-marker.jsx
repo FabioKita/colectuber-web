@@ -78,6 +78,7 @@ const ColectivoMarker = ({
         return dispatch({ type:ACTION.HIDE });
     }
 
+    //Debug
     const ref = useRef(false);
 
     const select = ()=>{

@@ -49,11 +49,11 @@ export const SelectionProvider = ({
         setFilter(prev=>_removeFromFilter(removeId, prev));
     }
 
+    //Debug
     useEffect(()=>{
         console.log(filter);
     },[filter])
 
-    //debug
     const [filtrar, setFiltrar] = useState(false);
 
     return <SelectionContext.Provider
