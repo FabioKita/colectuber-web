@@ -93,11 +93,12 @@ const ParadaMarker = ({
     }
 
     const deselect = ()=>{
-        if(selectionContext.filtrar){
-            selectionContext.removeFromFilter(paradaEntity.id);
-        }else{
-            selectionContext.deselectCurrent();
-        }
+        selectionContext.deselectCurrent();
+    }
+
+    const unmount = ()=>{
+        selectionContext.removeFromFilter(paradaEntity.id);
+        if (selectionContext.selectedMarker==paradaEntity.id) selectionContext.deselectCurrent();
     }
 
     const renderMarker = (hidden = false)=>{
@@ -110,7 +111,7 @@ const ParadaMarker = ({
             }}
             opacity={hidden?0.5:1}
             onClick={select}
-            onUnmount={deselect}
+            onUnmount={unmount}
         />
     }
 
