@@ -95,11 +95,12 @@ const ColectivoMarker = ({
     }
 
     const deselect = ()=>{
-        if(selectionContext.filtrar){
-            selectionContext.removeFromFilter(colectivoEntity.id);
-        }else{
-            selectionContext.deselectCurrent();
-        }
+        selectionContext.deselectCurrent();
+    }
+
+    const unmount = ()=>{
+        selectionContext.removeFromFilter(colectivoEntity.id);
+        if (selectionContext.selectedMarker==colectivoEntity.id) selectionContext.deselectCurrent();
     }
 
     const renderMarker = (hidden = false)=>{
@@ -115,7 +116,7 @@ const ColectivoMarker = ({
             }}
             opacity={hidden?0.5:1}
             onClick={select}
-            onUnmount={deselect}
+            onUnmount={unmount}
         />
     }
 
