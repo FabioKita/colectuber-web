@@ -1,0 +1,99 @@
+.MenuHeader{
+    background-color: white;
+    border: lightgray 1px solid;
+    border-radius: 15px;
+
+    height: 50px;
+
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+
+    display: flex;
+
+    transition: all 0.5s ease-in-out;
+
+    &.hidden{
+        width: 60px;
+        >div{
+            opacity: 0;
+        }
+        
+    }
+
+    &.shown{
+        width: 500px;
+        >div{
+            opacity: 1;
+        }
+    }
+
+    >button{
+        background-color: white;
+        border: none;
+        border-radius: 15px;
+
+        min-width: 60px;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+
+        &:hover{
+            background-color: rgb(225, 225, 225);
+        }
+
+        &:active{
+            background-color: rgb(200, 200, 200);
+        }
+    }
+
+    >div{
+        display: flex;
+        transition: all 0.5s linear;
+        flex: 1;
+        margin-left: 10px;
+        overflow: hidden;
+        >input{
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            outline: none;
+        }
+    }
+}
+
+.MenuPanel{
+    background-color: white;
+    border: lightgray 1px solid;
+    border-radius: 15px;
+    
+    position: absolute;
+    top: 75px;
+    left: 15px;
+    z-index: 11000;
+    
+    width: 500px;
+    height: calc(100% - 85px);
+
+    transition: all 0.5s ease-in-out;
+
+    &.hidden{
+        transform: translate(-1000px);
+    }
+}
+
+.Menu{
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+
+    padding: 15px;
+}

@@ -66,9 +66,6 @@ export const SelectionProvider = ({
             filtrar
         }}
     >
-        <button onClick={()=>{setFiltrar(!filtrar)}}>
-            {filtrar?"Seleccionar":"Filtrar"}
-        </button>
         {children}
     </SelectionContext.Provider>
 }
