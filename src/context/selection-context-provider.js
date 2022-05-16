@@ -11,8 +11,6 @@ export const useSelectionContext = ()=>{
 export const SelectionProvider = ({
     children
 })=>{
-    const dataContext = useDataContext();
-
     //Selection
     const [selectedMarker, setSelectedMarker] = useState(null);
 
