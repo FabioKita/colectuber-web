@@ -13,6 +13,7 @@ const MenuTabs = ({
 
         return tabs.map((tab, index)=>{
             return <button 
+                key={index}
                 className={styles.Tab + " " + (index == selectedTab?styles.selected:"")}
                 onClick={()=>{if(selectedTab != index) onTabClick(index)}}
             >

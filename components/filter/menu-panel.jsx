@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import styles from 'styles/menu.module.scss'
-import MenuElementList from './menu-element-list';
+import {MenuList, MenuElement, MenuListElement} from './menu-list';
 import MenuTabs from './menu-tabs';
 
 const MenuPanel = ({
@@ -12,26 +12,43 @@ const MenuPanel = ({
         setSelectedTab(index);
     }
 
-    return<div className={styles.MenuPanel + " " + (hidden?styles.hidden:"")}>
+    return <div className={styles.MenuPanel + " " + (hidden?styles.hidden:"")}>
         <MenuTabs 
             className={styles.Content} 
             tabs={["Colectivos", "Paradas"]}
             onTabClick={changeTab}
             selectedTab={selectedTab}
         >
-            <div className={styles.Page}>
-                <MenuElementList className={styles.Element}>
+            <MenuList>
+                <MenuListElement>
+                    <MenuElement/>
+                    <MenuElement/>
+                    <MenuElement/>
+                </MenuListElement>
+                <MenuListElement>
+                    <MenuElement/>
+                    <MenuElement/>
+                    <MenuElement/>
+                </MenuListElement>
+            </MenuList>
 
-                </MenuElementList>
-                <MenuElementList className={styles.Element}>
-
-                </MenuElementList>
-            </div>
-            <div className={styles.Page}>
-                <MenuElementList className={styles.Element}>
-
-                </MenuElementList>
-            </div>
+            <MenuList>
+                <MenuListElement>
+                    <MenuElement/>
+                    <MenuElement/>
+                    <MenuElement/>
+                </MenuListElement>
+                <MenuListElement>
+                    <MenuElement/>
+                    <MenuElement/>
+                    <MenuElement/>
+                </MenuListElement>
+                <MenuListElement>
+                    <MenuElement/>
+                    <MenuElement/>
+                    <MenuElement/>
+                </MenuListElement>
+            </MenuList>
         </MenuTabs>
     </div>
 }
