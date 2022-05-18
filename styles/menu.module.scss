@@ -153,11 +153,12 @@
         border-bottom: 1px lightgray solid;
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15px;
-
-        display: flex;
-        flex-direction: column;
         >.Content{
-            flex: 1;
+            max-height: 80vh;
+            overflow: auto;
+            &.hidden{
+                display: none;
+            }
         }
     }
 }
@@ -214,5 +215,9 @@
     &:last-child{
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15px;
+    }
+
+    &.selected{
+        background-color: lightgray;
     }
 }

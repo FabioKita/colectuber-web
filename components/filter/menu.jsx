@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import { MenuProvider } from 'src/context/menu-context-provider';
 import MenuHeader from './menu-header';
 import MenuPanel from './menu-panel';
 
@@ -9,10 +10,10 @@ const Menu = ()=>{
         setShow(prev=>!prev);
     }
 
-    return <>
+    return <MenuProvider>
         <MenuHeader onClick={toggleShow} shown={show}/>
         <MenuPanel hidden={!show}/>
-    </>
+    </MenuProvider>
 }
 
 export default Menu;

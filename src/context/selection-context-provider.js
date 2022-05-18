@@ -48,10 +48,6 @@ export const SelectionProvider = ({
     }
 
     //Debug
-    useEffect(()=>{
-        console.log(filter);
-    },[filter])
-
     const [filtrar, setFiltrar] = useState(false);
 
     return <SelectionContext.Provider

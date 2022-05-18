@@ -23,11 +23,17 @@ const MenuTabs = ({
     }
 
     const renderChildren = ()=>{
-        if(selectedTab < 0 || selectedTab >= children.length) return "";
+        if(!Array.isArray(children)){
+            return <div className={styles.Content}>
+                {children}
+            </div>
+        }
 
-        return <div className={styles.Content}>
-            {children[selectedTab]}
-        </div>
+        return children.map((child, index)=>{
+            return <div key={index} className={styles.Content + " " + (selectedTab!=index?styles.hidden:"")}>
+                {child}
+            </div>
+        });
     }
 
     return <div className={styles.MenuTabs + " " + className}>

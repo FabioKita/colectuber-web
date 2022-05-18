@@ -4,12 +4,13 @@ import {FaAngleDown, FaAngleUp} from 'react-icons/fa'
 
 export const MenuList = ({
     children = [],
+    id = "",
     className
 })=>{
     const renderChildren = ()=>{
         if(!Array.isArray(children)) return children
         return children.map((child, index)=>{
-            return <div key={index} className={styles.ListElement}>
+            return <div key={id+index} className={styles.ListElement}>
                 {child}
             </div>
         })
@@ -50,9 +51,18 @@ export const MenuListElement = ({
 
 export const MenuElement = ({
     className,
-    content = "Hola"
+    content = "Hola",
+    selected,
+    onSelect = ()=>{}
 })=>{
-    return <div className={styles.MenuElement + " " + className}>
+    const select = ()=>{
+        onSelect();
+    }
+
+    return <div 
+        className={styles.MenuElement + " " + className + " " + (selected?styles.selected:"")}
+        onClick={select}
+    >
         {content}
     </div>
 }
