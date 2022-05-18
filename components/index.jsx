@@ -4,6 +4,7 @@ import ColectuberMap from "./colectuber-map/colectuber-map";
 import { useDataContext } from "src/context/data-context-provider";
 import { useGoogleScript } from "src/context/google-context-provider";
 import { useUserLocationContext } from "src/context/user-location-context-provider";
+import Menu from "./filter/menu";
 
 const Index = () => {
     const script = useGoogleScript();
@@ -28,6 +29,7 @@ const Index = () => {
     }else{
         return <div className={styles.container}>
             <ColectuberMap/>
+            <Menu/>
         </div>
     }
 }

@@ -48,10 +48,6 @@ export const SelectionProvider = ({
     }
 
     //Debug
-    useEffect(()=>{
-        console.log(filter);
-    },[filter])
-
     const [filtrar, setFiltrar] = useState(false);
 
     return <SelectionContext.Provider
@@ -66,9 +62,6 @@ export const SelectionProvider = ({
             filtrar
         }}
     >
-        <button onClick={()=>{setFiltrar(!filtrar)}}>
-            {filtrar?"Seleccionar":"Filtrar"}
-        </button>
         {children}
     </SelectionContext.Provider>
 }

@@ -4,6 +4,7 @@ export default class ParadaMapEntity{
         this.name = data.name,
         this.description = data.description,
         this.image = data.image,
+        this.zone = data.zone,
         this.position = {
             lat: data.position.lat,
             lng: data.position.lng
