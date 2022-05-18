@@ -68,6 +68,7 @@ const getParadaList = (responceData)=>{
             name:p.nombre,
             description:p.descripcion,
             image:p.image,
+            zone:p.zona,
             position:{
                 lat:p.posicion.latitud,
                 lng:p.posicion.longitud

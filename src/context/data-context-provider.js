@@ -3,6 +3,7 @@ import ColectivoMapEntity from 'src/entities/colectivo-map-entity';
 import ParadaMapEntity from 'src/entities/parada-map-entity';
 import RecorridoMapEntity from 'src/entities/recorrido-map-entity';
 import ColectuberService from 'src/services/colectuber-service';
+import { useGoogleScript } from './google-context-provider';
 
 const DataContext = React.createContext();
 
@@ -19,6 +20,7 @@ export const useDataContext = ()=>{
 export const DataProvider = ({
     children
 })=>{
+    const script = useGoogleScript();
     const [isLoaded, setLoaded] = useState(false);
 
     //Data
@@ -101,14 +103,16 @@ export const DataProvider = ({
     }
 
     useEffect(()=>{
-        loadInitialData()
-            .catch((err)=>{
-                console.error(err);
-            })
-            .finally(()=>{
-                setLoaded(true);
-            })
-    },[])
+        if(script.isLoaded){
+            loadInitialData()
+                .catch((err)=>{
+                    console.error(err);
+                })
+                .finally(()=>{
+                    setLoaded(true);
+                })
+        }
+    },[script.isLoaded])
 
     //UPDATE DATA
     const loadNewLocations = async ()=>{
