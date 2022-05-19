@@ -23,7 +23,7 @@ const MenuPanel = ({
             let selected = colectivo.id == selectionContext.selectedMarker;
             return <MenuElement 
                 key={colectivo.id} 
-                content={colectivo.number}
+                content={"Colectivo N°" + colectivo.number + " - " + colectivo.destination}
                 selected={selected}
                 onSelect={()=>{
                     if(!selected) selectionContext.selectMarker(colectivo.id)
@@ -38,7 +38,7 @@ const MenuPanel = ({
         return Object.keys(mapa).map((key)=>{
             let recorrido = dataContext.recorridos[key];
             let list = mapa[key];
-            return <MenuListElement key={recorrido.id} title={recorrido.name}>
+            return <MenuListElement color={recorrido.color} key={recorrido.id} title={recorrido.name}>
                 {renderColectivosList(list)}
             </MenuListElement>
         })

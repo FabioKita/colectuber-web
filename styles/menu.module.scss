@@ -179,7 +179,7 @@
         padding: 10px;
         background-color: #f5f5f5;
         box-shadow: inset 0px 3px 5px gray;
-        border-top: 5px solid red;
+        border-top: 5px solid lightgray;
         z-index: 10;
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
@@ -209,7 +209,7 @@
     background-color: #f5f5f5;
     box-shadow: inset 0px 3px 5px gray;
     border-top: 2px white solid;
-
+    overflow: wrap;
     padding-left: 30px;
 
     &:last-child{

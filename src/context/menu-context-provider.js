@@ -26,7 +26,9 @@ export const MenuProvider = ({
                     busesToRoute.push(colectivos[j])
                 }
             }
-            map[recorridos[i].id] = busesToRoute;
+            if(busesToRoute.length != 0){
+                map[recorridos[i].id] = busesToRoute;
+            }
         }
 
         return map
@@ -65,7 +67,9 @@ export const MenuProvider = ({
                     stopsToZone.push(paradas[j])
                 }
             }
-            map[zonas[i]] = stopsToZone;
+            if(stopsToZone.length != 0){
+                map[zonas[i]] = stopsToZone;
+            }
         }
         return map
     }
