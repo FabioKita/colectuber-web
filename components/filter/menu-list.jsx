@@ -24,10 +24,12 @@ export const MenuList = ({
 export const MenuListElement = ({
     children,
     className,
+    color,
     title = "Hola"
 })=>{
     const [open, setOpen] = useState(false);
     
+    const headerRef = useRef();
     const contentRef = useRef();
 
     useEffect(()=>{
@@ -39,8 +41,14 @@ export const MenuListElement = ({
         }
     },[open])
 
+    useEffect(()=>{
+        if(!color) return;
+        let container = headerRef.current;
+        container.style.borderTopColor = color;
+    },[color]);
+
     return <div className={styles.MenuListElement + " " + className + " " + (!open?styles.closed:"")}>
-        <div className={styles.Header} onClick={()=>{setOpen(!open)}}>
+        <div ref={headerRef} className={styles.Header} onClick={()=>{setOpen(!open)}}>
             <b>{title}</b>
         </div>
         <div ref={contentRef} className={styles.Body}>
