@@ -29,6 +29,11 @@ const MenuPanel = ({
                     if(!selected) selectionContext.selectMarker(colectivo.id)
                     else selectionContext.deselectCurrent();
                 }}
+                checked={selectionContext.hasInFilter(colectivo.id)}
+                onCheck={(checked)=>{
+                    if(checked) selectionContext.removeFromFilter(colectivo.id);
+                    else selectionContext.addToFilter(colectivo.id);
+                }}
             />
         })
     }
@@ -54,6 +59,11 @@ const MenuPanel = ({
                 onSelect={()=>{
                     if(!selected) selectionContext.selectMarker(parada.id)
                     else selectionContext.deselectCurrent();
+                }}
+                checked={selectionContext.hasInFilter(parada.id)}
+                onCheck={(checked)=>{
+                    if(checked) selectionContext.removeFromFilter(parada.id);
+                    else selectionContext.addToFilter(parada.id);
                 }}
             />
         })

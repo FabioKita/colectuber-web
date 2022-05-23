@@ -77,21 +77,9 @@ const ColectivoMarker = ({
 
         return dispatch({ type:ACTION.HIDE });
     }
-
-    //Debug
-    const ref = useRef(false);
-
+    
     const select = ()=>{
-        if(selectionContext.filtrar){
-            if(ref.current){
-                selectionContext.removeFromFilter(colectivoEntity.id);
-            }else{
-                selectionContext.addToFilter(colectivoEntity.id);
-            }
-            ref.current = !ref.current;
-        }else{
-            selectionContext.selectMarker(colectivoEntity.id);
-        }
+        selectionContext.selectMarker(colectivoEntity.id);
     }
 
     const deselect = ()=>{
