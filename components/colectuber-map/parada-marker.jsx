@@ -75,21 +75,9 @@ const ParadaMarker = ({
         }
         return dispatch({ type:ACTION.HIDE });
     }
-
-    //Debug
-    const ref = useRef(false);
-
+    
     const select = ()=>{
-        if(selectionContext.filtrar){
-            if(ref.current){
-                selectionContext.removeFromFilter(paradaEntity.id);
-            }else{
-                selectionContext.addToFilter(paradaEntity.id);
-            }
-            ref.current = !ref.current;
-        }else{
-            selectionContext.selectMarker(paradaEntity.id);
-        }
+        selectionContext.selectMarker(paradaEntity.id);
     }
 
     const deselect = ()=>{

@@ -47,8 +47,10 @@ export const SelectionProvider = ({
         setFilter(prev=>_removeFromFilter(removeId, prev));
     }
 
-    //Debug
-    const [filtrar, setFiltrar] = useState(false);
+    const hasInFilter = (id)=>{
+        if(!filter) return false;
+        return filter.includes(id);
+    }
 
     return <SelectionContext.Provider
         value={{
@@ -58,8 +60,7 @@ export const SelectionProvider = ({
             filter,
             addToFilter,
             removeFromFilter,
-
-            filtrar
+            hasInFilter
         }}
     >
         {children}

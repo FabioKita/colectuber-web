@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import styles from 'styles/menu.module.scss';
-import {FaAngleDown, FaAngleUp} from 'react-icons/fa'
+import {FaAngleDown, FaAngleUp, FaCheck} from 'react-icons/fa'
 
 export const MenuList = ({
     children = [],
@@ -61,16 +61,39 @@ export const MenuElement = ({
     className,
     content = "Hola",
     selected,
-    onSelect = ()=>{}
+    onSelect = ()=>{},
+    checked,
+    onCheck = ()=>{}
 })=>{
     const select = ()=>{
         onSelect();
     }
+    
+    const check = ()=>{
+        onCheck(checked);
+    }
+
+    const renderCheckInput = ()=>{
+        if(!checked){
+            return <div className={styles.Input}/>
+        }else{
+            return <div className={styles.Input  + " " + styles.checked}>
+                <FaCheck/>
+            </div>
+        }
+    }
 
     return <div 
         className={styles.MenuElement + " " + className + " " + (selected?styles.selected:"")}
-        onClick={select}
     >
-        {content}
+        <div 
+            className={styles.Content}
+            onClick={select}
+        >
+            {content}
+        </div>
+        <div className={styles.InputDiv} onClick={check}>
+            {renderCheckInput()}
+        </div>
     </div>
 }
