@@ -142,6 +142,7 @@ const ParadaMarker = ({
         }
 
         return <ExtraInfoWindow
+            markerId={paradaEntity.id}
             position={paradaEntity.position}
         >
             <div>

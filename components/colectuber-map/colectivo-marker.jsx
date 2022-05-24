@@ -149,6 +149,7 @@ const ColectivoMarker = ({
         }
         
         return <ExtraInfoWindow
+            markerId={colectivoEntity.id}
             position={colectivoEntity.position}
         >
             <div>

@@ -18,8 +18,31 @@ export const SelectionProvider = ({
         setSelectedMarker(markerId);
     }
 
+    const deselectMarker = (markerId)=>{
+        if(selectedMarker==markerId){
+            deselectCurrent();
+        }
+    }
+
     const deselectCurrent = ()=>{
         setSelectedMarker(null);
+    }
+
+    //ExtraSelection
+    const [extraSelectedMarker, setExtraSelectedMarker] = useState(null);
+
+    const extraSelectMarker = (markerId)=>{
+        setExtraSelectedMarker(markerId);
+    }
+
+    const extraDeselectMarker = (markerId)=>{
+        if(extraSelectedMarker==markerId){
+            extraDeselectCurrent();
+        }
+    }
+
+    const extraDeselectCurrent = ()=>{
+        setExtraSelectedMarker(null);
     }
 
     //Filter
@@ -56,7 +79,14 @@ export const SelectionProvider = ({
         value={{
             selectedMarker,
             selectMarker,
+            deselectMarker,
             deselectCurrent,
+
+            extraSelectedMarker,
+            extraSelectMarker,
+            extraDeselectMarker,
+            extraDeselectCurrent,
+
             filter,
             addToFilter,
             removeFromFilter,
