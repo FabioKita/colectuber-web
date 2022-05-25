@@ -5,6 +5,7 @@ import { useDataContext } from "src/context/data-context-provider";
 import { useGoogleScript } from "src/context/google-context-provider";
 import { useUserLocationContext } from "src/context/user-location-context-provider";
 import Menu from "./filter/menu";
+import Loading from "./loading";
 
 const Index = () => {
     const script = useGoogleScript();
@@ -24,14 +25,16 @@ const Index = () => {
         }
     },[]);
 
-    if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
+   /* if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
         return <div>Loading...</div>
     }else{
         return <div className={styles.container}>
             <ColectuberMap/>
             <Menu/>
         </div>
-    }
+    }*/
+
+    return <Loading></Loading>
 }
 
 export default Index;
