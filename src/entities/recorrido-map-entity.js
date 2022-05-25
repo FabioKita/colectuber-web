@@ -74,6 +74,27 @@ export default class RecorridoMapEntity{
         return true;
     }
 
+    getParadasBeforeParada(parada){
+        let ip = this.paradas[parada.id].ip;
+        return this.getParadasBeforeIp(ip);
+    }
+
+    getParadasBeforeIp(ip){
+        let paradaList = [];
+        Object.values(this.paradas).forEach((paradaInfo)=>{
+            if(paradaInfo.ip <= ip) paradaList.push(paradaInfo.parada);
+        })
+        return paradaList;
+    }
+
+    getParadasAfterIp(ip){
+        let paradaList = [];
+        Object.values(this.paradas).forEach((paradaInfo)=>{
+            if(paradaInfo.ip >= ip) paradaList.push(paradaInfo.parada);
+        })
+        return paradaList;
+    }
+
     //IP Methods
     ipPosition(ip){
         ip = this._clampIp(ip);

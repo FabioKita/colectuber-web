@@ -7,7 +7,7 @@ import RecorridoLine from './recorrido-line';
 import UserMarker from './user-marker';
 import { useDataContext } from 'src/context/data-context-provider';
 
-const FPS = 60;
+const FPS = 15;
 const SPF = 1000/FPS;
 
 const ColectuberMap = ({
