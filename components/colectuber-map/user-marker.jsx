@@ -1,5 +1,6 @@
-import { InfoWindow, Marker } from '@react-google-maps/api';
+import { InfoWindow, Marker, Polyline } from '@react-google-maps/api';
 import React, {useState, useEffect, useReducer} from 'react';
+import { useDataContext } from 'src/context/data-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import { useUserLocationContext } from 'src/context/user-location-context-provider';
 
@@ -20,9 +21,10 @@ const STATE = {
 }
 
 const UserMarker = ()=>{
+    const dataContext = useDataContext();
     const selectionContext = useSelectionContext();
     const userLocationContext = useUserLocationContext();
-    
+
     const [state, dispatch] = useReducer((state, action)=>{
         switch(action.type){
             case ACTION.SHOW:{
@@ -49,14 +51,85 @@ const UserMarker = ()=>{
         relatedEntity:null
     })
 
-    useEffect(()=>{
+    const getNearestParada = (position, paradaList)=>{
+        const getDistanceDirect = (pos1, pos2)=>{
+            let dlat = pos1.lat-pos2.lat;
+            let dlng = pos1.lng-pos2.lng;
+            return Math.sqrt(dlat*dlat + dlng*dlng);
+        }
+
+        let nearest = {
+            distance: undefined,
+            parada: undefined
+        }
+        paradaList.forEach(parada=>{
+            let newDistance = getDistanceDirect(position, parada.position);
+            if(!nearest.parada){
+                nearest.parada = parada;
+                nearest.distance = newDistance;
+            }else{
+                if(nearest.distance > newDistance){
+                    nearest.parada = parada;
+                    nearest.distance = newDistance;
+                }
+            }
+        });
+        
+        return nearest.parada;
+    }
+
+    const getNearestParadaFromColectivo = (position, colectivo)=>{
+        let paradaList = colectivo.getParadasAfterColectivo();
+        return getNearestParada(position, paradaList);
+    }
+
+    const getNearestParadaFromParada = (position, parada, recorridos)=>{
+        let paradaList = parada.getParadasBeforeParada(recorridos);
+        return getNearestParada(position, paradaList);
+    }
+
+    const handleStateChange = ()=>{
+        if(!userLocationContext.lastKnownLocation) return dispatch({type:ACTION.HIDE});
+
         let id = selectionContext.selectedMarker;
-        if(!id){
-            return dispatch({ type:ACTION.SHOW });
+        if(!id) return dispatch({type:ACTION.SHOW});
+        else if(id.startsWith("p-")){
+            //get nearest parada that get to selected parada;
+            let parada = dataContext.paradas[id];
+            let position = userLocationContext.lastKnownLocation;
+            let nearestParada = getNearestParadaFromParada(position, parada, dataContext.recorridos);
+            return dispatch({type:ACTION.RELATE, relatedEntity:nearestParada})
+        }else if(id.startsWith("c-")){
+            //get nearest parada that the selected colectivo will pass;
+            let colectivo = dataContext.colectivos[id];
+            let position = userLocationContext.lastKnownLocation;
+            let nearestParada = getNearestParadaFromColectivo(position, colectivo);
+            return dispatch({type:ACTION.RELATE, relatedEntity:nearestParada})
         }
         
-        return dispatch({ type:ACTION.HIDE });
-    },[selectionContext.selectedMarker])
+        return dispatch({type:ACTION.HIDE});
+    }
+
+    useEffect(()=>{
+        handleStateChange();
+    },[selectionContext.selectedMarker, userLocationContext.lastKnownLocation]);
+
+    const renderLineToNearestParada = ()=>{
+        if(!userLocationContext.lastKnownLocation || !state.relatedEntity){
+            return <></>
+        }else{
+            return <Polyline
+                path={[
+                    userLocationContext.lastKnownLocation,
+                    state.relatedEntity.position
+                ]}
+                options={{
+                    strokeColor:'#666666',
+                    strokeWeight:4
+                }}
+            />
+        }
+    }
 
     const renderMarker = (hidden = false)=>{
         return <Marker
@@ -79,6 +152,11 @@ const UserMarker = ()=>{
                 return renderMarker(true);
             case STATE.SHOWN:
                 return renderMarker();
+            case STATE.RELATED:
+                return <>
+                    {renderMarker()}
+                    {renderLineToNearestParada()}
+                </>;
         }
     }
 
