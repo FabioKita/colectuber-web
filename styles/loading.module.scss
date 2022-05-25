@@ -1,62 +1,179 @@
 
 
 $height-total: 100vh;
-$width-total: 100vh;
+$width-total: 100vw;
 
 .load{
     width: $height-total*0.075;
     height: $height-total*0.075;
     border-radius: 100px;
-    position: relative;
+    position: absolute;
     background-color: red;
     animation-name: load1;
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
-  
+    display: flex;
+    justify-content: center;
+    align-items: center;  
 }
 
+.load1{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0px;
+    top: $height-total*0.20;
+    animation-delay: -0.1s;
+}
+.load2{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.2s;
+    left: 0px;
+    top: $height-total*0.20;
+}
+.load3{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.3s;
+    left: 0px;
+    top: $height-total*0.20;
+}
+.load4{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.4s;
+    left: 0px;
+    top: $height-total*0.20;
+}
+.load5{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.5s;
+    left: 0px;
+    top: $height-total*0.20;
+}
+.load6{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.6s;
+    left: $width-total*0.5;
+    top: $height-total*0.20;
+}
+.load7{
+    width: $height-total*0.075;
+    height: $height-total*0.075;
+    border-radius: 100px;
+    position: absolute;
+    background-color: red;
+    animation-name: load1;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-delay: -0.7s;
+    left: 0px;
+    top: $height-total*0.20;
+}
+
+
+
 @keyframes load1 {
-    0%   {background-color:#ff000061; left:$width-total*0; top:$height-total*0.20;}
+    0%   {background-color:#ff000061; left:$width-total*0 +$width-total*0.5; top:$height-total*0.20;}
 
-    3%   {background-color:#ff000061; left:$width-total*0.05; top:$height-total*0.2063;}
-    6%   {background-color:#ff000061; left:$width-total*0.10; top:$height-total*0.2268;}
-    9%   {background-color:#ff000061; left:$width-total*0.15; top:$height-total*0.2677;}  
-    12%  {background-color:#ff000061; left:$width-total*0.1732; top:$height-total*0.30;}
-    15%  {background-color:#ff000061; left:$width-total*0.1854; top:$height-total*0.325;} 
-    18%  {background-color:#ff000061; left:$width-total*0.1936; top:$height-total*0.35;}
-    21%  {background-color:#ff000061; left:$width-total*0.1984; top:$height-total*0.375;}
+    3%   {background-color:#ff000061; left:$width-total*0.05 +$width-total*0.5; top:$height-total*0.2063;}
+    6%   {background-color:#ff000061; left:$width-total*0.10 +$width-total*0.5; top:$height-total*0.2268;}
+    9%   {background-color:#ff000061; left:$width-total*0.15 +$width-total*0.5; top:$height-total*0.2677;}  
+    12%  {background-color:#ff000061; left:$width-total*0.1732 +$width-total*0.5; top:$height-total*0.30;}
+    15%  {background-color:#ff000061; left:$width-total*0.1854 +$width-total*0.5; top:$height-total*0.325;} 
+    18%  {background-color:#ff000061; left:$width-total*0.1936 +$width-total*0.5; top:$height-total*0.35;}
+    21%  {background-color:#ff000061; left:$width-total*0.1984 +$width-total*0.5; top:$height-total*0.375;}
 
-    25%  {background-color:#ff000061; left:$width-total*0.20; top:$height-total*0.40;}
+    25%  {background-color:#ff000061; left:$width-total*0.20 +$width-total*0.5; top:$height-total*0.40;}
 
-    28%  {background-color:#ff0000a2; left:$width-total*0.1984; top:$height-total*0.425;}
-    31%  {background-color:#ff0000a2; left:$width-total*0.1936; top:$height-total*0.45;}
-    34%  {background-color:#ff0000a2; left:$width-total*0.1854; top:$height-total*0.475;}
-    37%  {background-color:#ff0000a2; left:$width-total*0.1732; top:$height-total*0.50;}
-    40%  {background-color:#ff0000a2; left:$width-total*0.15; top:$height-total*0.5322;}
-    43%  {background-color:#ff0000a2; left:$width-total*0.10; top:$height-total*0.5732;}
-    46%  {background-color:#ff0000a2; left:$width-total*0.05; top:$height-total*0.5936;}
+    28%  {background-color:#ff000061; left:$width-total*0.1984 +$width-total*0.5; top:$height-total*0.425;}
+    31%  {background-color:#ff000061; left:$width-total*0.1936 +$width-total*0.5; top:$height-total*0.45;}
+    34%  {background-color:#ff000061; left:$width-total*0.1854 +$width-total*0.5; top:$height-total*0.475;}
+    37%  {background-color:#ff000061; left:$width-total*0.1732 +$width-total*0.5; top:$height-total*0.50;}
+    40%  {background-color:#ff000061; left:$width-total*0.15 +$width-total*0.5; top:$height-total*0.5322;}
+    43%  {background-color:#ff000061; left:$width-total*0.10 +$width-total*0.5; top:$height-total*0.5732;}
+    46%  {background-color:#ff0000a2; left:$width-total*0.05 +$width-total*0.5; top:$height-total*0.5936;}
     
-    50%  {background-color:#ff0000be; left:$width-total*0; top:$height-total*0.60;}
+    50%  {background-color:#ff0000a2; left:$width-total*0 +$width-total*0.5; top:$height-total*0.60;}
 
-    53%  {background-color:#ff0000be; left:$width-total*-0.05; top:$height-total*0.5936;}
-    56%  {background-color:#ff0000be; left:$width-total*-0.10; top:$height-total*0.5732;}
-    59%  {background-color:#ff0000be; left:$width-total*-0.15; top:$height-total*0.5322;}
-    62%  {background-color:#ff0000be; left:$width-total*-0.1732; top:$height-total*0.50;}
-    65%  {background-color:#ff0000be; left:$width-total*-0.1854; top:$height-total*0.475;}
-    68%  {background-color:#ff0000be; left:$width-total*-0.1936; top:$height-total*0.45;}
-    71%  {background-color:#ff0000be; left:$width-total*-0.1984; top:$height-total*0.425;}
+    53%  {background-color:#ff0000; left:$width-total*-0.05 +$width-total*0.5; top:$height-total*0.5936;}
+    56%  {background-color:#ff0000; left:$width-total*-0.10 +$width-total*0.5; top:$height-total*0.5732;}
+    59%  {background-color:#ff0000; left:$width-total*-0.15 +$width-total*0.5; top:$height-total*0.5322;}
+    62%  {background-color:#ff0000; left:$width-total*-0.1732 +$width-total*0.5; top:$height-total*0.50;}
+    65%  {background-color:#ff0000; left:$width-total*-0.1854 +$width-total*0.5; top:$height-total*0.475;}
+    68%  {background-color:#ff0000; left:$width-total*-0.1936 +$width-total*0.5; top:$height-total*0.45;}
+    71%  {background-color:#ff0000; left:$width-total*-0.1984 +$width-total*0.5; top:$height-total*0.425;}
 
-    75%  {background-color:#ff0000ea; left:-$width-total*0.20; top:$height-total*0.40;}
+    75%  {background-color:#ff0000; left:-$width-total*0.20 +$width-total*0.5; top:$height-total*0.40;}
 
-    78%  {background-color:#ff0000ea; left:-$width-total*0.1984; top:$height-total*0.375;}
-    81%  {background-color:#ff0000ea; left:-$width-total*0.1936; top:$height-total*0.35;}
-    84%  {background-color:#ff0000ea; left:-$width-total*0.1854; top:$height-total*0.325;} 
-    87%  {background-color:#ff0000ea; left:-$width-total*0.1732; top:$height-total*0.30;}
-    90%  {background-color:#ff0000ea; left:-$width-total*0.15; top:$height-total*0.2677;}
-    93%  {background-color:#ff0000ea; left:-$width-total*0.10; top:$height-total*0.2268;}
-    96%  {background-color:#ff0000ea; left:-$width-total*0.05; top:$height-total*0.2063;}
+    78%  {background-color:#ff0000; left:-$width-total*0.1984 +$width-total*0.5; top:$height-total*0.375;}
+    81%  {background-color:#ff0000; left:-$width-total*0.1936 +$width-total*0.5; top:$height-total*0.35;}
+    84%  {background-color:#ff0000; left:-$width-total*0.1854 +$width-total*0.5; top:$height-total*0.325;} 
+    87%  {background-color:#ff0000; left:-$width-total*0.1732 +$width-total*0.5; top:$height-total*0.30;}
+    90%  {background-color:#ff0000; left:-$width-total*0.15 +$width-total*0.5; top:$height-total*0.2677;}
+    93%  {background-color:#ff0000; left:-$width-total*0.10 +$width-total*0.5; top:$height-total*0.2268;}
+    96%  {background-color:#ff0000; left:-$width-total*0.05 +$width-total*0.5; top:$height-total*0.2063;}
 
-    100% {background-color:#ff0000ea; left:$width-total*0; top:$height-total*0.20;}
+    100% {background-color:#ff0000; left:$width-total*0 +$width-total*0.5; top:$height-total*0.20;}
   }
  
   
@@ -70,6 +187,6 @@ $width-total: 100vh;
 
 .text {
     position: relative;
-    top: $height-total*0.60;
+    top: $height-total*0.75;
    
 }
