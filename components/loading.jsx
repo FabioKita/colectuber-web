@@ -28,7 +28,7 @@ const Loading = () =>{
             <div className={styles.load6}>
                 <FaBusAlt size={30} color='white'></FaBusAlt>
             </div>
-
+            
 
 
 
