@@ -25,16 +25,16 @@ const Index = () => {
         }
     },[]);
 
-   /* if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
-        return <div>Loading...</div>
+    if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
+        return <Loading></Loading>
     }else{
         return <div className={styles.container}>
             <ColectuberMap/>
             <Menu/>
         </div>
-    }*/
+    }
 
-    return <Loading></Loading>
+    
 }
 
 export default Index;

@@ -159,47 +159,47 @@ $load-variable: (
 
 
 @keyframes load1 {
-    0%   {background-color:#fb4242; transform: translate($width-total*0,$height-total*0.20);}
+    0%   {background-color:red; transform: translate($width-total*0,$height-total*0.20);}
 
-    3%   {background-color:#fb4242; transform: translate($width-total*0.05,$height-total*0.2063);}
-    6%   {background-color:#fb4242; transform: translate($width-total*0.10,$height-total*0.2268);}
-    9%   {background-color:#fb4242; transform: translate($width-total*0.15,$height-total*0.2677);}  
-    12%  {background-color:#fb4242; transform: translate($width-total*0.1732,$height-total*0.30);}
-    15%  {background-color:#fb4242; transform: translate($width-total*0.1854,$height-total*0.325);} 
-    18%  {background-color:#fb4242; transform: translate($width-total*0.1936,$height-total*0.35);}
-    21%  {background-color:#fb4242; transform: translate($width-total*0.1984,$height-total*0.375);}
+    3%   {background-color:red; transform: translate($width-total*0.05,$height-total*0.2063);}
+    6%   {background-color:red; transform: translate($width-total*0.10,$height-total*0.2268);}
+    9%   {background-color:red; transform: translate($width-total*0.15,$height-total*0.2677);}  
+    12%  {background-color:orange; transform: translate($width-total*0.1732,$height-total*0.30);}
+    15%  {background-color:orange; transform: translate($width-total*0.1854,$height-total*0.325);} 
+    18%  {background-color:orange; transform: translate($width-total*0.1936,$height-total*0.35);}
+    21%  {background-color:orange; transform: translate($width-total*0.1984,$height-total*0.375);}
 
-    25%  {background-color:#fc1e1e; transform: translate($width-total*0.20,$height-total*0.40);}
+    25%  {background-color:yellow; transform: translate($width-total*0.20,$height-total*0.40);}
 
-    28%  {background-color:#fc1e1e; transform: translate($width-total*0.1984,$height-total*0.425);}
-    31%  {background-color:#fc1e1e; transform: translate($width-total*0.1936,$height-total*0.45);}
-    34%  {background-color:#fc1e1e; transform: translate($width-total*0.1854,$height-total*0.475);}
-    37%  {background-color:#fc1e1e; transform: translate($width-total*0.1732,$height-total*0.50);}
-    40%  {background-color:#fc1e1e; transform: translate($width-total*0.15,$height-total*0.5322);}
-    43%  {background-color:#fc1e1e; transform: translate($width-total*0.10,$height-total*0.5732);}
-    46%  {background-color:#fc1e1e; transform: translate($width-total*0.05,$height-total*0.5936);}
+    28%  {background-color:yellow; transform: translate($width-total*0.1984,$height-total*0.425);}
+    31%  {background-color:yellow; transform: translate($width-total*0.1936,$height-total*0.45);}
+    34%  {background-color:yellow; transform: translate($width-total*0.1854,$height-total*0.475);}
+    37%  {background-color:cyan; transform: translate($width-total*0.1732,$height-total*0.50);}
+    40%  {background-color:cyan; transform: translate($width-total*0.15,$height-total*0.5322);}
+    43%  {background-color:cyan; transform: translate($width-total*0.10,$height-total*0.5732);}
+    46%  {background-color:cyan; transform: translate($width-total*0.05,$height-total*0.5936);}
     
-    50%  {background-color:#ff9d9d; transform: translate($width-total*0,$height-total*0.60);}
+    50%  {background-color:blue; transform: translate($width-total*0,$height-total*0.60);}
 
-    53%  {background-color:#ff9d9d; transform: translate(-$width-total*0.05,$height-total*0.5936);}
-    56%  {background-color:#ff9d9d; transform: translate(-$width-total*0.10,$height-total*0.5732);}
-    59%  {background-color:#ff9d9d; transform: translate(-$width-total*0.15,$height-total*0.5322);}
-    62%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1732,$height-total*0.50);}
-    65%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1854,$height-total*0.475);}
-    68%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1936,$height-total*0.45);}
-    71%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1984,$height-total*0.425);}
+    53%  {background-color:blue; transform: translate(-$width-total*0.05,$height-total*0.5936);}
+    56%  {background-color:blue; transform: translate(-$width-total*0.10,$height-total*0.5732);}
+    59%  {background-color:blue; transform: translate(-$width-total*0.15,$height-total*0.5322);}
+    62%  {background-color:purple; transform: translate(-$width-total*0.1732,$height-total*0.50);}
+    65%  {background-color:purple; transform: translate(-$width-total*0.1854,$height-total*0.475);}
+    68%  {background-color:purple; transform: translate(-$width-total*0.1936,$height-total*0.45);}
+    71%  {background-color:purple; transform: translate(-$width-total*0.1984,$height-total*0.425);}
 
-    75%  {background-color:#fe6464; transform: translate(-$width-total*0.20,$height-total*0.40);}
+    75%  {background-color:gray; transform: translate(-$width-total*0.20,$height-total*0.40);}
 
-    78%  {background-color:#fe6464; transform: translate(-$width-total*0.1984,$height-total*0.375);}
-    81%  {background-color:#fe6464; transform: translate(-$width-total*0.1936,$height-total*0.35);}
-    84%  {background-color:#fe6464; transform: translate(-$width-total*0.1854,$height-total*0.325);} 
-    87%  {background-color:#fe6464; transform: translate(-$width-total*0.1732,$height-total*0.30);}
-    90%  {background-color:#fe6464; transform: translate(-$width-total*0.15,$height-total*0.2677);}
-    93%  {background-color:#fe6464; transform: translate(-$width-total*0.10,$height-total*0.2268);}
-    96%  {background-color:#fe6464; transform: translate(-$width-total*0.05,$height-total*0.2063);}
+    78%  {background-color:gray; transform: translate(-$width-total*0.1984,$height-total*0.375);}
+    81%  {background-color:gray; transform: translate(-$width-total*0.1936,$height-total*0.35);}
+    84%  {background-color:gray; transform: translate(-$width-total*0.1854,$height-total*0.325);} 
+    87%  {background-color:black; transform: translate(-$width-total*0.1732,$height-total*0.30);}
+    90%  {background-color:black; transform: translate(-$width-total*0.15,$height-total*0.2677);}
+    93%  {background-color:black; transform: translate(-$width-total*0.10,$height-total*0.2268);}
+    96%  {background-color:red; transform: translate(-$width-total*0.05,$height-total*0.2063);}
 
-    100% {background-color:#fe6464; transform: translate($width-total*0,$height-total*0.20);}
+    100% {background-color:red; transform: translate($width-total*0,$height-total*0.20);}
     
   }
  
@@ -235,47 +235,47 @@ $load-variable: (
     }
 
     @keyframes load1 {
-        0%   {background-color:#fb4242; transform: translate($width-total*0,$height-total*0.20);}
+        0%   {background-color:red; transform: translate($width-total*0,$height-total*0.20);}
 
-        3%   {background-color:#fb4242; transform: translate($width-total*0.05,$height-total*0.2063);}
-        6%   {background-color:#fb4242; transform: translate($width-total*0.10,$height-total*0.2268);}
-        9%   {background-color:#fb4242; transform: translate($width-total*0.15,$height-total*0.2677);}  
-        12%  {background-color:#fb4242; transform: translate($width-total*0.1732,$height-total*0.30);}
-        15%  {background-color:#fb4242; transform: translate($width-total*0.1854,$height-total*0.325);} 
-        18%  {background-color:#fb4242; transform: translate($width-total*0.1936,$height-total*0.35);}
-        21%  {background-color:#fb4242; transform: translate($width-total*0.1984,$height-total*0.375);}
-
-        25%  {background-color:#fc1e1e; transform: translate($width-total*0.20,$height-total*0.40);}
-
-        28%  {background-color:#fc1e1e; transform: translate($width-total*0.1984,$height-total*0.425);}
-        31%  {background-color:#fc1e1e; transform: translate($width-total*0.1936,$height-total*0.45);}
-        34%  {background-color:#fc1e1e; transform: translate($width-total*0.1854,$height-total*0.475);}
-        37%  {background-color:#fc1e1e; transform: translate($width-total*0.1732,$height-total*0.50);}
-        40%  {background-color:#fc1e1e; transform: translate($width-total*0.15,$height-total*0.5322);}
-        43%  {background-color:#fc1e1e; transform: translate($width-total*0.10,$height-total*0.5732);}
-        46%  {background-color:#fc1e1e; transform: translate($width-total*0.05,$height-total*0.5936);}
+        3%   {background-color:red; transform: translate($width-total*0.05,$height-total*0.2063);}
+        6%   {background-color:red; transform: translate($width-total*0.10,$height-total*0.2268);}
+        9%   {background-color:red; transform: translate($width-total*0.15,$height-total*0.2677);}  
+        12%  {background-color:orange; transform: translate($width-total*0.1732,$height-total*0.30);}
+        15%  {background-color:orange; transform: translate($width-total*0.1854,$height-total*0.325);} 
+        18%  {background-color:orange; transform: translate($width-total*0.1936,$height-total*0.35);}
+        21%  {background-color:orange; transform: translate($width-total*0.1984,$height-total*0.375);}
+    
+        25%  {background-color:yellow; transform: translate($width-total*0.20,$height-total*0.40);}
+    
+        28%  {background-color:yellow; transform: translate($width-total*0.1984,$height-total*0.425);}
+        31%  {background-color:yellow; transform: translate($width-total*0.1936,$height-total*0.45);}
+        34%  {background-color:yellow; transform: translate($width-total*0.1854,$height-total*0.475);}
+        37%  {background-color:cyan; transform: translate($width-total*0.1732,$height-total*0.50);}
+        40%  {background-color:cyan; transform: translate($width-total*0.15,$height-total*0.5322);}
+        43%  {background-color:cyan; transform: translate($width-total*0.10,$height-total*0.5732);}
+        46%  {background-color:cyan; transform: translate($width-total*0.05,$height-total*0.5936);}
         
-        50%  {background-color:#ff9d9d; transform: translate($width-total*0,$height-total*0.60);}
-
-        53%  {background-color:#ff9d9d; transform: translate(-$width-total*0.05,$height-total*0.5936);}
-        56%  {background-color:#ff9d9d; transform: translate(-$width-total*0.10,$height-total*0.5732);}
-        59%  {background-color:#ff9d9d; transform: translate(-$width-total*0.15,$height-total*0.5322);}
-        62%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1732,$height-total*0.50);}
-        65%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1854,$height-total*0.475);}
-        68%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1936,$height-total*0.45);}
-        71%  {background-color:#ff9d9d; transform: translate(-$width-total*0.1984,$height-total*0.425);}
-
-        75%  {background-color:#fe6464; transform: translate(-$width-total*0.20,$height-total*0.40);}
-
-        78%  {background-color:#fe6464; transform: translate(-$width-total*0.1984,$height-total*0.375);}
-        81%  {background-color:#fe6464; transform: translate(-$width-total*0.1936,$height-total*0.35);}
-        84%  {background-color:#fe6464; transform: translate(-$width-total*0.1854,$height-total*0.325);} 
-        87%  {background-color:#fe6464; transform: translate(-$width-total*0.1732,$height-total*0.30);}
-        90%  {background-color:#fe6464; transform: translate(-$width-total*0.15,$height-total*0.2677);}
-        93%  {background-color:#fe6464; transform: translate(-$width-total*0.10,$height-total*0.2268);}
-        96%  {background-color:#fe6464; transform: translate(-$width-total*0.05,$height-total*0.2063);}
-
-        100% {background-color:#fe6464; transform: translate($width-total*0,$height-total*0.20);}
+        50%  {background-color:blue; transform: translate($width-total*0,$height-total*0.60);}
+    
+        53%  {background-color:blue; transform: translate(-$width-total*0.05,$height-total*0.5936);}
+        56%  {background-color:blue; transform: translate(-$width-total*0.10,$height-total*0.5732);}
+        59%  {background-color:blue; transform: translate(-$width-total*0.15,$height-total*0.5322);}
+        62%  {background-color:purple; transform: translate(-$width-total*0.1732,$height-total*0.50);}
+        65%  {background-color:purple; transform: translate(-$width-total*0.1854,$height-total*0.475);}
+        68%  {background-color:purple; transform: translate(-$width-total*0.1936,$height-total*0.45);}
+        71%  {background-color:purple; transform: translate(-$width-total*0.1984,$height-total*0.425);}
+    
+        75%  {background-color:gray; transform: translate(-$width-total*0.20,$height-total*0.40);}
+    
+        78%  {background-color:gray; transform: translate(-$width-total*0.1984,$height-total*0.375);}
+        81%  {background-color:gray; transform: translate(-$width-total*0.1936,$height-total*0.35);}
+        84%  {background-color:gray; transform: translate(-$width-total*0.1854,$height-total*0.325);} 
+        87%  {background-color:black; transform: translate(-$width-total*0.1732,$height-total*0.30);}
+        90%  {background-color:black; transform: translate(-$width-total*0.15,$height-total*0.2677);}
+        93%  {background-color:black; transform: translate(-$width-total*0.10,$height-total*0.2268);}
+        96%  {background-color:red; transform: translate(-$width-total*0.05,$height-total*0.2063);}
+    
+        100% {background-color:red; transform: translate($width-total*0,$height-total*0.20);}
         
     }
     .text{
