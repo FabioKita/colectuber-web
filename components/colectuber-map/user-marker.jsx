@@ -4,7 +4,7 @@ import { useDataContext } from 'src/context/data-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import { useUserLocationContext } from 'src/context/user-location-context-provider';
 
-const MARKER_SIZE = 48;
+const MARKER_SIZE = 32;
 
 const ACTION = {
     SHOW:0,
