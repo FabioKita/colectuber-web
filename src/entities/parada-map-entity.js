@@ -10,4 +10,13 @@ export default class ParadaMapEntity{
             lng: data.position.lng
         }
     }
+
+    getParadasBeforeParada(recorridos){
+        let paradaList = [];
+        Object.values(recorridos).forEach((recorrido)=>{
+            if(!recorrido.hasParada(this)) return;
+            paradaList = [...paradaList, ...recorrido.getParadasBeforeParada(this)];
+        })
+        return paradaList;
+    }
 }

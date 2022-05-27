@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import React, {useState, useEffect, useRef, useMemo, useReducer} from 'react';
 import { Circle, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import styles from 'styles/colectuber-map.module.scss'
 import ColectivoMarker from './colectivo-marker';
@@ -6,22 +6,25 @@ import ParadaMarker from './parada-marker';
 import RecorridoLine from './recorrido-line';
 import UserMarker from './user-marker';
 import { useDataContext } from 'src/context/data-context-provider';
+import { useSelectionContext } from 'src/context/selection-context-provider';
 
-const FPS = 60;
+const FPS = 15;
 const SPF = 1000/FPS;
+
+const BOUNDS = {
+    north: -27.28831571374801,
+    south: -27.379767219135722,
+    east: -55.80048608276117,
+    west: -55.92708070367843,
+}
+
+const SELECT_ZOOM = 16;
 
 const ColectuberMap = ({
     className
 })=>{
     //INITIAL VALUES
     const mapParams = useMemo(()=>{
-        const BOUNDS = {
-            north: -27.28831571374801,
-            south: -27.379767219135722,
-            east: -55.80048608276117,
-            west: -55.92708070367843,
-        }
-        
         const DEF_VALUES = {
             center: { lat: (BOUNDS.north + BOUNDS.south)/2, lng: (BOUNDS.west + BOUNDS.east)/2 },
             zoom: 14,
@@ -35,9 +38,39 @@ const ColectuberMap = ({
         };
         return DEF_VALUES;
     },[]);
-
+    
     //DATA
     const dataContext = useDataContext();
+
+    //Selection and Panning
+    const selectionContext = useSelectionContext();
+    const mapRef = useRef();
+    
+    const moveToMarker = (position, zoom = undefined)=>{
+        let map = mapRef.current;
+        if(!map) return;
+        if(zoom) map.setZoom(zoom);
+        map.panTo(position);
+    }
+
+    useEffect(()=>{
+        let id = selectionContext.selectedMarker;
+        if(!id) return;
+
+        let markerPosition;
+        if(id.startsWith("c-")){
+            //es un colectivo
+            let colectivo = dataContext.colectivos[id];
+            markerPosition = colectivo.position;
+        }else if(id.startsWith("p-")){
+            //es una parada
+            let parada = dataContext.paradas[id];
+            markerPosition = parada.position;
+        }
+
+        moveToMarker(markerPosition, SELECT_ZOOM);
+
+    },[selectionContext.selectedMarker])
 
     //Interpolation
     const thenRef = useRef(0);
@@ -110,6 +143,9 @@ const ColectuberMap = ({
                 zoom={mapParams.zoom}
                 mapContainerClassName={mapParams.mapContainerClassName}
                 options={mapParams.options}
+                onLoad={(mapEntity)=>{
+                    mapRef.current = mapEntity;
+                }}
             >
                 {renderColectivos()}
                 {renderParadas()}

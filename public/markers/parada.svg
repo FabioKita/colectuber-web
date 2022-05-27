@@ -31,7 +31,6 @@
          id="stop3806" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient1510"
        osb:paint="gradient">
       <stop
@@ -75,9 +74,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="99.176314"
-     inkscape:cy="30.048416"
+     inkscape:zoom="11.313709"
+     inkscape:cx="45.506847"
+     inkscape:cy="55.467654"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -89,18 +88,22 @@
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
-     inkscape:bbox-nodes="false"
+     inkscape:bbox-nodes="true"
      inkscape:snap-bbox-edge-midpoints="false"
      inkscape:snap-bbox-midpoints="false"
      inkscape:object-paths="true"
      inkscape:snap-intersection-paths="true"
-     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="false"
-     inkscape:snap-object-midpoints="true"
+     inkscape:snap-object-midpoints="false"
      inkscape:snap-center="false"
      inkscape:snap-text-baseline="true"
      inkscape:snap-page="false"
-     inkscape:object-nodes="true">
+     inkscape:object-nodes="true"
+     inkscape:snap-nodes="true"
+     inkscape:snap-others="false"
+     inkscape:snap-global="true"
+     inkscape:snap-grids="true">
     <inkscape:grid
        type="xygrid"
        id="grid1403"
@@ -114,7 +117,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -140,21 +143,28 @@
        id="path1412-9"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#ffffff;stroke:none;stroke-width:0.374999px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 40,16 c 12,0 12,0 12,12 0,12 0,12 -12,12 C 28,40 28,40 28,28 28,16 28,16 40,16 Z"
-       id="path1412-9-3"
-       sodipodi:nodetypes="ccccc" />
-    <rect
-       style="fill:#ffffff;stroke:none;stroke-width:1.69967;stroke-linejoin:round"
-       id="rect1454"
-       width="4"
-       height="26"
-       x="38"
-       y="36" />
+       id="path1380-6-2"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.38889px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 20.38889,28 C 19,28 19,28 19,29.388889 v 6.944444 c 0,1.388889 0,1.388889 1.38889,1.388889 h 2.77778 V 51.61111 H 21.77778 C 20.38889,51.61111 19,51.61111 19,53 h 2.77778 4.16667 2.77778 c 0,-1.38889 -1.38889,-1.38889 -2.77778,-1.38889 H 24.55556 V 37.722222 h 2.77778 c 1.38889,0 1.38889,0 1.38889,-1.388889 V 29.388889 C 28.72223,28 28.72223,28 27.33334,28 Z" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 28,64 h 25 c 0,-4 -5,-4 -13,-4 -8,0 -12,0 -12,4 z"
-       id="path1456"
-       sodipodi:nodetypes="cccc" />
+       d="m 31,34 h 30 c 0,0 0,-4 0,-3 0,0 0,-1 -1,-1 H 32 c -1,0 -1,0 -1,1 z"
+       id="path1415-6"
+       sodipodi:nodetypes="cccccsc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 33,34 v 10 h 2 V 34 Z"
+       id="path1417-52"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 57,34 v 10 h 2 V 34 Z"
+       id="path1417-5-9"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 32,44 h 28 c 1,0 1,0 1,1 v 8 H 31 v -8 c 0,-1 0,-1 1,-1 z"
+       id="path1459-7"
+       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>

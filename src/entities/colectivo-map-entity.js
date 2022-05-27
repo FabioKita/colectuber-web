@@ -89,6 +89,11 @@ export default class ColectivoMapEntity{
         let time = distance/AVERAGE_SPEED;
         return [distance, time];
     }
+
+    getParadasAfterColectivo(){
+        let ip = this.ip;
+        return this.recorrido.getParadasAfterIp(ip);
+    }
     
     //Auxiliar method
     _lerp(i, f, p){
