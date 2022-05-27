@@ -5,6 +5,7 @@ import { useSelectionContext } from 'src/context/selection-context-provider';
 import ExtraInfoWindow from './extra-info-window';
 
 const MARKER_SIZE = 32;
+const SELECTED_SIZE = 48;
 
 const ACTION = {
     SHOW:0,
@@ -91,13 +92,13 @@ const ColectivoMarker = ({
         if (selectionContext.selectedMarker==colectivoEntity.id) selectionContext.deselectCurrent();
     }
 
-    const renderMarker = (hidden = false)=>{
+    const renderMarker = (size, hidden = false)=>{
         return <Marker
             position={colectivoEntity.position}
             icon={{
                 url:`markers/colectivo/colectivo-${colectivoEntity.recorrido.color}.svg`,
-                scaledSize:new google.maps.Size(MARKER_SIZE, MARKER_SIZE),
-                anchor:new google.maps.Point(MARKER_SIZE/2, MARKER_SIZE/2),
+                scaledSize:new google.maps.Size(size, size),
+                anchor:new google.maps.Point(size/2, size/2),
             }}
             options={{
                 zIndex:1000,
@@ -164,19 +165,19 @@ const ColectivoMarker = ({
     const renderAccordingToState = ()=>{
         switch(state.state){
             case STATE.HIDDEN: 
-                return renderMarker(true);
+                return renderMarker(MARKER_SIZE, true);
             case STATE.SELECTED:
                 return <>
-                    {renderMarker()}
+                    {renderMarker(SELECTED_SIZE)}
                     {renderInfoWindow()}
                 </>
             case STATE.RELATED:
                 return <>
-                    {renderMarker()}
+                    {renderMarker(MARKER_SIZE)}
                     {renderExtraInfoWindow()}
                 </>
             case STATE.SHOWN:
-                return renderMarker();
+                return renderMarker(MARKER_SIZE);
         }
     }
 
