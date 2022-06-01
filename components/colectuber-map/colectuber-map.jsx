@@ -94,7 +94,6 @@ const ColectuberMap = ({
             let newThen = now - (enlapsed%SPF);
             let delta = newThen - thenRef.current;
             thenRef.current = newThen;
-
             step(delta);
         }
     }

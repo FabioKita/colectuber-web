@@ -11,38 +11,41 @@ export default class ColectivoMapEntity{
         this.company = data.company;
 
         //Position and Interpolation Variables
-        this.destination = data.destination;
-        this.recorrido = recorridos[data.recorridoId];
-
-        if(!this.recorrido) return;
-
-        this.ip = data.ip;
-        this.ip_from = data.ip;
-        this.ip_to = data.ip;
-        this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
-
-        this.position = this.recorrido.ipPosition(this.ip);
-        this.distanceFromStart = this.recorrido.ipDistance(0, this.ip);
-
-        this.timer = 0;
+        this.update(data, recorridos)
     }
 
     update(data, recorridos){
-        let newIp = data.ip;
-        let newRecorrido = recorridos[data.recorridoId];
+        //Hay cuatro formas de hacer update
+        //No tiene datos y se le pasa datos nuevos
+        //Tiene datos y se le pasa datos nuevos
+        //No tiene datos y se el pasa nada
+        //No tiene datos y se le pasa datos nuevos
 
-        if(this.ip_to != newIp || this.recorrido != newRecorrido){
-            this.destination = data.destination;
-            this.recorrido = newRecorrido;
-
-            if(!this.recorrido) return;
-
-            this.ip_from = this.ip;
-            this.ip_to = newIp;
-            this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
-
-            this.position = this.recorrido.ipPosition(this.ip);
-            this.timer = TIMER;
+        if(!data){
+            this.valid = false;
+        }else{
+            if(this.isValid()){
+                //Tiene datos y se le pasa nuevos
+                this.destination = data.destination;
+                this.recorrido = recorridos[data.recorridoId];
+                this.ip_from = this.ip;
+                this.ip_to = data.ip;
+                this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
+                this.position = this.recorrido.ipPosition(this.ip);
+                this.timer = TIMER;
+            }else{
+                //No tiene datos y se le pasa nuevos
+                this.destination = data.destination;
+                this.recorrido = recorridos[data.recorridoId];
+                this.ip = data.ip;
+                this.ip_from = data.ip;
+                this.ip_to = data.ip;
+                this.ip_delta = this.recorrido.ipDistance(this.ip_from, this.ip_to);
+                this.position = this.recorrido.ipPosition(this.ip);
+                this.distanceFromStart = this.recorrido.ipDistance(0, this.ip);
+                this.timer = 0;
+            }
+            this.valid = true;
         }
     }
 
@@ -50,6 +53,7 @@ export default class ColectivoMapEntity{
         if(!this.id) return false;
         if(!this.recorrido) return false;
         if(isNaN(this.ip)) return false;
+        if(!this.valid) return false;
         return true;
     }
 
@@ -77,6 +81,7 @@ export default class ColectivoMapEntity{
     }
 
     isColectivoBeforeParada(paradaId){
+        if(!this.isValid()) return false;
         return this.recorrido.isParadaAfterIp(paradaId, this.ip);
     }
 
