@@ -17,6 +17,37 @@ export const useDataContext = ()=>{
     return useContext(DataContext);
 }
 
+const reducer = (state, action)=>{
+    switch(action.type){
+        case ACTIONS.LOAD_INITIAL_DATA:{
+            return {
+                colectivos: action.result.colectivos,
+                paradas: action.result.paradas,
+                recorridos: action.result.recorridos
+            };
+        }
+        case ACTIONS.UPDATE_LOCATION_DATA:{
+            let locationsData = action.data;
+
+            Object.values(state.colectivos).forEach((colectivo)=>{
+                let location = locationsData.find(l=>l.colectivoId==colectivo.id);
+                if(location) colectivo.update(location, state.recorridos);
+                else colectivo.update(null, state.recorridos);
+            })
+
+            console.log(state.colectivos);
+
+            return {...state}
+        }
+        case ACTIONS.MOVE_COLECTIVOS:{
+            Object.values(state.colectivos).forEach((colectivo)=>{
+                colectivo.step(action.delta);
+            })
+            return {...state};
+        }
+    }
+}
+
 export const DataProvider = ({
     children
 })=>{
@@ -24,34 +55,7 @@ export const DataProvider = ({
     const [isLoaded, setLoaded] = useState(false);
 
     //Data
-    const [state, dispatch] = useReducer((state, action)=>{
-        switch(action.type){
-            case ACTIONS.LOAD_INITIAL_DATA:{
-                return {
-                    colectivos: action.result.colectivos,
-                    paradas: action.result.paradas,
-                    recorridos: action.result.recorridos
-                };
-            }
-            case ACTIONS.UPDATE_LOCATION_DATA:{
-                let locationsData = action.data;
-
-                Object.values(state.colectivos).forEach((colectivo)=>{
-                    let location = locationsData.find(l=>l.colectivoId==colectivo.id);
-                    if(location) colectivo.update(location, state.recorridos);
-                    else colectivo.update({}, state.recorridos);
-                })
-
-                return {...state}
-            }
-            case ACTIONS.MOVE_COLECTIVOS:{
-                Object.values(state.colectivos).forEach((colectivo)=>{
-                    colectivo.step(action.delta);
-                })
-                return {...state};
-            }
-        }
-    }, {
+    const [state, dispatch] = useReducer(reducer, {
         colectivos:{},
         paradas:{},
         recorridos:{}

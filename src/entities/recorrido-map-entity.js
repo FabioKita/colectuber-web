@@ -42,6 +42,7 @@ export default class RecorridoMapEntity{
             return this.path;
         }else if(relatedEntity.id.startsWith("c-")){
             //Es un colectivo
+            if(!relatedEntity.isValid()) return this.path;
             return this.ipPath(relatedEntity.ip, this.path.length-1)
         }else if(relatedEntity.id.startsWith("p-")){
             //Es una parada

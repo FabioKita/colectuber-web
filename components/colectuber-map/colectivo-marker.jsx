@@ -89,7 +89,7 @@ const ColectivoMarker = ({
 
     const unmount = ()=>{
         selectionContext.removeFromFilter(colectivoEntity.id);
-        if (selectionContext.selectedMarker==colectivoEntity.id) selectionContext.deselectCurrent();
+        selectionContext.deselectMarker(colectivoEntity.id);
     }
 
     const renderMarker = (size, hidden = false)=>{
