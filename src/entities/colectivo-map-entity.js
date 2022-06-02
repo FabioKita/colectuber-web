@@ -24,6 +24,11 @@ export default class ColectivoMapEntity{
         if(!data){
             this.valid = false;
         }else{
+            if(!data.recorridoId){
+                this.valid = false;
+                return;
+            }
+
             if(this.isValid()){
                 //Tiene datos y se le pasa nuevos
                 this.destination = data.destination;
