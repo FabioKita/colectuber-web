@@ -48,7 +48,7 @@ const RecorridoLine = ({
         state:STATE.SHOWN,
         relatedEntity:null
     })
-
+    /*
     const shouldFilter = useMemo(()=>{
         if(!selectionContext.filter) return false;
         let shouldFilter = true;
@@ -94,6 +94,30 @@ const RecorridoLine = ({
         }
         return dispatch({ type:ACTION.HIDE });
     }
+    */
+    
+    const handleStateChange = ()=>{
+        let id = selectionContext.selectedMarker;
+        if(!id){
+            //Se muestra
+            return dispatch({ type:ACTION.SHOW });
+        }else if(id.startsWith("c-")){
+            let colectivo = dataContext.colectivos[id];
+            let colectivoData = dataContext.colectivosData[id];
+            if(recorridoEntity.hasColectivo(colectivoData)){
+                return dispatch({ type:ACTION.RELATE, relatedEntity:colectivo });
+            }
+        }else if(id.startsWith("p-")){
+            let parada = dataContext.paradas[id];
+            if(recorridoEntity.hasParada(parada)){
+                return dispatch({ type:ACTION.RELATE, relatedEntity:parada });
+            }
+        }
+    }
+
+    useEffect(()=>{
+        handleStateChange();
+    },[selectionContext.selectedMarker, selectionContext.filter, dataContext.colectivosData])
 
     const drawLineWithPath = (path, hidden = false)=>{
         return <>
@@ -118,6 +142,19 @@ const RecorridoLine = ({
         </>
     }
 
+    const drawLineWithRelatedEntity = ()=>{
+        let relatedEntity = state.relatedEntity;
+        if(relatedEntity.id.startsWith("p-")){
+            //Es una parada
+            return drawLineWithPath(recorridoEntity.getPathWithParada(relatedEntity.id));
+        }else if(relatedEntity.id.startsWith("c-")){
+            //Es un colectivo
+            let colectivoLocation = dataContext.colectivosLocation[relatedEntity.id];
+            if(!colectivoLocation) return <></>;
+            return drawLineWithPath(recorridoEntity.getPathWithColectivo(colectivoLocation))
+        }
+    }
+
     const renderAccordingToState = ()=>{
         switch (state.state) {
             case STATE.HIDDEN:
@@ -126,7 +163,7 @@ const RecorridoLine = ({
                 let relatedEntity = state.relatedEntity;
                 return <>
                     {drawLineWithPath(recorridoEntity.path, true)}
-                    {drawLineWithPath(recorridoEntity.getPathWithRelatedEntity(relatedEntity))}
+                    {drawLineWithRelatedEntity()}
                 </>
             case STATE.SHOWN:
                 return drawLineWithPath(recorridoEntity.path);

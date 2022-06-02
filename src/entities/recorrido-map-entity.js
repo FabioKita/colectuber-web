@@ -37,6 +37,7 @@ export default class RecorridoMapEntity{
     }
 
     //SelectionMethod
+    /*
     getPathWithRelatedEntity(relatedEntity){
         if(!relatedEntity){
             return this.path;
@@ -73,6 +74,58 @@ export default class RecorridoMapEntity{
         let paradaInfo = this.paradas[parada.id];
         if(!paradaInfo) return false;
         return true;
+    }
+
+    getParadasBeforeParada(parada){
+        let ip = this.paradas[parada.id].ip;
+        return this.getParadasBeforeIp(ip);
+    }
+
+    getParadasBeforeIp(ip){
+        let paradaList = [];
+        Object.values(this.paradas).forEach((paradaInfo)=>{
+            if(paradaInfo.ip <= ip) paradaList.push(paradaInfo.parada);
+        })
+        return paradaList;
+    }
+
+    getParadasAfterIp(ip){
+        let paradaList = [];
+        Object.values(this.paradas).forEach((paradaInfo)=>{
+            if(paradaInfo.ip >= ip) paradaList.push(paradaInfo.parada);
+        })
+        return paradaList;
+    }
+    */
+
+    getPathWithParada(paradaId){
+        return this.paradas[paradaId].path;
+    }
+
+    getPathWithColectivo(colectivoLocation){
+        return this.ipPath(colectivoLocation.ip, this.path.length-1)
+    }
+
+    hasColectivo(colectivoData){
+        if(!colectivoData) return false;
+        return (colectivoData.recorrido.id == this.id);
+    }
+
+    hasParada(parada){
+        let paradaInfo = this.paradas[parada.id];
+        if(!paradaInfo) return false;
+        return true;
+    }
+
+    isParadaAfterIp(paradaId, ip){
+        let paradaInfo = this.paradas[paradaId];
+        if(!paradaInfo) return false;
+        return paradaInfo.ip > ip;
+    }
+
+    getDistanceToParada(paradaId, distanceFromStart){
+        let paradaInfo = this.paradas[paradaId];
+        return paradaInfo.distanceFromStart-distanceFromStart;
     }
 
     getParadasBeforeParada(parada){

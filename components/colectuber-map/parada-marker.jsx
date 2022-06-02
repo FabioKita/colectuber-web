@@ -70,7 +70,10 @@ const ParadaMarker = ({
             return dispatch({ type:ACTION.SELECT });
         }else if(id.startsWith("c-")){
             let colectivo = dataContext.colectivos[id];
-            if(colectivo.isColectivoBeforeParada(paradaEntity.id)){
+            let colectivoData = dataContext.colectivosData[id];
+            if(!colectivo || !colectivoData){
+                return dispatch({ type:ACTION.HIDE });
+            }else if(colectivoData.isColectivoBeforeParada(paradaEntity.id)){
                 return dispatch({ type:ACTION.RELATE, relatedEntity:colectivo })
             }
         }
@@ -82,12 +85,12 @@ const ParadaMarker = ({
     }
 
     const deselect = ()=>{
-        selectionContext.deselectCurrent();
+        selectionContext.deselectMarker(paradaEntity.id);
     }
 
     const unmount = ()=>{
         selectionContext.removeFromFilter(paradaEntity.id);
-        if (selectionContext.selectedMarker==paradaEntity.id) selectionContext.deselectCurrent();
+        selectionContext.deselectMarker(paradaEntity.id);
     }
 
     const renderMarker = (size, hidden = false)=>{
@@ -121,7 +124,11 @@ const ParadaMarker = ({
     }
     
     const renderExtraInfoWindow = ()=>{
-        let [distance, time] = state.relatedEntity.getDistanceAndTimeToParada(paradaEntity.id);
+        let colectivoId = state.relatedEntity.id;
+        let colectivoData = dataContext.colectivosData[colectivoId];
+        if(!colectivoData) return <></>;
+
+        let [distance, time] = colectivoData.getDistanceAndTimeToParada(paradaEntity.id);
         let renderDistance, renderTime;
 
         //Process distance

@@ -22,7 +22,9 @@ const STATE = {
 }
 
 const ColectivoMarker = ({
-    colectivoEntity
+    colectivoEntity,
+    colectivoData,
+    colectivoLocation
 })=>{
     const dataContext = useDataContext();
     const selectionContext = useSelectionContext();
@@ -54,9 +56,8 @@ const ColectivoMarker = ({
     })
 
     useEffect(()=>{
-        if(!colectivoEntity || !colectivoEntity.isValid()) return;
         handleStateChange();
-    },[selectionContext.selectedMarker, selectionContext.filter, dataContext])
+    },[selectionContext.selectedMarker, selectionContext.filter, colectivoData])
 
     const handleStateChange = ()=>{
         const isFiltered = ()=>{
@@ -71,20 +72,20 @@ const ColectivoMarker = ({
             return dispatch({ type:ACTION.SELECT });
         }else if(id.startsWith("p-")){
             let parada = dataContext.paradas[id];
-            if(colectivoEntity.isColectivoBeforeParada(parada.id)){
+            if(colectivoData.isColectivoBeforeParada(parada.id)){
                 return dispatch({ type:ACTION.RELATE, relatedEntity:parada })
             }
         }
 
         return dispatch({ type:ACTION.HIDE });
     }
-    
+
     const select = ()=>{
         selectionContext.selectMarker(colectivoEntity.id);
     }
 
     const deselect = ()=>{
-        selectionContext.deselectCurrent();
+        selectionContext.deselectMarker(colectivoEntity.id);
     }
 
     const unmount = ()=>{
@@ -94,9 +95,9 @@ const ColectivoMarker = ({
 
     const renderMarker = (size, hidden = false)=>{
         return <Marker
-            position={colectivoEntity.position}
+            position={colectivoLocation.position}
             icon={{
-                url:`markers/colectivo/colectivo-${colectivoEntity.recorrido.color}.svg`,
+                url:`markers/colectivo/colectivo-${colectivoData.recorrido.color}.svg`,
                 scaledSize:new google.maps.Size(size, size),
                 anchor:new google.maps.Point(size/2, size/2),
             }}
@@ -111,7 +112,7 @@ const ColectivoMarker = ({
 
     const renderInfoWindow = ()=>{
         return <InfoWindow 
-            position={colectivoEntity.position}
+            position={colectivoLocation.position}
             onCloseClick={deselect}
             options={{
                 pixelOffset:new google.maps.Size(0, -25),
@@ -121,14 +122,14 @@ const ColectivoMarker = ({
             <div>
                 <h1>Colectivo N°{colectivoEntity.number} </h1>
                 <p>Linea {colectivoEntity.line}</p>
-                <p>Destino: {colectivoEntity.destination}</p>
+                <p>Destino: {colectivoData.destination}</p>
                 <p>{colectivoEntity.company}</p>
             </div>
         </InfoWindow>
     }
 
     const renderExtraInfoWindow = ()=>{
-        let [distance, time] = colectivoEntity.getDistanceAndTimeToParada(state.relatedEntity.id);
+        let [distance, time] = colectivoData.getDistanceAndTimeToParada(state.relatedEntity.id);
         let renderDistance, renderTime;
 
         //Process distance
@@ -151,7 +152,7 @@ const ColectivoMarker = ({
         
         return <ExtraInfoWindow
             markerId={colectivoEntity.id}
-            position={colectivoEntity.position}
+            position={colectivoLocation.position}
         >
             <div>
                 <b>Distancia:</b> {renderDistance}
@@ -181,11 +182,7 @@ const ColectivoMarker = ({
         }
     }
 
-    if(colectivoEntity && colectivoEntity.isValid()){
-        return renderAccordingToState();
-    }else{
-        return <></>
-    }
+    return renderAccordingToState();
 }
 
 export default ColectivoMarker;
