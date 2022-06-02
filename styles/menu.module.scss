@@ -1,0 +1,250 @@
+.MenuHeader{
+    background-color: white;
+    border: lightgray 1px solid;
+    border-radius: 15px;
+
+    height: 50px;
+
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+
+    display: flex;
+
+    transition: all 0.5s ease-in-out;
+
+    &.hidden{
+        width: 60px;
+        >div{
+            opacity: 0;
+        }
+        
+    }
+
+    &.shown{
+        width: 500px;
+        >div{
+            opacity: 1;
+        }
+    }
+
+    >button{
+        background-color: white;
+        border: none;
+        border-radius: 15px;
+
+        min-width: 60px;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+
+        &:hover{
+            background-color: rgb(225, 225, 225);
+        }
+
+        &:active{
+            background-color: rgb(200, 200, 200);
+        }
+    }
+
+    >div{
+        display: flex;
+        transition: all 0.5s linear;
+        flex: 1;
+        margin-left: 10px;
+        overflow: hidden;
+        >input{
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            outline: none;
+        }
+    }
+}
+
+.MenuPanel{
+    position: absolute;
+    top: 75px;
+    left: 15px;
+    z-index: 11000;
+    
+    width: 500px;
+    height: calc(100% - 85px);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: all 0.5s ease-in-out;
+
+    &.hidden{
+        transform: translate(-1000px);
+    }
+
+    >.Content{
+        flex: 1;
+    }
+
+    .Page{
+        padding: 10px;
+
+        >.Element{
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.Menu{
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+
+    padding: 15px;
+}
+
+.MenuTabs{
+    display: flex;
+    flex-direction: column;
+
+    >.Header{
+        height: 50px;
+        display: flex;
+        >.Tab{
+            flex: 1;
+            background-color: lightgray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-top: 1px lightgray solid;
+            &:hover{
+                background-color: rgb(195, 195, 195);
+            }
+            &:active{
+                background-color: rgb(180, 180, 180);
+            }
+        }
+        >.Tab:first-child{
+            border-top-left-radius: 15px;
+            border-left: 1px lightgray solid;
+        }
+        >.Tab:last-child{
+            border-top-right-radius: 15px;
+            border-right: 1px lightgray solid;
+        }
+        >.Tab.selected{
+            background-color: white;
+        }
+    }
+
+    >.Body{
+        flex: 1;
+        background-color: white;
+        width: 100%;
+        border-left: 1px lightgray solid;
+        border-right: 1px lightgray solid;
+        border-bottom: 1px lightgray solid;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        >.Content{
+            max-height: 80vh;
+            overflow: auto;
+            &.hidden{
+                display: none;
+            }
+        }
+    }
+}
+
+.MenuList{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    >.ListElement{
+        margin-bottom: 10px;
+    }
+}
+
+.MenuListElement{
+    display: flex;
+    flex-direction: column;
+    >.Header{
+        padding: 10px;
+        background-color: #f5f5f5;
+        box-shadow: inset 0px 3px 5px gray;
+        border-top: 5px solid lightgray;
+        z-index: 10;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        transition: all 0.5s ease-in-out;
+    }
+    >.Body{
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: all 0.5s ease-in-out;
+        max-height: 0px;
+    }
+    &.closed{
+        >.Header{
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        >.Body{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+}
+
+.MenuElement{
+    background-color: #f5f5f5;
+    box-shadow: inset 0px 3px 5px gray;
+    border-top: 2px white solid;
+    overflow: wrap;
+
+    display: flex;
+    align-items: center;
+
+    &:last-child{
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    &.selected{
+        background-color: lightgray;
+    }
+
+    .Content{
+        padding: 10px;
+        padding-left: 30px;
+        flex: 1;
+    }
+
+    .InputDiv{
+        padding: 10px;
+        >.Input{
+            border: 2px lightgray solid;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            &.checked{
+                background-color: rgb(88, 88, 255);
+                color: white;
+                border-color: rgb(94, 145, 255);
+            }
+        }
+    }
+}
