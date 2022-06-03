@@ -48,58 +48,31 @@ const RecorridoLine = ({
         state:STATE.SHOWN,
         relatedEntity:null
     })
-    /*
-    const shouldFilter = useMemo(()=>{
-        if(!selectionContext.filter) return false;
-        let shouldFilter = true;
-        selectionContext.filter.forEach(id=>{
-            if(id.startsWith("c-")){
-                let colectivo = dataContext.colectivos[id];
-                if(recorridoEntity.hasColectivo(colectivo)){
-                    shouldFilter = false;
-                }
-            }else if(id.startsWith("p-")){
-                let parada = dataContext.paradas[id];
-                if(recorridoEntity.hasParada(parada)){
-                    shouldFilter = false;
-                }
-            }
-        })
-        return shouldFilter;
-    }, [selectionContext.filter])
-
-    useEffect(()=>{
-        handleStateChange();
-    },[selectionContext.selectedMarker, selectionContext.filter])
-
+    
     const handleStateChange = ()=>{
         const isFiltered = ()=>{
+            if(!selectionContext.filter) return false;
+            let shouldFilter = true;
+            selectionContext.filter.forEach(id=>{
+                if(id.startsWith("c-")){
+                    let colectivo = dataContext.colectivos[id];
+                    if(recorridoEntity.hasColectivo(colectivo)){
+                        shouldFilter = false;
+                    }
+                }else if(id.startsWith("p-")){
+                    let parada = dataContext.paradas[id];
+                    if(recorridoEntity.hasParada(parada)){
+                        shouldFilter = false;
+                    }
+                }
+            })
             return shouldFilter;
         }
 
         let id = selectionContext.selectedMarker;
         if(!id){
-            if(isFiltered()) return dispatch({ type:ACTION.HIDE });
-            return dispatch({ type:ACTION.SHOW });
-        }else if(id.startsWith("c-")){
-            let colectivo = dataContext.colectivos[id];
-            if (recorridoEntity.hasColectivo(colectivo)){
-                return dispatch({ type:ACTION.RELATE, relatedEntity:colectivo });
-            }
-        }else if(id.startsWith("p-")){
-            let parada = dataContext.paradas[id];
-            if(recorridoEntity.hasParada(parada)){
-                return dispatch({ type:ACTION.RELATE, relatedEntity:parada });
-            }
-        }
-        return dispatch({ type:ACTION.HIDE });
-    }
-    */
-    
-    const handleStateChange = ()=>{
-        let id = selectionContext.selectedMarker;
-        if(!id){
             //Se muestra
+            if(isFiltered()) return dispatch({ type:ACTION.HIDE })
             return dispatch({ type:ACTION.SHOW });
         }else if(id.startsWith("c-")){
             let colectivo = dataContext.colectivos[id];
