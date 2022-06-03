@@ -81,15 +81,6 @@ const reducer = (state, action) => {
         }
         case ACTIONS.UPDATE_LOCATION_DATA: {
             let locationsData = action.data;
-
-            //Viejo
-            Object.values(state.colectivos).forEach((colectivo) => {
-                let location = locationsData.find(l => l.colectivoId == colectivo.id);
-                if (location) colectivo.update(location, state.recorridos);
-                else colectivo.update(null, state.recorridos);
-            })
-
-            //Nuevo
             let colectivosData = createColectivosData(locationsData, state.recorridos);
             state.colectivosData = colectivosData;
             let newLocationsData = createOrUpdateColectivosLocation(locationsData, state.colectivosLocation, state.recorridos);
@@ -97,12 +88,6 @@ const reducer = (state, action) => {
             return { ...state };
         }
         case ACTIONS.MOVE_COLECTIVOS: {
-            //Viejo
-            Object.values(state.colectivos).forEach((colectivo) => {
-                colectivo.step(action.delta);
-            })
-
-            //Nuevo
             Object.values(state.colectivosLocation).forEach((colectivoLocation)=>{
                 colectivoLocation.step(action.delta);
             })

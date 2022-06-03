@@ -55,8 +55,8 @@ const RecorridoLine = ({
             let shouldFilter = true;
             selectionContext.filter.forEach(id=>{
                 if(id.startsWith("c-")){
-                    let colectivo = dataContext.colectivos[id];
-                    if(recorridoEntity.hasColectivo(colectivo)){
+                    let colectivoData = dataContext.colectivosData[id];
+                    if(colectivoData && recorridoEntity.hasColectivo(colectivoData)){
                         shouldFilter = false;
                     }
                 }else if(id.startsWith("p-")){
@@ -86,6 +86,8 @@ const RecorridoLine = ({
                 return dispatch({ type:ACTION.RELATE, relatedEntity:parada });
             }
         }
+
+        return dispatch({ type:ACTION.HIDE });
     }
 
     useEffect(()=>{
