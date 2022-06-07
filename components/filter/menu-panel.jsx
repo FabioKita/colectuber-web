@@ -18,16 +18,29 @@ const MenuPanel = ({
         setSelectedTab(index);
     }
 
-    const renderColectivosList = (colectivoList)=>{
-        return colectivoList.map((colectivo)=>{
+    const renderRecorridosList = ()=>{
+        let mapa = menuContext.filteredColectivos;
+        return Object.keys(mapa).map((recorridoId)=>{
+            let recorrido = dataContext.recorridos[recorridoId];
+            let colectivoIdList = mapa[recorridoId];
+            return <MenuListElement color={recorrido.color} key={recorrido.id} title={recorrido.name}>
+                {renderColectivosList(colectivoIdList)}
+            </MenuListElement>
+        })
+    }
+
+    const renderColectivosList = (colectivoIdList)=>{
+        return colectivoIdList.map((colectivoId)=>{
+            let colectivo = dataContext.colectivos[colectivoId];
+            let colectivoData = dataContext.colectivosData[colectivoId];
             let selected = colectivo.id == selectionContext.selectedMarker;
             return <MenuElement 
                 key={colectivo.id} 
-                content={"Colectivo N°" + colectivo.number + " - " + colectivo.destination}
+                content={"Colectivo N°" + colectivo.number + " - " + colectivoData.destination}
                 selected={selected}
                 onSelect={()=>{
                     if(!selected) selectionContext.selectMarker(colectivo.id)
-                    else selectionContext.deselectCurrent();
+                    else selectionContext.deselectMarker(colectivo.id);
                 }}
                 checked={selectionContext.hasInFilter(colectivo.id)}
                 onCheck={(checked)=>{
@@ -38,19 +51,19 @@ const MenuPanel = ({
         })
     }
 
-    const renderRecorridosList = ()=>{
-        let mapa = menuContext.filteredColectivos;
-        return Object.keys(mapa).map((key)=>{
-            let recorrido = dataContext.recorridos[key];
-            let list = mapa[key];
-            return <MenuListElement color={recorrido.color} key={recorrido.id} title={recorrido.name}>
-                {renderColectivosList(list)}
+    const renderZonasList = ()=>{
+        let mapa = menuContext.filteredParadas;
+        return Object.keys(mapa).map((zona)=>{
+            let paradaIdList = mapa[zona];
+            return <MenuListElement key={zona} title={zona}>
+                {renderParadasList(paradaIdList)}
             </MenuListElement>
         })
     }
 
-    const renderParadasList = (paradaList)=>{
-        return paradaList.map((parada)=>{
+    const renderParadasList = (paradaIdList)=>{
+        return paradaIdList.map((paradaId)=>{
+            let parada = dataContext.paradas[paradaId];
             let selected = parada.id == selectionContext.selectedMarker;
             return <MenuElement 
                 key={parada.id} 
@@ -58,7 +71,7 @@ const MenuPanel = ({
                 selected={selected}
                 onSelect={()=>{
                     if(!selected) selectionContext.selectMarker(parada.id)
-                    else selectionContext.deselectCurrent();
+                    else selectionContext.deselectMarker(parada.id);
                 }}
                 checked={selectionContext.hasInFilter(parada.id)}
                 onCheck={(checked)=>{
@@ -66,16 +79,6 @@ const MenuPanel = ({
                     else selectionContext.addToFilter(parada.id);
                 }}
             />
-        })
-    }
-
-    const renderZonasList = ()=>{
-        let mapa = menuContext.filteredParadas;
-        return Object.keys(mapa).map((key)=>{
-            let list = mapa[key];
-            return <MenuListElement key={key} title={key}>
-                {renderParadasList(list)}
-            </MenuListElement>
         })
     }
 

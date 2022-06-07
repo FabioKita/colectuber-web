@@ -48,42 +48,36 @@ const RecorridoLine = ({
         state:STATE.SHOWN,
         relatedEntity:null
     })
-
-    const shouldFilter = useMemo(()=>{
-        if(!selectionContext.filter) return false;
-        let shouldFilter = true;
-        selectionContext.filter.forEach(id=>{
-            if(id.startsWith("c-")){
-                let colectivo = dataContext.colectivos[id];
-                if(recorridoEntity.hasColectivo(colectivo)){
-                    shouldFilter = false;
-                }
-            }else if(id.startsWith("p-")){
-                let parada = dataContext.paradas[id];
-                if(recorridoEntity.hasParada(parada)){
-                    shouldFilter = false;
-                }
-            }
-        })
-        return shouldFilter;
-    }, [selectionContext.filter])
-
-    useEffect(()=>{
-        handleStateChange();
-    },[selectionContext.selectedMarker, selectionContext.filter])
-
+    
     const handleStateChange = ()=>{
         const isFiltered = ()=>{
+            if(!selectionContext.filter) return false;
+            let shouldFilter = true;
+            selectionContext.filter.forEach(id=>{
+                if(id.startsWith("c-")){
+                    let colectivoData = dataContext.colectivosData[id];
+                    if(colectivoData && recorridoEntity.hasColectivo(colectivoData)){
+                        shouldFilter = false;
+                    }
+                }else if(id.startsWith("p-")){
+                    let parada = dataContext.paradas[id];
+                    if(recorridoEntity.hasParada(parada)){
+                        shouldFilter = false;
+                    }
+                }
+            })
             return shouldFilter;
         }
 
         let id = selectionContext.selectedMarker;
         if(!id){
-            if(isFiltered()) return dispatch({ type:ACTION.HIDE });
+            //Se muestra
+            if(isFiltered()) return dispatch({ type:ACTION.HIDE })
             return dispatch({ type:ACTION.SHOW });
         }else if(id.startsWith("c-")){
             let colectivo = dataContext.colectivos[id];
-            if (recorridoEntity.hasColectivo(colectivo)){
+            let colectivoData = dataContext.colectivosData[id];
+            if(recorridoEntity.hasColectivo(colectivoData)){
                 return dispatch({ type:ACTION.RELATE, relatedEntity:colectivo });
             }
         }else if(id.startsWith("p-")){
@@ -92,8 +86,13 @@ const RecorridoLine = ({
                 return dispatch({ type:ACTION.RELATE, relatedEntity:parada });
             }
         }
+
         return dispatch({ type:ACTION.HIDE });
     }
+
+    useEffect(()=>{
+        handleStateChange();
+    },[selectionContext.selectedMarker, selectionContext.filter, dataContext.colectivosData])
 
     const drawLineWithPath = (path, hidden = false)=>{
         return <>
@@ -118,6 +117,19 @@ const RecorridoLine = ({
         </>
     }
 
+    const drawLineWithRelatedEntity = ()=>{
+        let relatedEntity = state.relatedEntity;
+        if(relatedEntity.id.startsWith("p-")){
+            //Es una parada
+            return drawLineWithPath(recorridoEntity.getPathWithParada(relatedEntity.id));
+        }else if(relatedEntity.id.startsWith("c-")){
+            //Es un colectivo
+            let colectivoLocation = dataContext.colectivosLocation[relatedEntity.id];
+            if(!colectivoLocation) return <></>;
+            return drawLineWithPath(recorridoEntity.getPathWithColectivo(colectivoLocation))
+        }
+    }
+
     const renderAccordingToState = ()=>{
         switch (state.state) {
             case STATE.HIDDEN:
@@ -126,7 +138,7 @@ const RecorridoLine = ({
                 let relatedEntity = state.relatedEntity;
                 return <>
                     {drawLineWithPath(recorridoEntity.path, true)}
-                    {drawLineWithPath(recorridoEntity.getPathWithRelatedEntity(relatedEntity))}
+                    {drawLineWithRelatedEntity()}
                 </>
             case STATE.SHOWN:
                 return drawLineWithPath(recorridoEntity.path);

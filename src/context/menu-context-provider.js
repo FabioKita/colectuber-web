@@ -12,130 +12,82 @@ export const MenuProvider = ({
 })=>{
     const data = useDataContext();
 
-    //CLASIFICATION FUNCTIONS
-    /*Funcion para clasificar los colectivos por recorridos*/
-    const _getColectivosPorRecorrido = (colectivos, recorridos) => {
-        let map = {}
-
-        //Clasificamos los colectivos por recorrido
-        for (let i = 0; i < recorridos.length; i++) {
-            let busesToRoute = []
-            for (let j = 0; j < colectivos.length; j++) {
-                if(!colectivos[j].isValid()) continue;
-                if (recorridos[i].id == colectivos[j].recorrido.id) {
-                    busesToRoute.push(colectivos[j])
-                }
-            }
-            if(busesToRoute.length != 0){
-                map[recorridos[i].id] = busesToRoute;
-            }
-        }
-
-        return map
-    }
-
-    /*Funcion para obtener las zonas por medio de la lista de paradas*/
-    const getZonas = (paradas) => {
-        //Obtener todas las zonas de la tabla paradas
-        let zonas = []
-        for (let i = 0; i < paradas.length; i++) {
-            let zonaNew = paradas[i].zone
-            let control = 0
-
-            for (let j = 0; j < zonas.length; j++) {
-                if (zonaNew == zonas[j]) {
-                    control += 1
-                }
-            }
-            if (control == 0) {
-                zonas.push(zonaNew)
-            }
-        }
-        return zonas
-    }
-    /*Funcion para clasificar las paradas por zonas*/
-    const _getParadasPorZonas = (paradas) => {
-        let map = {}
-        let zonas = getZonas(paradas)
-
-        // Clasificamos las paradas por zonas
-
-        for (let i = 0; i < zonas.length; i++) {
-            let stopsToZone = []
-            for (let j = 0; j < paradas.length; j++) {
-                if (zonas[i] == paradas[j].zone) {
-                    stopsToZone.push(paradas[j])
-                }
-            }
-            if(stopsToZone.length != 0){
-                map[zonas[i]] = stopsToZone;
-            }
-        }
-        return map
-    }
-
-    //FILTER FUNCTIONS
     const [keyword, setKeyword] = useState("");
 
-    const _filterColectivo = (listData, keyword) => {
-        let listFilter = Object.values(listData);
+    //Retorna un mapa de indices de colectivos divididos por recorridos
+    const _getColectivosPorRecorridos = (colectivoIdList)=>{
+        let finalMap = {};
 
-        keyword = keyword.toLowerCase();
+        colectivoIdList.forEach((colectivoId)=>{
+            let colectivoData = data.colectivosData[colectivoId];
+            if(!colectivoData) return;
+            let recorrido = colectivoData.recorrido;
+            if(!recorrido) return;
+            if(!finalMap[recorrido.id]) finalMap[recorrido.id] = [];
+            finalMap[recorrido.id].push(colectivoId);
+        })
 
-        const includeKeyword = (entity, keyword) => {
-            if (!entity.isValid()) return false;
-            if (entity.number.toLowerCase().includes(keyword)) {
-                return true;
-            } else if (entity.line.toLowerCase().includes(keyword)) {
-                return true
-            } else if (entity.destination.toLowerCase().includes(keyword)) {
-                return true;
-            } else if (entity.company.toLowerCase().includes(keyword)) {
-                return true;
-            } else {
-                return false;
-            }
+        return finalMap;
+    }
+    
+    //Retorna un mapa de indices de paradas divididos por zonas
+    const _getParadasPorZonas = (paradaIdList)=>{
+        let finalMap = {};
+
+        paradaIdList.forEach((paradaId)=>{
+            let parada = data.paradas[paradaId];
+            if(!parada) return;
+            let zone = parada.zone;
+            if(!zone) return;
+            if(!finalMap[zone]) finalMap[zone] = [];
+            finalMap[zone].push(paradaId);
+        })
+
+        return finalMap;
+    }
+
+    const _filterColectivoList = (colectivoIdList, keyword)=>{
+        const hasKeyword = (colectivoId, keyword) =>{
+            let colectivo = data.colectivos[colectivoId];
+            let colectivoData = data.colectivosData[colectivoId];
+            if(!colectivo || !colectivoData) return false;
+            if(colectivo.number.toLowerCase().includes(keyword)) return true;
+            if(colectivo.line.toLowerCase().includes(keyword)) return true;
+            if(colectivoData.destination.toLowerCase().includes(keyword)) return true;
+            if(colectivo.company.toLowerCase().includes(keyword)) return true;
+            return false;
         }
-        
-        return listFilter.filter(x => includeKeyword(x, keyword));
 
+        return colectivoIdList.filter(colectivoId=>hasKeyword(colectivoId, keyword));
     }
 
-    const _filterParada = (listData, keyword) =>{
-        let listFilter = Object.values(listData);
-
-        keyword = keyword.toLowerCase();
-
-        const includeKeyword = (entity, keyword) =>{
-            if(entity.name.toLowerCase().includes(keyword)){
-                return true;
-            }else if(entity.description.toLowerCase().includes(keyword)){
-                return true;
-            }else{
-                return false;
-            }
+    const _filterParadaList = (paradaIdList, keyword)=>{
+        const hasKeyword = (paradaId, keyword)=>{
+            let parada = data.paradas[paradaId];
+            if(!parada) return false;
+            if(parada.name.toLowerCase().includes(keyword)) return true;
+            if(parada.description.toLowerCase().includes(keyword)) return true;
+            return false;
         }
 
-        return listFilter.filter(x => includeKeyword(x, keyword));
+        return paradaIdList.filter(paradaId=>hasKeyword(paradaId, keyword));
     }
 
-    const getColectivosPorRecorrido = ()=>{
-        let filteredColectivos = _filterColectivo(Object.values(data.colectivos), keyword);
-        return _getColectivosPorRecorrido(filteredColectivos, Object.values(data.recorridos))
+    const getColectivoIdList = ()=>{
+        let colectivoIdList = Object.keys(data.colectivos);
+        if(keyword) colectivoIdList = _filterColectivoList(colectivoIdList, keyword);
+        return _getColectivosPorRecorridos(colectivoIdList);
     }
 
-    const getParadasPorZonas = ()=>{
-        let filteredParadas = _filterParada(Object.values(data.paradas), keyword);
-        return _getParadasPorZonas(filteredParadas);
+    const getParadaIdList = ()=>{
+        let paradaIdList = Object.keys(data.paradas);
+        if(keyword) paradaIdList = _filterParadaList(paradaIdList, keyword);
+        return _getParadasPorZonas(paradaIdList);
     }
 
-    const filteredColectivos = useMemo(()=>{
-        return getColectivosPorRecorrido();
-    },[keyword])
+    const filteredColectivos = useMemo(getColectivoIdList, [keyword, data.colectivosData])
 
-    const filteredParadas = useMemo(()=>{
-        return getParadasPorZonas();
-    },[keyword])
+    const filteredParadas = useMemo(getParadaIdList, [keyword])
 
     return <MenuContext.Provider
         value={{

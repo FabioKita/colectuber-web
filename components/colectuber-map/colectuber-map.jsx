@@ -60,7 +60,8 @@ const ColectuberMap = ({
         let markerPosition;
         if(id.startsWith("c-")){
             //es un colectivo
-            let colectivo = dataContext.colectivos[id];
+            let colectivo = dataContext.colectivosLocation[id];
+            if(!colectivo) return;
             markerPosition = colectivo.position;
         }else if(id.startsWith("p-")){
             //es una parada
@@ -104,10 +105,21 @@ const ColectuberMap = ({
     
     //RENDER
     const renderColectivos = ()=>{
-        return Object.values(dataContext.colectivos).map((colectivo)=>{
+        return Object.values(dataContext.colectivos)
+        .filter((colectivo)=>{
+            let colectivoData = dataContext.colectivosData[colectivo.id];
+            let colectivoLocation = dataContext.colectivosLocation[colectivo.id];
+            return (colectivoData && colectivoLocation);
+        })
+        .map((colectivo)=>{
+            let colectivoData = dataContext.colectivosData[colectivo.id];
+            let colectivoLocation = dataContext.colectivosLocation[colectivo.id];
+
             return <ColectivoMarker
                 key={colectivo.id}
                 colectivoEntity={colectivo}
+                colectivoData={colectivoData}
+                colectivoLocation={colectivoLocation}
             />
         })
     }

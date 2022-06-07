@@ -33,23 +33,25 @@ const addPrefix=(value, prefix)=>{
 const fetchInitialData = async ()=>{
     let datos = {
         colectivos:[],
+        colectivosData:[],
         paradas:[],
         recorridos:[]
     };
 
-    let responce = await API.get("/colectuber/get-data");
-    
-    datos.colectivos = getColectivosList(responce.data);
-    datos.paradas = getParadaList(responce.data);
-    datos.recorridos = getRecorridosList(responce.data);
+    let response = await API.get("/colectuber/get-data");
+
+    datos.colectivos = getColectivosList(response.data);
+    datos.colectivosData = getColectivosDatosList(response.data);
+    datos.paradas = getParadaList(response.data);
+    datos.recorridos = getRecorridosList(response.data);
 
     return datos;
 }
 
-const getColectivosList = (responceData)=>{
-    let locations = responceData.colectivoUbicacion.map(l=>parseDtoToLocations(l));
+const getColectivosList = (responseData)=>{
+    let locations = responseData.colectivoUbicacion.map(l=>parseDtoToLocations(l));
 
-    let colectivos = responceData.colectivos.map(c=>{
+    let colectivos = responseData.colectivos.map(c=>{
         return {
             id:addPrefix(c.id, "c-"),
             number:c.numero,
@@ -61,8 +63,14 @@ const getColectivosList = (responceData)=>{
     return colectivos;
 }
 
-const getParadaList = (responceData)=>{
-    let paradas = responceData.paradas.map(p=>{
+const getColectivosDatosList = (responseData)=>{
+    let colectivosDatos = responseData.colectivoUbicacion.map(d=>parseDtoToLocations(d));
+
+    return colectivosDatos;
+}
+
+const getParadaList = (responseData)=>{
+    let paradas = responseData.paradas.map(p=>{
         return {
             id:addPrefix(p.id, "p-"),
             name:p.nombre,
@@ -79,8 +87,8 @@ const getParadaList = (responceData)=>{
     return paradas;
 }
 
-const getRecorridosList = (responceData)=>{
-    let recorridos = responceData.recorridos.map(r=>{
+const getRecorridosList = (responseData)=>{
+    let recorridos = responseData.recorridos.map(r=>{
         return {
             id:addPrefix(r.id, "r-"),
             name:r.nombre,
@@ -101,8 +109,8 @@ const getRecorridosList = (responceData)=>{
 }
 
 const fetchLocations = async ()=>{
-    let responce = await API.get("/colectuber/ubicaciones");
-    let fetchedLocations = responce.data.result.map((fetchedLocation)=>parseDtoToLocations(fetchedLocation))
+    let response = await API.get("/colectuber/ubicaciones");
+    let fetchedLocations = response.data.result.map((fetchedLocation)=>parseDtoToLocations(fetchedLocation))
     return fetchedLocations;
 }
 

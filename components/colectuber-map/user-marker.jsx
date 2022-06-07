@@ -79,7 +79,9 @@ const UserMarker = ()=>{
     }
 
     const getNearestParadaFromColectivo = (position, colectivo)=>{
-        let paradaList = colectivo.getParadasAfterColectivo();
+        let colectivoData = dataContext.colectivosData[colectivo.id];
+        if(!colectivoData) return null;
+        let paradaList = colectivoData.getParadasAfterColectivo();
         return getNearestParada(position, paradaList);
     }
 
@@ -112,7 +114,7 @@ const UserMarker = ()=>{
 
     useEffect(()=>{
         handleStateChange();
-    },[selectionContext.selectedMarker, userLocationContext.lastKnownLocation]);
+    },[selectionContext.selectedMarker, userLocationContext.lastKnownLocation, dataContext.colectivosData]);
 
     const renderLineToNearestParada = ()=>{
         if(!userLocationContext.lastKnownLocation || !state.relatedEntity){

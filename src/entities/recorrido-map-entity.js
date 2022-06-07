@@ -37,19 +37,23 @@ export default class RecorridoMapEntity{
     }
 
     //SelectionMethod
-    getPathWithRelatedEntity(relatedEntity){
-        if(!relatedEntity){
-            return this.path;
-        }else if(relatedEntity.id.startsWith("c-")){
-            //Es un colectivo
-            if(!relatedEntity.isValid()) return this.path;
-            return this.ipPath(relatedEntity.ip, this.path.length-1)
-        }else if(relatedEntity.id.startsWith("p-")){
-            //Es una parada
-            return this.paradas[relatedEntity.id].path;
-        }else{
-            return this.path;
-        }
+    getPathWithParada(paradaId){
+        return this.paradas[paradaId].path;
+    }
+
+    getPathWithColectivo(colectivoLocation){
+        return this.ipPath(colectivoLocation.ip, this.path.length-1)
+    }
+
+    hasColectivo(colectivoData){
+        if(!colectivoData) return false;
+        return (colectivoData.recorrido.id == this.id);
+    }
+
+    hasParada(parada){
+        let paradaInfo = this.paradas[parada.id];
+        if(!paradaInfo) return false;
+        return true;
     }
 
     isParadaAfterIp(paradaId, ip){
@@ -61,18 +65,6 @@ export default class RecorridoMapEntity{
     getDistanceToParada(paradaId, distanceFromStart){
         let paradaInfo = this.paradas[paradaId];
         return paradaInfo.distanceFromStart-distanceFromStart;
-    }
-
-    hasColectivo(colectivo){
-        if(!colectivo)return false;
-        if(!colectivo.isValid()) return false;
-        return (colectivo.recorrido.id == this.id);
-    }
-
-    hasParada(parada){
-        let paradaInfo = this.paradas[parada.id];
-        if(!paradaInfo) return false;
-        return true;
     }
 
     getParadasBeforeParada(parada){
