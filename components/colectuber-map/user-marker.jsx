@@ -114,7 +114,7 @@ const UserMarker = ()=>{
 
     useEffect(()=>{
         handleStateChange();
-    },[selectionContext.selectedMarker, userLocationContext.lastKnownLocation]);
+    },[selectionContext.selectedMarker, userLocationContext.lastKnownLocation, dataContext.colectivosData]);
 
     const renderLineToNearestParada = ()=>{
         if(!userLocationContext.lastKnownLocation || !state.relatedEntity){
