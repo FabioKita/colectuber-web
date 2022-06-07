@@ -248,3 +248,15 @@
         }
     }
 }
+
+.MenuHelp{
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .Image{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
