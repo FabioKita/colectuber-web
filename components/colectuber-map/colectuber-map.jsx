@@ -11,11 +11,14 @@ import { useSelectionContext } from 'src/context/selection-context-provider';
 const FPS = 15;
 const SPF = 1000/FPS;
 
+//-27.25480747154465, -55.98543362798353
+//-27.42213450012838, -55.74014616729476
+
 const BOUNDS = {
-    north: -27.28831571374801,
-    south: -27.379767219135722,
-    east: -55.80048608276117,
-    west: -55.92708070367843,
+    north: -27.25480747154465,
+    south: -27.42213450012838,
+    east: -55.74014616729476,
+    west: -55.98543362798353,
 }
 
 const SELECT_ZOOM = 16;
@@ -27,13 +30,18 @@ const ColectuberMap = ({
     const mapParams = useMemo(()=>{
         const DEF_VALUES = {
             center: { lat: (BOUNDS.north + BOUNDS.south)/2, lng: (BOUNDS.west + BOUNDS.east)/2 },
-            zoom: 14,
+            zoom: 13,
             mapContainerClassName: styles.map,
             options: {
                 maxZoom: 18,
+                minZoom:13,
                 mapId: 'c0f2df849cf82a64',
                 disableDefaultUI:true,
                 gestureHandling: "greedy",
+                restriction: {
+                    latLngBounds: BOUNDS,
+                    strictBounds: false,
+                },
             }
         };
         return DEF_VALUES;
