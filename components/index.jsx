@@ -6,6 +6,7 @@ import { useGoogleScript } from "src/context/google-context-provider";
 import { useUserLocationContext } from "src/context/user-location-context-provider";
 import Menu from "./filter/menu";
 import Loading from "./loading";
+import Logo from "./colectuber-map/logo";
 
 const Index = () => {
     const script = useGoogleScript();
@@ -31,6 +32,7 @@ const Index = () => {
         return <div className={styles.container}>
             <ColectuberMap/>
             <Menu/>
+            <Logo/>
         </div>
     }
 
