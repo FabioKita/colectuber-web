@@ -7,6 +7,7 @@ import { useUserLocationContext } from "src/context/user-location-context-provid
 import Menu from "./filter/menu";
 import Loading from "./loading";
 import Logo from "./colectuber-map/logo";
+import ErrorPage from "./error-page";
 
 const Index = () => {
     const script = useGoogleScript();
@@ -28,6 +29,8 @@ const Index = () => {
 
     if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
         return <Loading></Loading>
+    }else if(data.isError){
+        return <ErrorPage errorCode={500}></ErrorPage>
     }else{
         return <div className={styles.container}>
             <ColectuberMap/>
