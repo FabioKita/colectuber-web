@@ -15,17 +15,19 @@ const Index = () => {
     const userLocation = useUserLocationContext();
 
     useEffect(()=>{
-        const intervalId = setInterval(()=>{
-            data.loadNewLocations().catch(err=>console.error(err));
-        }, 5000);
-
-        const locationId = userLocation.startLocationTracking();
-        
-        return ()=>{
-            clearInterval(intervalId);
-            userLocation.stopLocationTracking(locationId);
+        if(data.isLoaded && data.isError){
+            const intervalId = setInterval(()=>{
+                data.loadNewLocations().catch(err=>console.error(err));
+            }, 5000);
+    
+            const locationId = userLocation.startLocationTracking();
+            
+            return ()=>{
+                clearInterval(intervalId);
+                userLocation.stopLocationTracking(locationId);
+            }
         }
-    },[]);
+    },[data.isLoaded]);
 
     if(!script.isLoaded || !data.isLoaded || !userLocation.permissionAsked){
         return <Loading></Loading>
