@@ -14,9 +14,9 @@ const ErrorPage=({
                 errorMessage:
                 "Lo sentimos. Pero ocurrio un error."
             }</p>
-           <p><a className={styles.errorLink} href="/">Volver al Inicio</a></p>
+           <p>Volver al Inicio</p>
         </div>
-    )
+    );
 }
 
 export default ErrorPage;
