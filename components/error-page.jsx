@@ -1,4 +1,3 @@
-import Link from "next/link"
 import react from "react"
 import styles from "../styles/errores.module.scss"
 
@@ -23,8 +22,4 @@ const ErrorPage=({
     )
 }
 
-export default ErrorPage
-
-/*  <div><a href="/">
-                <img src={"./colectuber.jpg"} width="200" height="150"></img>
-           </a></div>*/
+export default ErrorPage;
