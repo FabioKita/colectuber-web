@@ -107,6 +107,7 @@ export const DataProvider = ({
 }) => {
     const script = useGoogleScript();
     const [isLoaded, setLoaded] = useState(false);
+    const [isError, setError] = useState(false);
 
     //Data
     const [state, dispatch] = useReducer(reducer, {
@@ -143,7 +144,7 @@ export const DataProvider = ({
         if (script.isLoaded) {
             loadInitialData()
                 .catch((err) => {
-                    console.error(err);
+                    setError(true)
                 })
                 .finally(() => {
                     setLoaded(true);
@@ -171,6 +172,7 @@ export const DataProvider = ({
     return <DataContext.Provider
         value={{
             isLoaded,
+            isError,
 
             colectivos: state.colectivos,
             colectivosData: state.colectivosData,
