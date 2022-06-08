@@ -3,6 +3,7 @@ import { useDataContext } from 'src/context/data-context-provider';
 import { useMenuContext } from 'src/context/menu-context-provider';
 import { useSelectionContext } from 'src/context/selection-context-provider';
 import styles from 'styles/menu.module.scss'
+import MenuHelp from './menu-help';
 import {MenuList, MenuElement, MenuListElement} from './menu-list';
 import MenuTabs from './menu-tabs';
 
@@ -85,7 +86,7 @@ const MenuPanel = ({
     return <div className={styles.MenuPanel + " " + (hidden?styles.hidden:"")}>
         <MenuTabs 
             className={styles.Content} 
-            tabs={["Colectivos", "Paradas"]}
+            tabs={["Colectivos", "Paradas", "Acerca de"]}
             onTabClick={changeTab}
             selectedTab={selectedTab}
         >
@@ -96,6 +97,8 @@ const MenuPanel = ({
             <MenuList key={"zonas/paradas"}>
                 {renderZonasList()}
             </MenuList>
+
+            <MenuHelp key={"ayuda"}/>
         </MenuTabs>
     </div>
 }
