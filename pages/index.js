@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { DataProvider } from "src/context/data-context-provider";
 import Index from "components";
 import { GoogleScriptProvider } from "src/context/google-context-provider";

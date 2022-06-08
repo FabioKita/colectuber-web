@@ -5,10 +5,12 @@
     height: 100vh;
     justify-content: center;
     
-    h1{
+    .errorLabel{
         margin: 0;
     }
+
     .errorCode{
+        margin: 0;
         font-size: 100px ;
     }
     .errorText{
@@ -21,7 +23,5 @@
             color: darkblue;
         }
     }
-
-    
 }
 
