@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/errores.module.scss"
+import styles from "styles/errores.module.scss"
 
 const ErrorPage=({
     errorCode = 500,
