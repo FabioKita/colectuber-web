@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import styles from 'styles/menu.module.scss'
 
 const MenuHelp = () => {

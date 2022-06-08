@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer, useRef} from 'react';
+import React from 'react';
 import styles from 'styles/colectuber-map.module.scss'
 
 const Logo = ()=>{
