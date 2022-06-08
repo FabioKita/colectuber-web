@@ -15,7 +15,7 @@ const Index = () => {
     const userLocation = useUserLocationContext();
 
     useEffect(()=>{
-        if(data.isLoaded && !data.isError){
+        if(data.isLoaded){
             const intervalId = setInterval(()=>{
                 data.loadNewLocations().catch(err=>console.error(err));
             }, 5000);

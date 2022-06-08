@@ -143,11 +143,11 @@ export const DataProvider = ({
     useEffect(() => {
         if (script.isLoaded) {
             loadInitialData()
+                .then(()=>{
+                    setLoaded(true);
+                })
                 .catch((err) => {
                     setError(true)
-                })
-                .finally(() => {
-                    setLoaded(true);
                 })
         }
     }, [script.isLoaded])
