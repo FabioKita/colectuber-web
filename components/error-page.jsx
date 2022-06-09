@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styles from "styles/errores.module.scss"
 
@@ -14,7 +15,9 @@ const ErrorPage=({
                 errorMessage:
                 "Lo sentimos. Pero ocurrio un error."
             }</p>
-           <a href="/" className={styles.errorLink}>Volver al Inicio</a>
+            <Link href={"/"}>
+                <a className={styles.errorLink}>Volver al Inicio</a>
+            </Link>
         </div>
     );
 }
