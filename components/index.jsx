@@ -40,8 +40,6 @@ const Index = () => {
             <Logo/>
         </div>
     }
-
-    
 }
 
 export default Index;

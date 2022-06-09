@@ -146,7 +146,7 @@ export const DataProvider = ({
                 .then(()=>{
                     setLoaded(true);
                 })
-                .catch((err) => {
+                .catch(() => {
                     setError(true)
                 })
         }
